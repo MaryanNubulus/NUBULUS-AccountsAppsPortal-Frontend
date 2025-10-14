@@ -1,30 +1,36 @@
-import { useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { useLoginViewModel } from "./viewmodel";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export default function Login() {
-  const [params] = useSearchParams();
-
-  const signInUrl = useMemo(() => {
-    const url = new URL("/api/v1/auth/sign-in", window.location.origin);
-    return url.toString();
-  }, [params]);
+  const { signInUrl } = useLoginViewModel();
 
   return (
-    <div style={{ padding: 40, textAlign: "center" }}>
-      <h1>Accede al Portal</h1>
-      <p>Autentícate con Microsoft para continuar.</p>
-      <a
-        href={signInUrl}
-        style={{
-          background: "#0078D4",
-          color: "white",
-          padding: "10px 20px",
-          borderRadius: 6,
-          textDecoration: "none",
-        }}
-      >
-        Iniciar sesión con Microsoft
-      </a>
+    <div className={"flex flex-col gap-6"}>
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-center">Accede al Portal</CardTitle>
+          <CardDescription className="text-center">
+            Autentícate con Microsoft para continuar.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button
+            onClick={() => {
+              window.location.href = signInUrl;
+            }}
+            className="w-full"
+          >
+            Iniciar sesión con Microsoft
+          </Button>
+        </CardContent>
+      </Card>
     </div>
   );
 }

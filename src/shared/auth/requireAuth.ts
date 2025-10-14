@@ -11,7 +11,7 @@ export async function requireAuth({ request }: LoaderFunctionArgs) {
   if (!res.ok) {
     const url = new URL(request.url);
     const from = url.pathname + url.search + url.hash;
-    throw redirect(`/login?from=${encodeURIComponent(from)}`);
+    throw redirect(`/?from=${encodeURIComponent(from)}`);
   }
   return null;
 }
