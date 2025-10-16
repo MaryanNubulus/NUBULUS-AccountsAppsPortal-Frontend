@@ -18,25 +18,22 @@ export function ModeToggle({ isIcon = true }: { isIcon?: boolean }) {
         <Button
           variant={isIcon ? "outline" : "ghost"}
           size={isIcon ? "icon" : "sm"}
-          className="w-full relative justify-start"
+          className={isIcon ? "" : "w-full justify-start relative"}
         >
           <Sun
             className={
               isIcon
-                ? "h-[1.2rem] w-[1.2rem]"
-                : "h-[1rem] w-[1rem] absolute left-0" +
-                  " scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90"
+                ? "h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90"
+                : "absolute h-[1rem] w-[1rem] left-0 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90"
             }
           />
           <Moon
             className={
               isIcon
-                ? "h-[1.2rem] w-[1.2rem]"
-                : "h-[1rem] w-[1rem] left-0" +
-                  " absolute scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0"
+                ? "absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0"
+                : "absolute h-[1rem] w-[1rem] left-0 scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0"
             }
           />
-
           {isIcon ? (
             <span className="sr-only">Toggle theme</span>
           ) : (
