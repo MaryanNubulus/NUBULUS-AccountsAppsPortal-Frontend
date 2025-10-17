@@ -1,8 +1,7 @@
 export default function Main() {
   return (
     <div>
-      <h1>Zona privada</h1>
-      <p>Sesión válida ✅</p>
+      <p>Welcome to the Main Dashboard!</p>
     </div>
   );
 }

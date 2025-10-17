@@ -14,6 +14,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { Navigate } from "react-router-dom";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -34,10 +35,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarGroup>
           <SidebarGroupContent className="flex flex-col gap-2">
             <SidebarMenu>
-              <SidebarMenuItem key="accounts">
-                <SidebarMenuButton tooltip="Accounts">
+              <SidebarMenuItem
+                key="users"
+                onClick={() => (window.location.href = "/private/users")}
+              >
+                <SidebarMenuButton tooltip="Users">
                   <IconUsers />
-                  <span>Accounts</span>
+                  <span>Users</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>

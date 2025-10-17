@@ -11,7 +11,7 @@ export async function requireAuth({ request }: LoaderFunctionArgs) {
     headers: { Accept: "application/json" },
   });
 
-  if (!res.ok) {
+  if (!res.ok || res.status > 299) {
     const url = new URL(request.url);
     const from = url.pathname + url.search + url.hash;
     throw redirect(`/?from=${encodeURIComponent(from)}`);
