@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useLoginViewModel } from "./viewmodel";
+import { useAuthViewModel } from "./viewmodel";
 import {
   Card,
   CardContent,
@@ -8,8 +8,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-export default function Login() {
-  const { signInUrl } = useLoginViewModel();
+export default function Auth() {
+  const { signInUrl } = useAuthViewModel();
 
   return (
     <div className={"flex flex-col gap-6"}>

@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { getSignInUrl } from "./services";
 
-export function useLoginViewModel() {
+export function useAuthViewModel() {
   const [params] = useSearchParams();
 
   const signInUrl = useMemo(() => {

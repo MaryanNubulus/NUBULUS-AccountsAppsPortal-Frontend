@@ -1,11 +1,8 @@
 import { Outlet, useMatches } from "react-router-dom";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "./components/AppSidebar";
-import { Header } from "./components/Header";
-
-interface RouteHandle {
-  title?: string;
-}
+import type { RouteHandle } from "../types";
+import { AppSidebar } from "../components/AppSidebar";
+import { Header } from "../components/Header";
 
 export default function PrivateLayout() {
   const matches = useMatches();

@@ -1,10 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
-import PrivateLayout from "./private/shared/Layout";
-import PublicLayout from "./public/shared/Layout";
-import Main from "./private/main";
-import Login from "./public/login";
-import { requireAuth } from "./shared/auth/requireAuth";
-import Users from "./private/users";
+import PrivateLayout from "./modules/shared/layouts/PrivateLayout";
+import PublicLayout from "./modules/shared/layouts/PublicLayout";
+import { requireAuth } from "./modules/auth/requireAuth";
+import { moduleRegistry } from "./modules/shared/registry";
+import Auth from "./modules/auth";
+
+import "./modules/users";
 
 const router = createBrowserRouter([
   {
@@ -13,7 +14,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Login />,
+        element: <Auth />,
       },
     ],
   },
@@ -22,16 +23,8 @@ const router = createBrowserRouter([
     loader: requireAuth,
     element: <PrivateLayout />,
     children: [
-      {
-        index: true,
-        element: <Main />,
-        handle: { title: "Dashboard" },
-      },
-      {
-        path: "users",
-        element: <Users />,
-        handle: { title: "Users" },
-      },
+      { index: true, element: <p>Welcome to the Main Dashboard!</p> },
+      ...moduleRegistry.getPrivateRoutes(),
     ],
   },
 ]);

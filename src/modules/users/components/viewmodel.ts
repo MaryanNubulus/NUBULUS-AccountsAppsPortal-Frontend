@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
-import type {
-  GetUsersResponse,
-  UserInfoDTO,
-} from "@/shared/DTOs/GetUsersResponse";
+import type { GetUsersResponse, UserInfoDTO } from "@/modules/users/types";
 import { getUsers } from "./service";
 
 export function useUsersViewModel() {

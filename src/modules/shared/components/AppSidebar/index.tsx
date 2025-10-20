@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { IconUsers } from "@tabler/icons-react";
 import { NavUser } from "../NavUser";
 import {
   Sidebar,
@@ -14,9 +13,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { moduleRegistry } from "@/modules/shared/registry";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const navigate = useNavigate();
+  const menuItems = moduleRegistry.getMenuItems();
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -35,15 +38,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarGroup>
           <SidebarGroupContent className="flex flex-col gap-2">
             <SidebarMenu>
-              <SidebarMenuItem
-                key="users"
-                onClick={() => (window.location.href = "/private/users")}
-              >
-                <SidebarMenuButton tooltip="Users">
-                  <IconUsers />
-                  <span>Users</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+              {menuItems.map((item) => (
+                <SidebarMenuItem
+                  key={item.id}
+                  onClick={() => navigate(item.path)}
+                >
+                  <SidebarMenuButton tooltip={item.label}>
+                    {item.icon}
+                    <span>{item.label}</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

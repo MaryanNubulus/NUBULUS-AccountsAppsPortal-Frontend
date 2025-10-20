@@ -1,4 +1,3 @@
-// src/features/users/index.tsx
 import {
   Table,
   TableBody,
@@ -12,7 +11,7 @@ import {
 import { Loader2 } from "lucide-react";
 import { useUsersViewModel } from "./viewmodel";
 
-export default function Users() {
+export default function UsersTable() {
   const { users, isLoading, error } = useUsersViewModel();
 
   if (isLoading) {
