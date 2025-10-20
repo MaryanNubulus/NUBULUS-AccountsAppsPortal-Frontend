@@ -7,13 +7,22 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
 import { Loader2 } from "lucide-react";
-import { useUsersViewModel } from "./viewmodel";
+import type { UserInfoDTO } from "../types";
 
-export default function UsersTable() {
-  const { users, isLoading, error } = useUsersViewModel();
+interface UsersTableProps {
+  users?: UserInfoDTO[];
+  isLoading?: boolean;
+  error?: string | null;
+  onUserSelect?: (user: UserInfoDTO) => void;
+}
 
+export default function UsersTable({
+  users = [],
+  isLoading = false,
+  error = null,
+  onUserSelect,
+}: UsersTableProps) {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -49,7 +58,11 @@ export default function UsersTable() {
       </TableHeader>
       <TableBody>
         {users.map((user) => (
-          <TableRow key={user.id}>
+          <TableRow
+            key={user.id}
+            className="cursor-pointer hover:bg-muted/50"
+            onClick={() => onUserSelect?.(user)}
+          >
             <TableCell>{user.email}</TableCell>
             <TableCell>{user.name}</TableCell>
             <TableCell>

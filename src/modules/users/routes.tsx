@@ -1,9 +1,9 @@
 import type { RouteDefinition } from "../shared/types";
-import UsersTable from "./components/UsersTable";
+import UsersPage from "./page";
 
 export const routes: RouteDefinition[] = [
   {
     path: "/private/users",
-    element: <UsersTable />,
+    element: <UsersPage />,
   },
 ];
