@@ -13,9 +13,8 @@ export default function UsersPage() {
   };
 
   return (
-    <div className="p-4">
-      <div className="flex flex-row items-center justify-between mb-6">
-        <h1 className="text-xl font-semibold">Users</h1>
+    <>
+      <div className="flex flex-row items-center justify-end mb-6">
         <UserDefinition user={selectedUser} />
       </div>
 
@@ -25,6 +24,6 @@ export default function UsersPage() {
         error={error}
         onUserSelect={handleUserSelect}
       />
-    </div>
+    </>
   );
 }

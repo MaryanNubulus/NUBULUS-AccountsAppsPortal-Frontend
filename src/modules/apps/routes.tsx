@@ -1,12 +1,12 @@
 import type { RouteDefinition } from "../shared/types";
-import UsersPage from "./page";
+import AppsPage from "./page";
 
 export const routes: RouteDefinition[] = [
   {
-    path: "/private/users",
-    element: <UsersPage />,
+    path: "/private/apps",
+    element: <AppsPage />,
     handle: {
-      title: "Users",
+      title: "Aplications",
     },
   },
 ];

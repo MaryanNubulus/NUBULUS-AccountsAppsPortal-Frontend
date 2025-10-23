@@ -6,6 +6,7 @@ import { moduleRegistry } from "./modules/shared/registry";
 import Auth from "./modules/auth";
 
 import "./modules/users";
+import "./modules/apps";
 
 const router = createBrowserRouter([
   {

@@ -25,7 +25,6 @@ export function useUsersViewModel() {
           setUsers(response.users ?? []);
         }
       } catch (err) {
-        console.error("Error fetching users:", err);
         if (isMounted) {
           setError("Error fetching users. Please try again later.");
         }
