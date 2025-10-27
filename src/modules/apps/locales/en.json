@@ -1,0 +1,40 @@
+{
+  "page": {
+    "title": "Applications",
+    "addButton": "Add New"
+  },
+  "addModal": {
+    "title": "Create New App",
+    "description": "Fill in the details for your new application. The key must be unique.",
+    "form": {
+      "key": "Key",
+      "name": "Name",
+      "keyPlaceholder": "Use only letters, numbers, hyphens and underscores",
+      "create": "Create",
+      "creating": "Creating...",
+      "cancel": "Cancel"
+    }
+  },
+  "table": {
+    "caption": "Apps List",
+    "headers": {
+      "key": "Key",
+      "name": "Name",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "loading": "Loading apps...",
+    "noApps": "No apps found."
+  },
+  "confirmDialog": {
+    "title": "Confirm Action",
+    "pauseMessage": "Do you want to continue with the iteration?",
+    "activateMessage": "Are you sure you want to activate this app?",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  }
+}

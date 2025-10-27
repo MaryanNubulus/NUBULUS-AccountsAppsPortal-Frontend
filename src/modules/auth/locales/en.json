@@ -1,0 +1,9 @@
+{
+  "page": {
+    "title": "Access Portal",
+    "description": "Authenticate with Microsoft to continue.",
+    "actions": {
+      "signIn": "Sign in with Microsoft"
+    }
+  }
+}

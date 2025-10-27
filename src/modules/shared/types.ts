@@ -19,9 +19,5 @@ export interface RouteDefinition {
   path: string;
   element: ReactNode;
   children?: RouteDefinition[];
-  handle: RouteHandle;
-}
-
-export interface RouteHandle {
-  title?: string;
+  title: string;
 }

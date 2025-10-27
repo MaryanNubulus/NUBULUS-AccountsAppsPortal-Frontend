@@ -30,3 +30,17 @@ export async function createApp(request: CreateAppRequest) {
 
   return "failed";
 }
+
+export async function pauseResumeApp(appId: string, pause: boolean) {
+  const action = pause ? "pause" : "resume";
+  const url = new URL(`/api/v1/apps/${appId}/${action}`, API_BASE);
+
+  const response = await fetch(url, {
+    method: "POST",
+    credentials: "include",
+    headers: { Accept: "application/json", "Content-Type": "application/json" },
+  });
+
+  if (response.ok) return "success";
+  return "failed";
+}

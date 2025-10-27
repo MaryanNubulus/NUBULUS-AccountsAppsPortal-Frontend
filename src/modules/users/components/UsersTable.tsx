@@ -9,26 +9,27 @@ import {
 } from "@/components/ui/table";
 import { Loader2 } from "lucide-react";
 import type { UserInfoDTO } from "../types";
+import { useTranslation } from "react-i18next";
 
 interface UsersTableProps {
   users?: UserInfoDTO[];
   isLoading?: boolean;
   error?: string | null;
-  onUserSelect?: (user: UserInfoDTO) => void;
 }
 
 export default function UsersTable({
   users = [],
   isLoading = false,
   error = null,
-  onUserSelect,
 }: UsersTableProps) {
+  const { t } = useTranslation("users");
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
         <Loader2 className="animate-spin text-muted-foreground" size={32} />
         <span className="ml-2 text-sm text-muted-foreground">
-          Loading users...
+          {t("page.loading")}
         </span>
       </div>
     );
@@ -41,28 +42,24 @@ export default function UsersTable({
   if (!users || users.length === 0) {
     return (
       <div className="text-center py-8 text-muted-foreground">
-        No users found.
+        {t("page.noUsersFound")}
       </div>
     );
   }
 
   return (
     <Table>
-      <TableCaption>User List</TableCaption>
+      <TableCaption>{t("page.title")}</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead>Email</TableHead>
-          <TableHead>Name</TableHead>
-          <TableHead>Status</TableHead>
+          <TableHead>{t("page.table.email")}</TableHead>
+          <TableHead>{t("page.table.name")}</TableHead>
+          <TableHead>{t("page.table.status")}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {users.map((user) => (
-          <TableRow
-            key={user.id}
-            className="cursor-pointer hover:bg-muted/50"
-            onClick={() => onUserSelect?.(user)}
-          >
+          <TableRow key={user.id} className={"hover:bg-muted/50"}>
             <TableCell>{user.email}</TableCell>
             <TableCell>{user.name}</TableCell>
             <TableCell>
@@ -73,7 +70,9 @@ export default function UsersTable({
                     : "bg-red-100 text-red-700"
                 }`}
               >
-                {user.isActive ? "Active" : "Inactive"}
+                {user.isActive
+                  ? t("page.status.active")
+                  : t("page.status.inactive")}
               </span>
             </TableCell>
           </TableRow>

@@ -9,7 +9,7 @@ export const userModule: ModuleDescriptor = {
   menu: [
     {
       id: "users.list",
-      label: "Users",
+      label: "users:page.title",
       path: "/private/users",
       icon: <UsersIcon />,
       order: 1,

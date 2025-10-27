@@ -5,8 +5,6 @@ export const routes: RouteDefinition[] = [
   {
     path: "/private/users",
     element: <UsersPage />,
-    handle: {
-      title: "Users",
-    },
+    title: "users:page.title",
   },
 ];

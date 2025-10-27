@@ -1,0 +1,31 @@
+{
+  "layout": {
+    "loading": "Carregant...",
+    "header": {
+      "toggleTheme": "Canviar tema",
+      "theme": {
+        "light": "Clar",
+        "dark": "Fosc",
+        "system": "Sistema"
+      },
+      "user": {
+        "profile": "Perfil",
+        "settings": "Configuració",
+        "logout": "Tancar sessió",
+        "error": "Error en carregar les dades de l'usuari"
+      },
+      "language": {
+        "select": "Seleccionar idioma"
+      }
+    },
+    "sidebar": {
+      "dashboard": "Tauler principal",
+      "users": "Usuaris",
+      "applications": "Aplicacions",
+      "collapse": "Contraure menú",
+      "expand": "Expandir menú",
+      "title": "Menú principal",
+      "portal": "Portal d'Administració"
+    }
+  }
+}

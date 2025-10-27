@@ -2,8 +2,10 @@ import { Button } from "@/components/ui/button";
 import AppsTable from "./components/AppsTable";
 import { useAppsViewModel } from "./viewmodel";
 import { AddNewAppModal } from "./components/AddNewAppModal";
+import { useTranslation } from "react-i18next";
 
 export default function AppsPage() {
+  const { t } = useTranslation("apps");
   const {
     apps,
     isLoading,
@@ -12,17 +14,24 @@ export default function AppsPage() {
     setIsAddModalOpen,
     handleCloseModal,
     createApp,
+    pauseResumeApp,
     addAppState,
   } = useAppsViewModel();
 
   return (
     <>
-      <div className="flex flex-row items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Applications</h1>
-        <Button onClick={() => setIsAddModalOpen(true)}>Add New</Button>
+      <div className="flex flex-row items-center justify-end mb-6">
+        <Button onClick={() => setIsAddModalOpen(true)}>
+          {t("page.addButton")}
+        </Button>
       </div>
 
-      <AppsTable apps={apps} isLoading={isLoading} error={error} />
+      <AppsTable
+        apps={apps}
+        isLoading={isLoading}
+        error={error}
+        onPauseResume={pauseResumeApp}
+      />
 
       <AddNewAppModal
         isOpen={isAddModalOpen}

@@ -9,7 +9,7 @@ export const appModule: ModuleDescriptor = {
   menu: [
     {
       id: "apps.list",
-      label: "Aplications",
+      label: "apps:page.title",
       path: "/private/apps",
       icon: <LayoutPanelLeft />,
       order: 2,

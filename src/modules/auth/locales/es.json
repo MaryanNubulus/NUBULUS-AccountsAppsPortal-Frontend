@@ -1,0 +1,9 @@
+{
+  "page": {
+    "title": "Accede al Portal",
+    "description": "Autentícate con Microsoft para continuar.",
+    "actions": {
+      "signIn": "Iniciar sesión con Microsoft"
+    }
+  }
+}

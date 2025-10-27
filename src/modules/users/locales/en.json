@@ -1,0 +1,16 @@
+{
+  "page": {
+    "title": "User Management",
+    "table": {
+      "name": "Name",
+      "email": "Email",
+      "status": "Status"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "loading": "Loading users...",
+    "noUsersFound": "No users found."
+  }
+}

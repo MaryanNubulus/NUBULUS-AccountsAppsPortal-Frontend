@@ -1,0 +1,16 @@
+{
+  "page": {
+    "title": "Gestión de Usuarios",
+    "table": {
+      "name": "Nombre",
+      "email": "Correo electrónico",
+      "status": "Estado"
+    },
+    "status": {
+      "active": "Activo",
+      "inactive": "Inactivo"
+    },
+    "loading": "Cargando usuarios...",
+    "noUsersFound": "No se encontraron usuarios."
+  }
+}

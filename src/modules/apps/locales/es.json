@@ -1,0 +1,40 @@
+{
+  "page": {
+    "title": "Aplicaciones",
+    "addButton": "Añadir Nueva"
+  },
+  "addModal": {
+    "title": "Crear Nueva Aplicación",
+    "description": "Complete los detalles para su nueva aplicación. La clave debe ser única.",
+    "form": {
+      "key": "Clave",
+      "name": "Nombre",
+      "keyPlaceholder": "Use solo letras, números, guiones y guiones bajos",
+      "create": "Crear",
+      "creating": "Creando...",
+      "cancel": "Cancelar"
+    }
+  },
+  "table": {
+    "caption": "Lista de Aplicaciones",
+    "headers": {
+      "key": "Clave",
+      "name": "Nombre",
+      "status": "Estado",
+      "actions": "Acciones"
+    },
+    "status": {
+      "active": "Activa",
+      "inactive": "Inactiva"
+    },
+    "loading": "Cargando aplicaciones...",
+    "noApps": "No se encontraron aplicaciones."
+  },
+  "confirmDialog": {
+    "title": "Confirmar Acción",
+    "pauseMessage": "¿Desea continuar con la iteración?",
+    "activateMessage": "¿Está seguro que desea activar esta aplicación?",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar"
+  }
+}

@@ -7,17 +7,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useTranslation } from "react-i18next";
 
 export default function Auth() {
   const { signInUrl } = useAuthViewModel();
+  const { t } = useTranslation("auth");
 
   return (
     <div className={"flex flex-col gap-6"}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-center">Accede al Portal</CardTitle>
+          <CardTitle className="text-center">{t("page.title")}</CardTitle>
           <CardDescription className="text-center">
-            Autentícate con Microsoft para continuar.
+            {t("page.description")}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -27,7 +29,7 @@ export default function Auth() {
             }}
             className="w-full"
           >
-            Iniciar sesión con Microsoft
+            {t("page.actions.signIn")}
           </Button>
         </CardContent>
       </Card>

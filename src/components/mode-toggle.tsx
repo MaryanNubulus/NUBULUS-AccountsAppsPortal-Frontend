@@ -1,5 +1,5 @@
 import { Moon, Sun } from "lucide-react";
-
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,6 +11,7 @@ import { useTheme } from "@/components/theme-provider";
 
 export function ModeToggle({ isIcon = true }: { isIcon?: boolean }) {
   const { setTheme } = useTheme();
+  const { t } = useTranslation("shared");
 
   return (
     <DropdownMenu>
@@ -35,9 +36,9 @@ export function ModeToggle({ isIcon = true }: { isIcon?: boolean }) {
             }
           />
           {isIcon ? (
-            <span className="sr-only">Toggle theme</span>
+            <span className="sr-only">{t("layout.header.toggleTheme")}</span>
           ) : (
-            <span className="ml-4">Theme</span>
+            <span className="ml-4">{t("layout.header.toggleTheme")}</span>
           )}
         </Button>
       </DropdownMenuTrigger>
@@ -48,7 +49,7 @@ export function ModeToggle({ isIcon = true }: { isIcon?: boolean }) {
             window.location.reload();
           }}
         >
-          Light
+          {t("layout.header.theme.light")}
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => {
@@ -56,7 +57,7 @@ export function ModeToggle({ isIcon = true }: { isIcon?: boolean }) {
             window.location.reload();
           }}
         >
-          Dark
+          {t("layout.header.theme.dark")}
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => {
@@ -64,7 +65,7 @@ export function ModeToggle({ isIcon = true }: { isIcon?: boolean }) {
             window.location.reload();
           }}
         >
-          System
+          {t("layout.header.theme.system")}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

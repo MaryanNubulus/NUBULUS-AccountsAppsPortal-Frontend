@@ -1,0 +1,31 @@
+{
+  "layout": {
+    "loading": "Loading...",
+    "header": {
+      "toggleTheme": "Toggle theme",
+      "theme": {
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System"
+      },
+      "user": {
+        "profile": "Profile",
+        "settings": "Settings",
+        "logout": "Log out",
+        "error": "Error loading user data"
+      },
+      "language": {
+        "select": "Select language"
+      }
+    },
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "users": "Users",
+      "applications": "Applications",
+      "collapse": "Collapse sidebar",
+      "expand": "Expand sidebar",
+      "title": "Main menu",
+      "portal": "Admin Portal"
+    }
+  }
+}

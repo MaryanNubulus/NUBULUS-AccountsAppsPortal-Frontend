@@ -10,6 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { useTranslation } from "react-i18next";
 import type { CreateAppRequest } from "../types";
 
 interface AddNewAppModalProps {
@@ -30,6 +31,7 @@ export function AddNewAppModal({
   isSubmitting,
   status,
 }: AddNewAppModalProps) {
+  const { t } = useTranslation("apps");
   const [formData, setFormData] = useState<CreateAppRequest>({
     key: "",
     name: "",
@@ -44,16 +46,13 @@ export function AddNewAppModal({
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Create New App</DialogTitle>
-            <DialogDescription>
-              Fill in the details for your new application. The key must be
-              unique.
-            </DialogDescription>
+            <DialogTitle>{t("addModal.title")}</DialogTitle>
+            <DialogDescription>{t("addModal.description")}</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="key" className="text-right">
-                Key
+                {t("addModal.form.key")}
               </Label>
               <Input
                 id="key"
@@ -64,12 +63,12 @@ export function AddNewAppModal({
                 }
                 required
                 pattern="^[a-zA-Z0-9-_]+$"
-                title="Use only letters, numbers, hyphens and underscores"
+                title={t("addModal.form.keyPlaceholder")}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="name" className="text-right">
-                Name
+                {t("addModal.form.name")}
               </Label>
               <Input
                 id="name"
@@ -102,10 +101,12 @@ export function AddNewAppModal({
               onClick={onClose}
               disabled={isSubmitting}
             >
-              Cancel
+              {t("addModal.form.cancel")}
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Creating..." : "Create"}
+              {isSubmitting
+                ? t("addModal.form.creating")
+                : t("addModal.form.create")}
             </Button>
           </DialogFooter>
         </form>

@@ -15,11 +15,12 @@ import {
 } from "@/components/ui/sidebar";
 import { useNavigate } from "react-router-dom";
 import { moduleRegistry } from "@/modules/shared/registry";
+import { useTranslation } from "react-i18next";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const navigate = useNavigate();
   const menuItems = moduleRegistry.getMenuItems();
-
+  const { t } = useTranslation("shared");
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -29,7 +30,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <span className="text-base font-semibold">Nubulus Portal</span>
+              <span className="text-base font-semibold">
+                {t("layout.sidebar.portal")}
+              </span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -43,9 +46,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   key={item.id}
                   onClick={() => navigate(item.path)}
                 >
-                  <SidebarMenuButton tooltip={item.label}>
+                  <SidebarMenuButton tooltip={t(item.label)}>
                     {item.icon}
-                    <span>{item.label}</span>
+                    <span>{t(item.label)}</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

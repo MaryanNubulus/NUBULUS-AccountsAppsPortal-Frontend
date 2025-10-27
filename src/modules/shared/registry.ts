@@ -31,6 +31,23 @@ class ModuleRegistry {
   getPublicRoutes() {
     return this.modules.filter((m) => !m.isPrivate).flatMap((m) => m.routes);
   }
+
+  getRouteTitle(path: string): string {
+    const allRoutes = this.getRoutes();
+    const route = allRoutes.find((route) => {
+      const routePathParts = route.path.split("/").filter(Boolean);
+      const currentPathParts = path.split("/").filter(Boolean);
+
+      return (
+        routePathParts.length === currentPathParts.length &&
+        routePathParts.every(
+          (part, i) => part.startsWith(":") || part === currentPathParts[i]
+        )
+      );
+    });
+
+    return route?.title ?? "";
+  }
 }
 
 export const moduleRegistry = new ModuleRegistry();

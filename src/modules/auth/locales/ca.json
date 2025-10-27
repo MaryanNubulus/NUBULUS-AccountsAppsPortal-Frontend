@@ -1,0 +1,9 @@
+{
+  "page": {
+    "title": "Accés al Portal",
+    "description": "Autentica't amb Microsoft per continuar.",
+    "actions": {
+      "signIn": "Iniciar sessió amb Microsoft"
+    }
+  }
+}

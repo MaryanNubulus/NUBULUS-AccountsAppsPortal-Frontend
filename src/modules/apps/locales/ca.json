@@ -1,0 +1,40 @@
+{
+  "page": {
+    "title": "Aplicacions",
+    "addButton": "Afegir Nova"
+  },
+  "addModal": {
+    "title": "Crear Nova Aplicació",
+    "description": "Ompliu els detalls de la vostra nova aplicació. La clau ha de ser única.",
+    "form": {
+      "key": "Clau",
+      "name": "Nom",
+      "keyPlaceholder": "Utilitzeu només lletres, números, guions i guions baixos",
+      "create": "Crear",
+      "creating": "Creant...",
+      "cancel": "Cancel·lar"
+    }
+  },
+  "table": {
+    "caption": "Llista d'Aplicacions",
+    "headers": {
+      "key": "Clau",
+      "name": "Nom",
+      "status": "Estat",
+      "actions": "Accions"
+    },
+    "status": {
+      "active": "Activa",
+      "inactive": "Inactiva"
+    },
+    "loading": "Carregant aplicacions...",
+    "noApps": "No s'han trobat aplicacions."
+  },
+  "confirmDialog": {
+    "title": "Confirmar Acció",
+    "pauseMessage": "Voleu continuar amb la iteració?",
+    "activateMessage": "Esteu segur que voleu activar aquesta aplicació?",
+    "confirm": "Confirmar",
+    "cancel": "Cancel·lar"
+  }
+}

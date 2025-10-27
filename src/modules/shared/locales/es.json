@@ -1,0 +1,31 @@
+{
+  "layout": {
+    "loading": "Cargando...",
+    "header": {
+      "toggleTheme": "Cambiar tema",
+      "theme": {
+        "light": "Claro",
+        "dark": "Oscuro",
+        "system": "Sistema"
+      },
+      "user": {
+        "profile": "Perfil",
+        "settings": "Configuración",
+        "logout": "Cerrar sesión",
+        "error": "Error al cargar los datos del usuario"
+      },
+      "language": {
+        "select": "Seleccionar idioma"
+      }
+    },
+    "sidebar": {
+      "dashboard": "Panel principal",
+      "users": "Usuarios",
+      "applications": "Aplicaciones",
+      "collapse": "Contraer menú",
+      "expand": "Expandir menú",
+      "title": "Menú principal",
+      "portal": "Portal de Administración"
+    }
+  }
+}

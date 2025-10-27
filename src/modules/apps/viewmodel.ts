@@ -1,6 +1,10 @@
 import { useEffect, useState, useCallback } from "react";
 import type { AppInfoDTO, CreateAppRequest, GetAppsResponse } from "./types";
-import { createApp as createAppService, getApps } from "./service";
+import {
+  createApp as createAppService,
+  getApps,
+  pauseResumeApp,
+} from "./service";
 
 interface AddAppState {
   isSubmitting: boolean;
@@ -119,6 +123,17 @@ export function useAppsViewModel() {
     });
   }, []);
 
+  const handlePauseResumeApp = async (appId: string, pause: boolean) => {
+    const result = await pauseResumeApp(appId, pause);
+    if (result === "success") {
+      setApps((prev) =>
+        prev.map((app) =>
+          app.id === appId ? { ...app, isActive: !pause } : app
+        )
+      );
+    }
+  };
+
   return {
     apps,
     isLoading,
@@ -127,6 +142,7 @@ export function useAppsViewModel() {
     setIsAddModalOpen,
     handleCloseModal,
     createApp: handleCreateApp,
+    pauseResumeApp: handlePauseResumeApp,
     addAppState,
   };
 }

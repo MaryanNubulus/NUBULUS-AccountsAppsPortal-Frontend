@@ -5,8 +5,6 @@ export const routes: RouteDefinition[] = [
   {
     path: "/private/apps",
     element: <AppsPage />,
-    handle: {
-      title: "Aplications",
-    },
+    title: "apps:page.title",
   },
 ];

@@ -1,0 +1,16 @@
+{
+  "page": {
+    "title": "Gestió d'Usuaris",
+    "table": {
+      "name": "Nom",
+      "email": "Correu electrònic",
+      "status": "Estat"
+    },
+    "status": {
+      "active": "Actiu",
+      "inactive": "Inactiu"
+    },
+    "loading": "Carregant usuaris...",
+    "noUsersFound": "No s'han trobat usuaris."
+  }
+}
