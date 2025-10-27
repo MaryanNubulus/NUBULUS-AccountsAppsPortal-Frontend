@@ -23,10 +23,7 @@ const router = createBrowserRouter([
     path: "/private",
     loader: requireAuth,
     element: <PrivateLayout />,
-    children: [
-      { index: true, element: <p>Welcome to the Main Dashboard!</p> },
-      ...moduleRegistry.getPrivateRoutes(),
-    ],
+    children: [...moduleRegistry.getPrivateRoutes()],
   },
 ]);
 
