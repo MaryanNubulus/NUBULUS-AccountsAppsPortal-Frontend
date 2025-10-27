@@ -1,4 +1,8 @@
 {
+  "errors": {
+    "fetchApps": "Error en carregar les aplicacions. Si us plau, torneu-ho a provar més tard.",
+    "unexpected": "S'ha produït un error inesperat"
+  },
   "page": {
     "title": "Aplicacions",
     "addButton": "Afegir Nova"
@@ -6,6 +10,11 @@
   "addModal": {
     "title": "Crear Nova Aplicació",
     "description": "Ompliu els detalls de la vostra nova aplicació. La clau ha de ser única.",
+    "messages": {
+      "success": "Aplicació creada amb èxit",
+      "keyExists": "Ja existeix una aplicació amb aquesta clau",
+      "failed": "Error en crear l'aplicació. Si us plau, torneu-ho a provar."
+    },
     "form": {
       "key": "Clau",
       "name": "Nom",
@@ -36,5 +45,20 @@
     "activateMessage": "Esteu segur que voleu activar aquesta aplicació?",
     "confirm": "Confirmar",
     "cancel": "Cancel·lar"
+  },
+  "editModal": {
+    "title": "Editar Aplicació",
+    "description": "Actualitzeu els detalls de la vostra aplicació.",
+    "messages": {
+      "success": "Aplicació actualitzada amb èxit",
+      "failed": "Error en actualitzar l'aplicació. Si us plau, torneu-ho a provar."
+    },
+    "form": {
+      "key": "Clau",
+      "name": "Nom",
+      "update": "Actualitzar",
+      "updating": "Actualitzant...",
+      "cancel": "Cancel·lar"
+    }
   }
 }

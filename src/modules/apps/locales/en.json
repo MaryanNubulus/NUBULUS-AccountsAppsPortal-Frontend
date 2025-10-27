@@ -1,4 +1,8 @@
 {
+  "errors": {
+    "fetchApps": "Error fetching apps. Please try again later.",
+    "unexpected": "An unexpected error occurred"
+  },
   "page": {
     "title": "Applications",
     "addButton": "Add New"
@@ -6,6 +10,11 @@
   "addModal": {
     "title": "Create New App",
     "description": "Fill in the details for your new application. The key must be unique.",
+    "messages": {
+      "success": "Application created successfully",
+      "keyExists": "An application with this key already exists",
+      "failed": "Failed to create application. Please try again."
+    },
     "form": {
       "key": "Key",
       "name": "Name",
@@ -36,5 +45,20 @@
     "activateMessage": "Are you sure you want to activate this app?",
     "confirm": "Confirm",
     "cancel": "Cancel"
+  },
+  "editModal": {
+    "title": "Edit App",
+    "description": "Update the details of your application below.",
+    "messages": {
+      "success": "Application updated successfully",
+      "failed": "Failed to update application. Please try again."
+    },
+    "form": {
+      "key": "Key",
+      "name": "Name",
+      "update": "Update",
+      "updating": "Updating...",
+      "cancel": "Cancel"
+    }
   }
 }

@@ -1,4 +1,8 @@
 {
+  "errors": {
+    "fetchApps": "Error al cargar las aplicaciones. Por favor, inténtelo de nuevo más tarde.",
+    "unexpected": "Ha ocurrido un error inesperado"
+  },
   "page": {
     "title": "Aplicaciones",
     "addButton": "Añadir Nueva"
@@ -6,6 +10,11 @@
   "addModal": {
     "title": "Crear Nueva Aplicación",
     "description": "Complete los detalles para su nueva aplicación. La clave debe ser única.",
+    "messages": {
+      "success": "Aplicación creada con éxito",
+      "keyExists": "Ya existe una aplicación con esta clave",
+      "failed": "Error al crear la aplicación. Por favor, inténtelo de nuevo."
+    },
     "form": {
       "key": "Clave",
       "name": "Nombre",
@@ -36,5 +45,20 @@
     "activateMessage": "¿Está seguro que desea activar esta aplicación?",
     "confirm": "Confirmar",
     "cancel": "Cancelar"
+  },
+  "editModal": {
+    "title": "Editar Aplicación",
+    "description": "Actualice los detalles de su aplicación a continuación.",
+    "messages": {
+      "success": "Aplicación actualizada con éxito",
+      "failed": "Error al actualizar la aplicación. Por favor, inténtelo de nuevo."
+    },
+    "form": {
+      "key": "Clave",
+      "name": "Nombre",
+      "update": "Actualizar",
+      "updating": "Actualizando...",
+      "cancel": "Cancelar"
+    }
   }
 }

@@ -1,4 +1,8 @@
-import type { CreateAppRequest, GetAppsResponse } from "./types";
+import type {
+  CreateAppRequest,
+  GetAppsResponse,
+  UpdateAppRequest,
+} from "./types";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -39,6 +43,20 @@ export async function pauseResumeApp(appId: string, pause: boolean) {
     method: "POST",
     credentials: "include",
     headers: { Accept: "application/json", "Content-Type": "application/json" },
+  });
+
+  if (response.ok) return "success";
+  return "failed";
+}
+
+export async function updateApp(appId: string, request: UpdateAppRequest) {
+  const url = new URL(`/api/v1/apps/${appId}`, API_BASE);
+
+  const response = await fetch(url, {
+    method: "PUT",
+    credentials: "include",
+    headers: { Accept: "application/json", "Content-Type": "application/json" },
+    body: JSON.stringify(request),
   });
 
   if (response.ok) return "success";

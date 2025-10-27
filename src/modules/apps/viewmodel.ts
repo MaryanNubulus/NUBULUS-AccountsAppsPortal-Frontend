@@ -4,9 +4,11 @@ import {
   createApp as createAppService,
   getApps,
   pauseResumeApp,
+  updateApp,
 } from "./service";
+import { useTranslation } from "react-i18next";
 
-interface AddAppState {
+interface ModalState {
   isSubmitting: boolean;
   status: {
     type: "none" | "error" | "success";
@@ -15,12 +17,20 @@ interface AddAppState {
 }
 
 export function useAppsViewModel() {
+  const { t } = useTranslation("apps");
   const [apps, setApps] = useState<AppInfoDTO[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [addAppState, setAddAppState] = useState<AddAppState>({
+  const [addAppState, setAddAppState] = useState<ModalState>({
+    isSubmitting: false,
+    status: { type: "none", message: "" },
+  });
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingApp, setEditingApp] = useState<AppInfoDTO | null>(null);
+  const [editAppState, setEditAppState] = useState<ModalState>({
     isSubmitting: false,
     status: { type: "none", message: "" },
   });
@@ -38,7 +48,7 @@ export function useAppsViewModel() {
 
       setApps(response.apps ?? []);
     } catch (err) {
-      setError("Error fetching apps. Please try again later.");
+      setError(t("errors.fetchApps"));
     } finally {
       setIsLoading(false);
     }
@@ -64,7 +74,7 @@ export function useAppsViewModel() {
             ...prev,
             status: {
               type: "success",
-              message: "App created successfully",
+              message: t("addModal.messages.success"),
             },
           }));
           await loadApps();
@@ -82,7 +92,7 @@ export function useAppsViewModel() {
             ...prev,
             status: {
               type: "error",
-              message: "An app with this key already exists",
+              message: t("addModal.messages.keyExists"),
             },
           }));
           return result;
@@ -92,7 +102,7 @@ export function useAppsViewModel() {
             ...prev,
             status: {
               type: "error",
-              message: "Failed to create app. Please try again.",
+              message: t("addModal.messages.failed"),
             },
           }));
           return result;
@@ -102,7 +112,7 @@ export function useAppsViewModel() {
         ...prev,
         status: {
           type: "error",
-          message: "An unexpected error occurred",
+          message: t("errors.unexpected"),
         },
       }));
     } finally {
@@ -122,6 +132,78 @@ export function useAppsViewModel() {
       status: { type: "none", message: "" },
     });
   }, []);
+
+  const handleCloseEditModal = useCallback(() => {
+    setIsEditModalOpen(false);
+    setEditingApp(null);
+    setEditAppState({
+      isSubmitting: false,
+      status: { type: "none", message: "" },
+    });
+  }, []);
+
+  const handleEditApp = async (
+    appId: string,
+    name: string
+  ): Promise<"success" | "failed"> => {
+    setEditAppState((prev) => ({
+      ...prev,
+      isSubmitting: true,
+      status: { type: "none", message: "" },
+    }));
+
+    try {
+      const result = await updateApp(appId, { name });
+
+      if (result === "success") {
+        setEditAppState((prev) => ({
+          ...prev,
+          status: {
+            type: "success",
+            message: t("editModal.messages.success"),
+          },
+        }));
+        await loadApps();
+        setTimeout(() => {
+          setIsEditModalOpen(false);
+          setEditingApp(null);
+          setEditAppState((prev) => ({
+            ...prev,
+            status: { type: "none", message: "" },
+          }));
+        }, 1500);
+        return "success";
+      }
+
+      setEditAppState((prev) => ({
+        ...prev,
+        status: {
+          type: "error",
+          message: t("editModal.messages.failed"),
+        },
+      }));
+      return "failed";
+    } catch (error) {
+      setEditAppState((prev) => ({
+        ...prev,
+        status: {
+          type: "error",
+          message: t("errors.unexpected"),
+        },
+      }));
+      return "failed";
+    } finally {
+      setEditAppState((prev) => ({
+        ...prev,
+        isSubmitting: false,
+      }));
+    }
+  };
+
+  const handleStartEdit = (app: AppInfoDTO) => {
+    setEditingApp(app);
+    setIsEditModalOpen(true);
+  };
 
   const handlePauseResumeApp = async (appId: string, pause: boolean) => {
     const result = await pauseResumeApp(appId, pause);
@@ -144,5 +226,11 @@ export function useAppsViewModel() {
     createApp: handleCreateApp,
     pauseResumeApp: handlePauseResumeApp,
     addAppState,
+    editingApp,
+    isEditModalOpen,
+    handleCloseEditModal,
+    handleStartEdit,
+    handleEditApp,
+    editAppState,
   };
 }

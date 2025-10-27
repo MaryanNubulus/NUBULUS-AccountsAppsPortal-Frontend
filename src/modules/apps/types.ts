@@ -15,3 +15,7 @@ export interface CreateAppRequest {
   key: string;
   name: string;
 }
+
+export interface UpdateAppRequest {
+  name: string;
+}

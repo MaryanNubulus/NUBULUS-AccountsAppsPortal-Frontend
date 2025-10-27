@@ -2,6 +2,9 @@ import { Button } from "@/components/ui/button";
 import AppsTable from "./components/AppsTable";
 import { useAppsViewModel } from "./viewmodel";
 import { AddNewAppModal } from "./components/AddNewAppModal";
+import { EditAppModal } from "./components/EditAppModal";
+import { ConfirmStateChangeDialog } from "./components/ConfirmStateChangeDialog";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export default function AppsPage() {
@@ -16,7 +19,32 @@ export default function AppsPage() {
     createApp,
     pauseResumeApp,
     addAppState,
+    editingApp,
+    isEditModalOpen,
+    handleCloseEditModal,
+    handleStartEdit,
+    handleEditApp,
+    editAppState,
   } = useAppsViewModel();
+
+  const [confirmationOpen, setConfirmationOpen] = useState(false);
+  const [pendingAction, setPendingAction] = useState<{
+    appId: string;
+    newState: boolean;
+  } | null>(null);
+
+  const handleStateChange = (appId: string, newState: boolean) => {
+    setPendingAction({ appId, newState });
+    setConfirmationOpen(true);
+  };
+
+  const handleConfirmStateChange = async () => {
+    if (pendingAction) {
+      await pauseResumeApp(pendingAction.appId, pendingAction.newState);
+      setConfirmationOpen(false);
+      setPendingAction(null);
+    }
+  };
 
   return (
     <>
@@ -30,7 +58,8 @@ export default function AppsPage() {
         apps={apps}
         isLoading={isLoading}
         error={error}
-        onPauseResume={pauseResumeApp}
+        onEdit={handleStartEdit}
+        onStateChange={handleStateChange}
       />
 
       <AddNewAppModal
@@ -39,6 +68,22 @@ export default function AppsPage() {
         onSubmit={createApp}
         isSubmitting={addAppState.isSubmitting}
         status={addAppState.status}
+      />
+
+      <EditAppModal
+        app={editingApp}
+        isOpen={isEditModalOpen}
+        onClose={handleCloseEditModal}
+        onSubmit={handleEditApp}
+        isSubmitting={editAppState.isSubmitting}
+        status={editAppState.status}
+      />
+
+      <ConfirmStateChangeDialog
+        open={confirmationOpen}
+        onOpenChange={setConfirmationOpen}
+        isPause={pendingAction?.newState ?? false}
+        onConfirm={handleConfirmStateChange}
       />
     </>
   );
