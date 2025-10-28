@@ -1,6 +1,6 @@
 {
   "page": {
-    "title": "Gestión de Usuarios",
+    "title": "Gestión de Empleados",
     "table": {
       "name": "Nombre",
       "email": "Correo electrónico",
@@ -10,7 +10,7 @@
       "active": "Activo",
       "inactive": "Inactivo"
     },
-    "loading": "Cargando usuarios...",
-    "noUsersFound": "No se encontraron usuarios."
+    "loading": "Cargando empleados...",
+    "noEmployeesFound": "No se encontraron empleados."
   }
 }

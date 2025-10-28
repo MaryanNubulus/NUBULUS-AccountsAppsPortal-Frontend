@@ -16,13 +16,14 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useUserSessionViewModel } from "./viewmodel";
+import { useEmployeeSessionViewModel } from "./viewmodel";
 import { ModeToggle } from "@/components/mode-toggle";
 import { LanguageSelector } from "@/components/language-selector";
 
-export function NavUser() {
+export function NavEmployee() {
   const { isMobile } = useSidebar();
-  const { user, isLoading, error, handleSignOut } = useUserSessionViewModel();
+  const { employee, isLoading, error, handleSignOut } =
+    useEmployeeSessionViewModel();
   const { t } = useTranslation("shared");
 
   if (isLoading) {
@@ -43,13 +44,13 @@ export function NavUser() {
     );
   }
 
-  if (error || !user) {
+  if (error || !employee) {
     return (
       <SidebarMenu>
         <SidebarMenuItem>
           <SidebarMenuButton size="lg" disabled>
             <div className="text-sm text-red-500">
-              {error || t("layout.header.user.error")}
+              {error || t("layout.header.employee.error")}
             </div>
           </SidebarMenuButton>
         </SidebarMenuItem>
@@ -68,7 +69,7 @@ export function NavUser() {
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarFallback className="rounded-lg">
-                  {user.name
+                  {employee.name
                     .split(" ")
                     .map((n) => n[0])
                     .join("")
@@ -76,9 +77,9 @@ export function NavUser() {
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
+                <span className="truncate font-medium">{employee.name}</span>
                 <span className="text-muted-foreground truncate text-xs">
-                  {user.email}
+                  {employee.email}
                 </span>
               </div>
               <IconDotsVertical className="ml-auto size-4" />
@@ -99,7 +100,7 @@ export function NavUser() {
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleSignOut}>
               <IconLogout />
-              {t("layout.header.user.logout")}
+              {t("layout.header.employee.logout")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

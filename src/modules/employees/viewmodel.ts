@@ -1,39 +1,42 @@
 import { useEffect, useState } from "react";
-import type { GetUsersResponse, UserInfoDTO } from "@/modules/users/types";
-import { getUsers } from "./service";
+import type {
+  GetEmployeesResponse,
+  EmployeeInfoDTO,
+} from "@/modules/employees/types";
+import { getEmployees } from "./service";
 
-export function useUsersViewModel() {
-  const [users, setUsers] = useState<UserInfoDTO[]>([]);
+export function useEmployeesViewModel() {
+  const [employees, setEmployees] = useState<EmployeeInfoDTO[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let isMounted = true;
 
-    async function loadUsers() {
+    async function loadEmployees() {
       try {
         setIsLoading(true);
         setError(null);
 
-        const response: GetUsersResponse = await getUsers();
+        const response: GetEmployeesResponse = await getEmployees();
 
         if (!response.success) {
           throw new Error(response.message ?? "Unknown error");
         }
 
         if (isMounted) {
-          setUsers(response.users ?? []);
+          setEmployees(response.employees ?? []);
         }
       } catch (err) {
         if (isMounted) {
-          setError("Error fetching users. Please try again later.");
+          setError("Error fetching employees. Please try again later.");
         }
       } finally {
         if (isMounted) setIsLoading(false);
       }
     }
 
-    loadUsers();
+    loadEmployees();
 
     return () => {
       isMounted = false;
@@ -41,7 +44,7 @@ export function useUsersViewModel() {
   }, []);
 
   return {
-    users,
+    employees,
     isLoading,
     error,
   };

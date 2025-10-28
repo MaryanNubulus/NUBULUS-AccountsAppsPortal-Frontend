@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import { getSignOutUrl, getCurrentUserAsync } from "./services";
-import type { UserInfoDTO } from "@/modules/users/types";
+import { getSignOutUrl, getCurrentEmployeeAsync } from "./services";
+import type { EmployeeInfoDTO } from "@/modules/employees/types";
 
-export function useUserSessionViewModel() {
-  const [user, setUser] = useState<UserInfoDTO | null>(null);
+export function useEmployeeSessionViewModel() {
+  const [employee, setEmployee] = useState<EmployeeInfoDTO | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -13,12 +13,12 @@ export function useUserSessionViewModel() {
   }, []);
 
   useEffect(() => {
-    async function loadUser() {
+    async function loadEmployee() {
       try {
         setIsLoading(true);
         setError(null);
-        const userData = await getCurrentUserAsync();
-        setUser(userData);
+        const employeeData = await getCurrentEmployeeAsync();
+        setEmployee(employeeData);
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "Error al cargar el usuario"
@@ -28,11 +28,11 @@ export function useUserSessionViewModel() {
       }
     }
 
-    loadUser();
+    loadEmployee();
   }, []);
 
   return {
-    user,
+    employee,
     isLoading,
     error,
     handleSignOut,

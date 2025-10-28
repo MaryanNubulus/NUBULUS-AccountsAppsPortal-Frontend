@@ -1,10 +1,10 @@
-export interface GetUsersResponse {
+export interface GetEmployeesResponse {
   success: boolean;
   message: string | null;
-  users: UserInfoDTO[] | null;
+  employees: EmployeeInfoDTO[] | null;
 }
 
-export interface UserInfoDTO {
+export interface EmployeeInfoDTO {
   id: string;
   email: string;
   name: string;

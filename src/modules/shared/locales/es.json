@@ -8,7 +8,7 @@
         "dark": "Oscuro",
         "system": "Sistema"
       },
-      "user": {
+      "employee": {
         "profile": "Perfil",
         "settings": "Configuración",
         "logout": "Cerrar sesión",
@@ -20,7 +20,7 @@
     },
     "sidebar": {
       "dashboard": "Panel principal",
-      "users": "Usuarios",
+      "employees": "Usuarios",
       "applications": "Aplicaciones",
       "collapse": "Contraer menú",
       "expand": "Expandir menú",

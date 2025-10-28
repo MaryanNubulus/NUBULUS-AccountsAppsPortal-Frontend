@@ -6,4 +6,4 @@ import es from "./locales/es.json";
 import ca from "./locales/ca.json";
 
 // Register translations
-registerTranslations("users", { en, es, ca });
+registerTranslations("employees", { en, es, ca });

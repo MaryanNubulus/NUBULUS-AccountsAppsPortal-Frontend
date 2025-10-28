@@ -5,7 +5,7 @@ import { requireAuth } from "./modules/auth/requireAuth";
 import { moduleRegistry } from "./modules/shared/registry";
 import Auth from "./modules/auth";
 
-import "./modules/users";
+import "./modules/employees";
 import "./modules/apps";
 
 const router = createBrowserRouter([

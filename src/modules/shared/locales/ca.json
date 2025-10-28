@@ -8,7 +8,7 @@
         "dark": "Fosc",
         "system": "Sistema"
       },
-      "user": {
+      "employee": {
         "profile": "Perfil",
         "settings": "Configuració",
         "logout": "Tancar sessió",
@@ -20,7 +20,7 @@
     },
     "sidebar": {
       "dashboard": "Tauler principal",
-      "users": "Usuaris",
+      "employees": "Usuaris",
       "applications": "Aplicacions",
       "collapse": "Contraure menú",
       "expand": "Expandir menú",

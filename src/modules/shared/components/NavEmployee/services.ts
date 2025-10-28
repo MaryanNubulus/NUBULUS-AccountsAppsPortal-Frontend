@@ -1,4 +1,4 @@
-import type { UserInfoDTO } from "@/modules/users/types";
+import type { EmployeeInfoDTO } from "@/modules/employees/types";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -11,16 +11,16 @@ export function getSignOutUrl(): string {
   return url.toString();
 }
 
-export async function getCurrentUserAsync(): Promise<UserInfoDTO> {
-  const url = new URL("/api/v1/users/current", API_BASE);
+export async function getCurrentEmployeeAsync(): Promise<EmployeeInfoDTO> {
+  const url = new URL("/api/v1/employees/current", API_BASE);
   const response = await fetch(url, {
     method: "GET",
     credentials: "include",
     headers: { Accept: "application/json" },
   });
   if (!response.ok) {
-    throw new Error("Failed to fetch current user");
+    throw new Error("Failed to fetch current employee");
   }
-  const data: UserInfoDTO = await response.json();
+  const data: EmployeeInfoDTO = await response.json();
   return data;
 }

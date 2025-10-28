@@ -1,6 +1,6 @@
 {
   "page": {
-    "title": "User Management",
+    "title": "Employee Management",
     "table": {
       "name": "Name",
       "email": "Email",
@@ -10,7 +10,7 @@
       "active": "Active",
       "inactive": "Inactive"
     },
-    "loading": "Loading users...",
-    "noUsersFound": "No users found."
+    "loading": "Loading employees...",
+    "noEmployeesFound": "No employees found."
   }
 }

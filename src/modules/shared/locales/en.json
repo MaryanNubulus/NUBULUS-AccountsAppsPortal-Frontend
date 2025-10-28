@@ -8,11 +8,11 @@
         "dark": "Dark",
         "system": "System"
       },
-      "user": {
+      "employee": {
         "profile": "Profile",
         "settings": "Settings",
         "logout": "Log out",
-        "error": "Error loading user data"
+        "error": "Error loading employee data"
       },
       "language": {
         "select": "Select language"
@@ -20,7 +20,7 @@
     },
     "sidebar": {
       "dashboard": "Dashboard",
-      "users": "Users",
+      "employees": "Employees",
       "applications": "Applications",
       "collapse": "Collapse sidebar",
       "expand": "Expand sidebar",

@@ -1,6 +1,6 @@
 {
   "page": {
-    "title": "Gestió d'Usuaris",
+    "title": "Gestió d'Empleats",
     "table": {
       "name": "Nom",
       "email": "Correu electrònic",
@@ -10,7 +10,7 @@
       "active": "Actiu",
       "inactive": "Inactiu"
     },
-    "loading": "Carregant usuaris...",
-    "noUsersFound": "No s'han trobat usuaris."
+    "loading": "Carregant empleats...",
+    "noEmployeesFound": "No s'han trobat empleats."
   }
 }
