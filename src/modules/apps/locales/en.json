@@ -5,6 +5,7 @@
   },
   "page": {
     "title": "Applications",
+    "description": "Manage registered applications in the system",
     "addButton": "Add New"
   },
   "addModal": {
@@ -45,16 +46,29 @@
       "active": "Active",
       "inactive": "Inactive"
     },
+    "actions": {
+      "edit": "Edit",
+      "activate": "Activate",
+      "deactivate": "Deactivate"
+    },
     "loading": "Loading apps...",
     "noApps": "No apps found.",
     "error": "Error loading apps. Please try again later."
   },
   "confirmDialog": {
     "title": "Confirm Action",
-    "pauseMessage": "Do you want to continue with the iteration?",
-    "activateMessage": "Are you sure you want to activate this app?",
     "confirm": "Confirm",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "activate": {
+      "title": "Activate Application",
+      "description": "Are you sure you want to activate this application?"
+    },
+    "deactivate": {
+      "title": "Deactivate Application",
+      "description": "Are you sure you want to deactivate this application? Data will not be deleted."
+    },
+    "pauseMessage": "Do you want to deactivate this application?",
+    "activateMessage": "Are you sure you want to activate this app?"
   },
   "editModal": {
     "title": "Edit App",

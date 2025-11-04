@@ -5,6 +5,7 @@
   },
   "page": {
     "title": "Aplicaciones",
+    "description": "Gestiona las aplicaciones registradas en el sistema",
     "addButton": "Añadir Nueva"
   },
   "addModal": {
@@ -45,16 +46,29 @@
       "active": "Activa",
       "inactive": "Inactiva"
     },
+    "actions": {
+      "edit": "Editar",
+      "activate": "Activar",
+      "deactivate": "Desactivar"
+    },
     "loading": "Cargando aplicaciones...",
     "noApps": "No se encontraron aplicaciones.",
     "error": "Error al cargar las aplicaciones. Por favor, inténtelo de nuevo."
   },
   "confirmDialog": {
     "title": "Confirmar Acción",
-    "pauseMessage": "¿Desea continuar con la iteración?",
-    "activateMessage": "¿Está seguro que desea activar esta aplicación?",
     "confirm": "Confirmar",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "activate": {
+      "title": "Activar Aplicación",
+      "description": "¿Estás seguro de que deseas activar esta aplicación?"
+    },
+    "deactivate": {
+      "title": "Desactivar Aplicación",
+      "description": "¿Estás seguro de que deseas desactivar esta aplicación? Los datos no se eliminarán."
+    },
+    "pauseMessage": "¿Desea desactivar esta aplicación?",
+    "activateMessage": "¿Está seguro que desea activar esta aplicación?"
   },
   "editModal": {
     "title": "Editar Aplicación",

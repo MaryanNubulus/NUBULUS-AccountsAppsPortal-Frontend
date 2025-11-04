@@ -1,0 +1,126 @@
+{
+  "page": {
+    "title": "Comptes",
+    "description": "Gestiona els comptes i els seus usuaris propietaris",
+    "addButton": "Afegir Compte"
+  },
+  "table": {
+    "headers": {
+      "name": "Nom del Compte",
+      "userName": "Usuari Propietari",
+      "userEmail": "Email",
+      "userPhone": "Telèfon",
+      "status": "Estat",
+      "actions": "Accions"
+    },
+    "status": {
+      "active": "Actiu",
+      "inactive": "Inactiu"
+    },
+    "actions": {
+      "edit": "Editar",
+      "activate": "Activar",
+      "deactivate": "Desactivar"
+    },
+    "empty": "No hi ha comptes registrats",
+    "loading": "Carregant comptes..."
+  },
+  "addModal": {
+    "title": "Afegir Nou Compte",
+    "description": "Crea un nou compte amb un usuari propietari associat",
+    "form": {
+      "accountName": "Nom del Compte",
+      "accountNamePlaceholder": "Ex: Acme Corporation",
+      "userName": "Nom de l'Usuari Propietari",
+      "userNamePlaceholder": "Ex: Joan Pérez",
+      "userEmail": "Email de l'Usuari",
+      "userEmailPlaceholder": "Ex: joan.perez@acme.com",
+      "userPhone": "Telèfon de l'Usuari",
+      "userPhonePlaceholder": "Ex: +34600123456"
+    },
+    "buttons": {
+      "cancel": "Cancel·lar",
+      "create": "Crear Compte",
+      "creating": "Creant..."
+    },
+    "validation": {
+      "accountNameRequired": "El nom del compte és obligatori",
+      "accountNameMinLength": "El nom ha de tenir almenys 2 caràcters",
+      "accountNameMaxLength": "El nom no pot excedir 256 caràcters",
+      "userNameRequired": "El nom de l'usuari és obligatori",
+      "userNameMinLength": "El nom ha de tenir almenys 2 caràcters",
+      "userNameMaxLength": "El nom no pot excedir 256 caràcters",
+      "userEmailRequired": "L'email és obligatori",
+      "userEmailInvalid": "Format d'email invàlid",
+      "userPhoneRequired": "El telèfon és obligatori",
+      "userPhoneMinLength": "El telèfon ha de tenir almenys 7 caràcters",
+      "userPhoneMaxLength": "El telèfon no pot excedir 15 caràcters"
+    },
+    "messages": {
+      "success": "Compte creat amb èxit"
+    }
+  },
+  "editModal": {
+    "title": "Editar Compte",
+    "description": "Actualitza la informació del compte i el seu usuari propietari",
+    "form": {
+      "name": "Nom del Compte",
+      "namePlaceholder": "Ex: Acme Corporation",
+      "userName": "Nom de l'Usuari Propietari",
+      "userNamePlaceholder": "Ex: Joan Pérez",
+      "userEmail": "Email de l'Usuari",
+      "userEmailPlaceholder": "Ex: joan.perez@acme.com",
+      "userPhone": "Telèfon de l'Usuari",
+      "userPhonePlaceholder": "Ex: +34600123456"
+    },
+    "buttons": {
+      "cancel": "Cancel·lar",
+      "update": "Actualitzar",
+      "updating": "Actualitzant..."
+    },
+    "validation": {
+      "nameRequired": "El nom del compte és obligatori",
+      "nameMinLength": "El nom ha de tenir almenys 2 caràcters",
+      "nameMaxLength": "El nom no pot excedir 256 caràcters",
+      "userNameRequired": "El nom de l'usuari és obligatori",
+      "userNameMinLength": "El nom ha de tenir almenys 2 caràcters",
+      "userNameMaxLength": "El nom no pot excedir 256 caràcters",
+      "userEmailRequired": "L'email és obligatori",
+      "userEmailInvalid": "Format d'email invàlid",
+      "userPhoneRequired": "El telèfon és obligatori",
+      "userPhoneMinLength": "El telèfon ha de tenir almenys 7 caràcters",
+      "userPhoneMaxLength": "El telèfon no pot excedir 15 caràcters"
+    },
+    "messages": {
+      "success": "Compte actualitzat amb èxit"
+    }
+  },
+  "confirmDialog": {
+    "title": "Confirmar Acció",
+    "confirm": "Confirmar",
+    "cancel": "Cancel·lar",
+    "activate": {
+      "title": "Activar Compte",
+      "description": "Estàs segur que vols activar aquest compte? Tots els usuaris associats també seran activats."
+    },
+    "deactivate": {
+      "title": "Desactivar Compte",
+      "description": "Estàs segur que vols desactivar aquest compte? Tots els usuaris associats també seran desactivats. Les dades no s'eliminaran."
+    },
+    "buttons": {
+      "cancel": "Cancel·lar",
+      "confirm": "Confirmar",
+      "processing": "Processant..."
+    }
+  },
+  "errors": {
+    "loadFailed": "Error en carregar els comptes",
+    "createFailed": "Error en crear el compte",
+    "updateFailed": "Error en actualitzar el compte",
+    "stateChangeFailed": "Error en canviar l'estat del compte",
+    "nameExists": "Ja existeix un compte amb aquest nom",
+    "emailExists": "Ja existeix un usuari amb aquest email",
+    "phoneExists": "Ja existeix un usuari amb aquest telèfon",
+    "validationError": "Error de validació. Verifica les dades introduïdes"
+  }
+}

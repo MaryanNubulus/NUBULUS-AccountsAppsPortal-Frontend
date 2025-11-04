@@ -18,7 +18,10 @@ interface EditAppModalProps {
   app: AppInfoDTO | null;
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (appId: string, name: string) => Promise<"success" | "failed">;
+  onSubmit: (
+    appId: string,
+    name: string
+  ) => Promise<"success" | "failed" | "not_found" | "validation_error">;
   isSubmitting?: boolean;
   status?: {
     type: "none" | "error" | "success";

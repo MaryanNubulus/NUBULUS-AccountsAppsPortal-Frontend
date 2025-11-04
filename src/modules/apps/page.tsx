@@ -1,10 +1,19 @@
+import { useState } from "react";
+import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import AppsTable from "./components/AppsTable";
 import { useAppsViewModel } from "./viewmodel";
 import { AddNewAppModal } from "./components/AddNewAppModal";
 import { EditAppModal } from "./components/EditAppModal";
 import { ConfirmStateChangeDialog } from "./components/ConfirmStateChangeDialog";
-import { useState } from "react";
+import type { AppInfoDTO } from "./types";
 
 export default function AppsPage() {
   const {
@@ -27,40 +36,64 @@ export default function AppsPage() {
   } = useAppsViewModel();
 
   const [confirmationOpen, setConfirmationOpen] = useState(false);
-  const [pendingAction, setPendingAction] = useState<{
-    appId: string;
-    newState: boolean;
-  } | null>(null);
+  const [selectedApp, setSelectedApp] = useState<AppInfoDTO | null>(null);
+  const [stateChangeAction, setStateChangeAction] = useState<
+    "activate" | "deactivate" | null
+  >(null);
 
-  const handleStateChange = (appId: string, newState: boolean) => {
-    setPendingAction({ appId, newState });
+  const handleStateChangeClick = (app: AppInfoDTO, activate: boolean) => {
+    setSelectedApp(app);
+    setStateChangeAction(activate ? "activate" : "deactivate");
     setConfirmationOpen(true);
   };
 
   const handleConfirmStateChange = async () => {
-    if (pendingAction) {
-      await pauseResumeApp(pendingAction.appId, pendingAction.newState);
+    if (selectedApp && stateChangeAction) {
+      await pauseResumeApp(selectedApp.id, stateChangeAction === "deactivate");
       setConfirmationOpen(false);
-      setPendingAction(null);
+      setSelectedApp(null);
+      setStateChangeAction(null);
     }
   };
 
-  return (
-    <>
-      <div className="flex flex-row items-center justify-end mb-6">
-        <Button onClick={() => setIsAddModalOpen(true)}>
-          {t("page.addButton")}
-        </Button>
-      </div>
+  const handleConfirmDialogClose = () => {
+    setConfirmationOpen(false);
+    setSelectedApp(null);
+    setStateChangeAction(null);
+  };
 
-      <AppsTable
-        apps={apps}
-        isLoading={isLoading}
-        error={error}
-        onEdit={handleStartEdit}
-        onStateChange={handleStateChange}
-        t={t}
-      />
+  return (
+    <div className="container mx-auto py-6 space-y-6">
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+          <div className="space-y-1">
+            <CardTitle className="text-2xl font-bold">
+              {t("page.title")}
+            </CardTitle>
+            <CardDescription>{t("page.description")}</CardDescription>
+          </div>
+          <Button onClick={() => setIsAddModalOpen(true)}>
+            <Plus className="mr-2 h-4 w-4" />
+            {t("page.addButton")}
+          </Button>
+        </CardHeader>
+        <CardContent>
+          {error && (
+            <div className="mb-4 p-3 rounded-md text-sm bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+              {error}
+            </div>
+          )}
+
+          <AppsTable
+            apps={apps}
+            isLoading={isLoading}
+            error={error}
+            onEdit={handleStartEdit}
+            onChangeState={handleStateChangeClick}
+            t={t}
+          />
+        </CardContent>
+      </Card>
 
       <AddNewAppModal
         isOpen={isAddModalOpen}
@@ -81,10 +114,10 @@ export default function AppsPage() {
 
       <ConfirmStateChangeDialog
         open={confirmationOpen}
-        onOpenChange={setConfirmationOpen}
-        isPause={pendingAction?.newState ?? false}
+        onOpenChange={handleConfirmDialogClose}
+        isPause={stateChangeAction === "deactivate"}
         onConfirm={handleConfirmStateChange}
       />
-    </>
+    </div>
   );
 }

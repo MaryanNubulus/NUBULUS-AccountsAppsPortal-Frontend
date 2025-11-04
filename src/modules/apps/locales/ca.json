@@ -5,6 +5,7 @@
   },
   "page": {
     "title": "Aplicacions",
+    "description": "Gestiona les aplicacions registrades al sistema",
     "addButton": "Afegir Nova"
   },
   "addModal": {
@@ -45,16 +46,29 @@
       "active": "Activa",
       "inactive": "Inactiva"
     },
+    "actions": {
+      "edit": "Editar",
+      "activate": "Activar",
+      "deactivate": "Desactivar"
+    },
     "loading": "Carregant aplicacions...",
     "noApps": "No s'han trobat aplicacions.",
     "error": "Error al carregar les aplicacions. Si us plau, torneu-ho a provar."
   },
   "confirmDialog": {
     "title": "Confirmar Acció",
-    "pauseMessage": "Voleu continuar amb la iteració?",
-    "activateMessage": "Esteu segur que voleu activar aquesta aplicació?",
     "confirm": "Confirmar",
-    "cancel": "Cancel·lar"
+    "cancel": "Cancel·lar",
+    "activate": {
+      "title": "Activar Aplicació",
+      "description": "Estàs segur que vols activar aquesta aplicació?"
+    },
+    "deactivate": {
+      "title": "Desactivar Aplicació",
+      "description": "Estàs segur que vols desactivar aquesta aplicació? Les dades no s'eliminaran."
+    },
+    "pauseMessage": "Vols desactivar aquesta aplicació?",
+    "activateMessage": "Esteu segur que voleu activar aquesta aplicació?"
   },
   "editModal": {
     "title": "Editar Aplicació",

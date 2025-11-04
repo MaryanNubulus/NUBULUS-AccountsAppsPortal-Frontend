@@ -1,6 +1,7 @@
 {
   "page": {
     "title": "Gestión de Empleados",
+    "description": "Visualiza la información de los empleados registrados",
     "table": {
       "name": "Nombre",
       "email": "Correo electrónico",

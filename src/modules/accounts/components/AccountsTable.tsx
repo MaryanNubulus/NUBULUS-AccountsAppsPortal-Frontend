@@ -1,3 +1,7 @@
+// AccountsTable.tsx - Table component for displaying accounts
+
+import { Edit, Power, PowerOff } from "lucide-react";
+import { Button } from "../../../components/ui/button";
 import {
   Table,
   TableBody,
@@ -5,45 +9,26 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Edit, Power, PowerOff } from "lucide-react";
-import type { AppInfoDTO } from "../types";
-import type { TFunction } from "i18next";
+} from "../../../components/ui/table";
+import type { Account } from "../types";
 
-interface AppsTableProps {
-  apps?: AppInfoDTO[];
-  isLoading?: boolean;
-  error?: string | null;
-  onEdit?: (app: AppInfoDTO) => void;
-  onChangeState?: (app: AppInfoDTO, activate: boolean) => void;
-  t: TFunction<"apps", undefined>;
+interface AccountsTableProps {
+  accounts: Account[];
+  onEdit: (account: Account) => void;
+  onChangeState: (account: Account, activate: boolean) => void;
+  t: (key: string) => string;
 }
 
-export default function AppsTable({
-  apps = [],
-  isLoading = false,
-  error = null,
+export function AccountsTable({
+  accounts,
   onEdit,
   onChangeState,
   t,
-}: AppsTableProps) {
-  if (isLoading) {
+}: AccountsTableProps) {
+  if (accounts.length === 0) {
     return (
       <div className="text-center py-8 text-muted-foreground">
-        {t("table.loading")}
-      </div>
-    );
-  }
-
-  if (error) {
-    return null;
-  }
-
-  if (!apps || apps.length === 0) {
-    return (
-      <div className="text-center py-8 text-muted-foreground">
-        {t("table.noApps")}
+        {t("table.empty")}
       </div>
     );
   }
@@ -53,8 +38,10 @@ export default function AppsTable({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>{t("table.headers.key")}</TableHead>
             <TableHead>{t("table.headers.name")}</TableHead>
+            <TableHead>{t("table.headers.userName")}</TableHead>
+            <TableHead>{t("table.headers.userEmail")}</TableHead>
+            <TableHead>{t("table.headers.userPhone")}</TableHead>
             <TableHead>{t("table.headers.status")}</TableHead>
             <TableHead className="text-right">
               {t("table.headers.actions")}
@@ -62,19 +49,21 @@ export default function AppsTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {apps.map((app) => (
-            <TableRow key={app.id}>
-              <TableCell className="font-mono">{app.key}</TableCell>
-              <TableCell className="font-medium">{app.name}</TableCell>
+          {accounts.map((account) => (
+            <TableRow key={account.id}>
+              <TableCell className="font-medium">{account.name}</TableCell>
+              <TableCell>{account.userName}</TableCell>
+              <TableCell>{account.userEmail}</TableCell>
+              <TableCell>{account.userPhone}</TableCell>
               <TableCell>
                 <span
                   className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                    app.isActive
+                    account.isActive
                       ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
                       : "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200"
                   }`}
                 >
-                  {app.isActive
+                  {account.isActive
                     ? t("table.status.active")
                     : t("table.status.inactive")}
                 </span>
@@ -84,16 +73,16 @@ export default function AppsTable({
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => onEdit?.(app)}
+                    onClick={() => onEdit(account)}
                     title={t("table.actions.edit")}
                   >
                     <Edit className="h-4 w-4" />
                   </Button>
-                  {app.isActive ? (
+                  {account.isActive ? (
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => onChangeState?.(app, false)}
+                      onClick={() => onChangeState(account, false)}
                       title={t("table.actions.deactivate")}
                     >
                       <PowerOff className="h-4 w-4 text-red-500" />
@@ -102,7 +91,7 @@ export default function AppsTable({
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => onChangeState?.(app, true)}
+                      onClick={() => onChangeState(account, true)}
                       title={t("table.actions.activate")}
                     >
                       <Power className="h-4 w-4 text-green-500" />

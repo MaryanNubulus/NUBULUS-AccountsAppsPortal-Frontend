@@ -1,6 +1,7 @@
 {
   "page": {
     "title": "Employee Management",
+    "description": "View information about registered employees",
     "table": {
       "name": "Name",
       "email": "Email",

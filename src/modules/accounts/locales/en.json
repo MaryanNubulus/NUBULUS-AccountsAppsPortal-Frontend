@@ -1,0 +1,126 @@
+{
+  "page": {
+    "title": "Accounts",
+    "description": "Manage accounts and their owner users",
+    "addButton": "Add Account"
+  },
+  "table": {
+    "headers": {
+      "name": "Account Name",
+      "userName": "Owner User",
+      "userEmail": "Email",
+      "userPhone": "Phone",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "actions": {
+      "edit": "Edit",
+      "activate": "Activate",
+      "deactivate": "Deactivate"
+    },
+    "empty": "No accounts registered",
+    "loading": "Loading accounts..."
+  },
+  "addModal": {
+    "title": "Add New Account",
+    "description": "Create a new account with an associated owner user",
+    "form": {
+      "accountName": "Account Name",
+      "accountNamePlaceholder": "E.g.: Acme Corporation",
+      "userName": "Owner User Name",
+      "userNamePlaceholder": "E.g.: John Doe",
+      "userEmail": "User Email",
+      "userEmailPlaceholder": "E.g.: john.doe@acme.com",
+      "userPhone": "User Phone",
+      "userPhonePlaceholder": "E.g.: +34600123456"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "create": "Create Account",
+      "creating": "Creating..."
+    },
+    "validation": {
+      "accountNameRequired": "Account name is required",
+      "accountNameMinLength": "Name must be at least 2 characters",
+      "accountNameMaxLength": "Name cannot exceed 256 characters",
+      "userNameRequired": "User name is required",
+      "userNameMinLength": "Name must be at least 2 characters",
+      "userNameMaxLength": "Name cannot exceed 256 characters",
+      "userEmailRequired": "Email is required",
+      "userEmailInvalid": "Invalid email format",
+      "userPhoneRequired": "Phone is required",
+      "userPhoneMinLength": "Phone must be at least 7 characters",
+      "userPhoneMaxLength": "Phone cannot exceed 15 characters"
+    },
+    "messages": {
+      "success": "Account created successfully"
+    }
+  },
+  "editModal": {
+    "title": "Edit Account",
+    "description": "Update account and owner user information",
+    "form": {
+      "name": "Account Name",
+      "namePlaceholder": "E.g.: Acme Corporation",
+      "userName": "Owner User Name",
+      "userNamePlaceholder": "E.g.: John Doe",
+      "userEmail": "User Email",
+      "userEmailPlaceholder": "E.g.: john.doe@acme.com",
+      "userPhone": "User Phone",
+      "userPhonePlaceholder": "E.g.: +34600123456"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "update": "Update",
+      "updating": "Updating..."
+    },
+    "validation": {
+      "nameRequired": "Account name is required",
+      "nameMinLength": "Name must be at least 2 characters",
+      "nameMaxLength": "Name cannot exceed 256 characters",
+      "userNameRequired": "User name is required",
+      "userNameMinLength": "Name must be at least 2 characters",
+      "userNameMaxLength": "Name cannot exceed 256 characters",
+      "userEmailRequired": "Email is required",
+      "userEmailInvalid": "Invalid email format",
+      "userPhoneRequired": "Phone is required",
+      "userPhoneMinLength": "Phone must be at least 7 characters",
+      "userPhoneMaxLength": "Phone cannot exceed 15 characters"
+    },
+    "messages": {
+      "success": "Account updated successfully"
+    }
+  },
+  "confirmDialog": {
+    "title": "Confirm Action",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "activate": {
+      "title": "Activate Account",
+      "description": "Are you sure you want to activate this account? All associated users will also be activated."
+    },
+    "deactivate": {
+      "title": "Deactivate Account",
+      "description": "Are you sure you want to deactivate this account? All associated users will also be deactivated. Data will not be deleted."
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "processing": "Processing..."
+    }
+  },
+  "errors": {
+    "loadFailed": "Error loading accounts",
+    "createFailed": "Error creating account",
+    "updateFailed": "Error updating account",
+    "stateChangeFailed": "Error changing account state",
+    "nameExists": "An account with this name already exists",
+    "emailExists": "A user with this email already exists",
+    "phoneExists": "A user with this phone already exists",
+    "validationError": "Validation error. Please check the entered data"
+  }
+}

@@ -1,6 +1,7 @@
 {
   "page": {
     "title": "Gestió d'Empleats",
+    "description": "Visualitza la informació dels empleats registrats",
     "table": {
       "name": "Nom",
       "email": "Correu electrònic",

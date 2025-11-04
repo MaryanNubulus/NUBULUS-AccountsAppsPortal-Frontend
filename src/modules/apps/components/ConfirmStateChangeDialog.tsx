@@ -23,20 +23,23 @@ export function ConfirmStateChangeDialog({
   onConfirm,
 }: ConfirmStateChangeDialogProps) {
   const { t } = useTranslation("apps");
+
+  const title = isPause
+    ? t("confirmDialog.deactivate.title")
+    : t("confirmDialog.activate.title");
+
+  const description = isPause
+    ? t("confirmDialog.deactivate.description")
+    : t("confirmDialog.activate.description");
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>{t("confirmDialog.title")}</SheetTitle>
-          <SheetDescription>
-            {t(
-              isPause
-                ? "confirmDialog.pauseMessage"
-                : "confirmDialog.activateMessage"
-            )}
-          </SheetDescription>
+          <SheetTitle>{title}</SheetTitle>
+          <SheetDescription>{description}</SheetDescription>
         </SheetHeader>
-        <SheetFooter className="mt-4">
+        <SheetFooter className="mt-6">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             {t("confirmDialog.cancel")}
           </Button>

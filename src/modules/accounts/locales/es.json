@@ -1,0 +1,126 @@
+{
+  "page": {
+    "title": "Cuentas",
+    "description": "Gestiona las cuentas y sus usuarios propietarios",
+    "addButton": "Añadir Cuenta"
+  },
+  "table": {
+    "headers": {
+      "name": "Nombre de Cuenta",
+      "userName": "Usuario Propietario",
+      "userEmail": "Email",
+      "userPhone": "Teléfono",
+      "status": "Estado",
+      "actions": "Acciones"
+    },
+    "status": {
+      "active": "Activa",
+      "inactive": "Inactiva"
+    },
+    "actions": {
+      "edit": "Editar",
+      "activate": "Activar",
+      "deactivate": "Desactivar"
+    },
+    "empty": "No hay cuentas registradas",
+    "loading": "Cargando cuentas..."
+  },
+  "addModal": {
+    "title": "Añadir Nueva Cuenta",
+    "description": "Crea una nueva cuenta con un usuario propietario asociado",
+    "form": {
+      "accountName": "Nombre de la Cuenta",
+      "accountNamePlaceholder": "Ej: Acme Corporation",
+      "userName": "Nombre del Usuario Propietario",
+      "userNamePlaceholder": "Ej: Juan Pérez",
+      "userEmail": "Email del Usuario",
+      "userEmailPlaceholder": "Ej: juan.perez@acme.com",
+      "userPhone": "Teléfono del Usuario",
+      "userPhonePlaceholder": "Ej: +34600123456"
+    },
+    "buttons": {
+      "cancel": "Cancelar",
+      "create": "Crear Cuenta",
+      "creating": "Creando..."
+    },
+    "validation": {
+      "accountNameRequired": "El nombre de la cuenta es obligatorio",
+      "accountNameMinLength": "El nombre debe tener al menos 2 caracteres",
+      "accountNameMaxLength": "El nombre no puede exceder 256 caracteres",
+      "userNameRequired": "El nombre del usuario es obligatorio",
+      "userNameMinLength": "El nombre debe tener al menos 2 caracteres",
+      "userNameMaxLength": "El nombre no puede exceder 256 caracteres",
+      "userEmailRequired": "El email es obligatorio",
+      "userEmailInvalid": "Formato de email inválido",
+      "userPhoneRequired": "El teléfono es obligatorio",
+      "userPhoneMinLength": "El teléfono debe tener al menos 7 caracteres",
+      "userPhoneMaxLength": "El teléfono no puede exceder 15 caracteres"
+    },
+    "messages": {
+      "success": "Cuenta creada exitosamente"
+    }
+  },
+  "editModal": {
+    "title": "Editar Cuenta",
+    "description": "Actualiza la información de la cuenta y su usuario propietario",
+    "form": {
+      "name": "Nombre de la Cuenta",
+      "namePlaceholder": "Ej: Acme Corporation",
+      "userName": "Nombre del Usuario Propietario",
+      "userNamePlaceholder": "Ej: Juan Pérez",
+      "userEmail": "Email del Usuario",
+      "userEmailPlaceholder": "Ej: juan.perez@acme.com",
+      "userPhone": "Teléfono del Usuario",
+      "userPhonePlaceholder": "Ej: +34600123456"
+    },
+    "buttons": {
+      "cancel": "Cancelar",
+      "update": "Actualizar",
+      "updating": "Actualizando..."
+    },
+    "validation": {
+      "nameRequired": "El nombre de la cuenta es obligatorio",
+      "nameMinLength": "El nombre debe tener al menos 2 caracteres",
+      "nameMaxLength": "El nombre no puede exceder 256 caracteres",
+      "userNameRequired": "El nombre del usuario es obligatorio",
+      "userNameMinLength": "El nombre debe tener al menos 2 caracteres",
+      "userNameMaxLength": "El nombre no puede exceder 256 caracteres",
+      "userEmailRequired": "El email es obligatorio",
+      "userEmailInvalid": "Formato de email inválido",
+      "userPhoneRequired": "El teléfono es obligatorio",
+      "userPhoneMinLength": "El teléfono debe tener al menos 7 caracteres",
+      "userPhoneMaxLength": "El teléfono no puede exceder 15 caracteres"
+    },
+    "messages": {
+      "success": "Cuenta actualizada exitosamente"
+    }
+  },
+  "confirmDialog": {
+    "title": "Confirmar Acción",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar",
+    "activate": {
+      "title": "Activar Cuenta",
+      "description": "¿Estás seguro de que deseas activar esta cuenta? Todos los usuarios asociados también serán activados."
+    },
+    "deactivate": {
+      "title": "Desactivar Cuenta",
+      "description": "¿Estás seguro de que deseas desactivar esta cuenta? Todos los usuarios asociados también serán desactivados. Los datos no se eliminarán."
+    },
+    "buttons": {
+      "cancel": "Cancelar",
+      "confirm": "Confirmar",
+      "processing": "Procesando..."
+    }
+  },
+  "errors": {
+    "loadFailed": "Error al cargar las cuentas",
+    "createFailed": "Error al crear la cuenta",
+    "updateFailed": "Error al actualizar la cuenta",
+    "stateChangeFailed": "Error al cambiar el estado de la cuenta",
+    "nameExists": "Ya existe una cuenta con este nombre",
+    "emailExists": "Ya existe un usuario con este email",
+    "phoneExists": "Ya existe un usuario con este teléfono",
+    "validationError": "Error de validación. Verifica los datos ingresados"
+  }
+}
