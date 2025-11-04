@@ -10,7 +10,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useTranslation } from "react-i18next";
-import type { AppInfoDTO } from "../types";
+import type { AppInfoDTO, UpdateValidationErrors } from "../types";
+import { validateUpdateAppRequest } from "../types";
 import { useEffect, useState } from "react";
 
 interface EditAppModalProps {
@@ -35,11 +36,21 @@ export function EditAppModal({
 }: EditAppModalProps) {
   const { t } = useTranslation("apps");
   const [name, setName] = useState("");
+  const [validationErrors, setValidationErrors] =
+    useState<UpdateValidationErrors>({});
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!app) return;
-    await onSubmit(app.id, name);
+
+    // Validate form
+    const errors = validateUpdateAppRequest({ name }, t);
+    setValidationErrors(errors);
+
+    // Only submit if no errors
+    if (Object.keys(errors).length === 0) {
+      await onSubmit(app.id, name);
+    }
   };
 
   useEffect(() => {
@@ -67,9 +78,22 @@ export function EditAppModal({
               <Input
                 id="app-name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  // Clear error when user starts typing
+                  if (validationErrors.name) {
+                    setValidationErrors({});
+                  }
+                }}
                 disabled={isSubmitting}
+                className={validationErrors.name ? "border-red-500" : ""}
+                minLength={2}
+                maxLength={256}
+                required
               />
+              {validationErrors.name && (
+                <p className="text-sm text-red-500">{validationErrors.name}</p>
+              )}
             </div>
           </div>
 

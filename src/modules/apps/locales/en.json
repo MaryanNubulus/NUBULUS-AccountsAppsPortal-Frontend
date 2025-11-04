@@ -13,7 +13,16 @@
     "messages": {
       "success": "Application created successfully",
       "keyExists": "An application with this key already exists",
+      "validationError": "The provided data is not valid",
       "failed": "Failed to create application. Please try again."
+    },
+    "validation": {
+      "keyRequired": "Key is required",
+      "keyTooShort": "Key must be at least 5 characters long",
+      "keyTooLong": "Key cannot be longer than 50 characters",
+      "nameRequired": "Name is required",
+      "nameTooShort": "Name must be at least 2 characters long",
+      "nameTooLong": "Name cannot be longer than 256 characters"
     },
     "form": {
       "key": "Key",
@@ -37,7 +46,8 @@
       "inactive": "Inactive"
     },
     "loading": "Loading apps...",
-    "noApps": "No apps found."
+    "noApps": "No apps found.",
+    "error": "Error loading apps. Please try again later."
   },
   "confirmDialog": {
     "title": "Confirm Action",
@@ -51,7 +61,14 @@
     "description": "Update the details of your application below.",
     "messages": {
       "success": "Application updated successfully",
+      "notFound": "Application not found",
+      "validationError": "The provided data is not valid",
       "failed": "Failed to update application. Please try again."
+    },
+    "validation": {
+      "nameRequired": "Name is required",
+      "nameTooShort": "Name must be at least 2 characters long",
+      "nameTooLong": "Name cannot be longer than 256 characters"
     },
     "form": {
       "key": "Key",

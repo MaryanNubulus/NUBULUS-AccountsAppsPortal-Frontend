@@ -19,9 +19,6 @@
       }
     },
     "sidebar": {
-      "dashboard": "Panel principal",
-      "employees": "Usuarios",
-      "applications": "Aplicaciones",
       "collapse": "Contraer menú",
       "expand": "Expandir menú",
       "title": "Menú principal",

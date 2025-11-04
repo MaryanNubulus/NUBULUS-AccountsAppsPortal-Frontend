@@ -19,7 +19,7 @@ export async function getCurrentEmployeeAsync(): Promise<EmployeeInfoDTO> {
     headers: { Accept: "application/json" },
   });
   if (!response.ok) {
-    throw new Error("Failed to fetch current employee");
+    throw new Error();
   }
   const data: EmployeeInfoDTO = await response.json();
   return data;

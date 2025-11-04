@@ -42,10 +42,6 @@ export function useAppsViewModel() {
 
       const response: GetAppsResponse = await getApps();
 
-      if (!response.success) {
-        throw new Error(response.message ?? "Unknown error");
-      }
-
       setApps(response.apps ?? []);
     } catch (err) {
       setError(t("errors.fetchApps"));
@@ -93,6 +89,16 @@ export function useAppsViewModel() {
             status: {
               type: "error",
               message: t("addModal.messages.keyExists"),
+            },
+          }));
+          return result;
+
+        case "validation_error":
+          setAddAppState((prev) => ({
+            ...prev,
+            status: {
+              type: "error",
+              message: t("addModal.messages.validationError"),
             },
           }));
           return result;
@@ -145,7 +151,7 @@ export function useAppsViewModel() {
   const handleEditApp = async (
     appId: string,
     name: string
-  ): Promise<"success" | "failed"> => {
+  ): Promise<"success" | "failed" | "not_found" | "validation_error"> => {
     setEditAppState((prev) => ({
       ...prev,
       isSubmitting: true,
@@ -173,6 +179,28 @@ export function useAppsViewModel() {
           }));
         }, 1500);
         return "success";
+      }
+
+      if (result === "not_found") {
+        setEditAppState((prev) => ({
+          ...prev,
+          status: {
+            type: "error",
+            message: t("editModal.messages.notFound"),
+          },
+        }));
+        return "not_found";
+      }
+
+      if (result === "validation_error") {
+        setEditAppState((prev) => ({
+          ...prev,
+          status: {
+            type: "error",
+            message: t("editModal.messages.validationError"),
+          },
+        }));
+        return "validation_error";
       }
 
       setEditAppState((prev) => ({
@@ -207,13 +235,19 @@ export function useAppsViewModel() {
 
   const handlePauseResumeApp = async (appId: string, pause: boolean) => {
     const result = await pauseResumeApp(appId, pause);
+
     if (result === "success") {
       setApps((prev) =>
         prev.map((app) =>
           app.id === appId ? { ...app, isActive: !pause } : app
         )
       );
+    } else if (result === "not_found") {
+      // App not found, reload the list
+      await loadApps();
     }
+    // For validation_error or failed, we could show a notification
+    // but for now we just ignore it
   };
 
   return {
@@ -232,5 +266,6 @@ export function useAppsViewModel() {
     handleStartEdit,
     handleEditApp,
     editAppState,
+    t,
   };
 }

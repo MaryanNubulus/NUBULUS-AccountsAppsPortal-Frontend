@@ -11,6 +11,7 @@
       "inactive": "Inactiu"
     },
     "loading": "Carregant empleats...",
-    "noEmployeesFound": "No s'han trobat empleats."
+    "noEmployeesFound": "No s'han trobat empleats.",
+    "error": "Error en carregar els empleats. Si us plau, torneu-ho a provar més tard."
   }
 }

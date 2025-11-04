@@ -11,7 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Loader2, Pencil } from "lucide-react";
 import type { AppInfoDTO } from "../types";
-import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 
 interface AppsTableProps {
   apps?: AppInfoDTO[];
@@ -19,6 +19,7 @@ interface AppsTableProps {
   error?: string | null;
   onEdit?: (app: AppInfoDTO) => void;
   onStateChange?: (appId: string, newState: boolean) => void;
+  t: TFunction<"apps", undefined>;
 }
 
 export default function AppsTable({
@@ -27,8 +28,8 @@ export default function AppsTable({
   error = null,
   onEdit,
   onStateChange,
+  t,
 }: AppsTableProps) {
-  const { t } = useTranslation("apps");
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -42,9 +43,7 @@ export default function AppsTable({
 
   if (error) {
     return (
-      <div className="text-red-500 text-center py-8">
-        {t("common.error")}: {error}
-      </div>
+      <div className="text-red-500 text-center py-8">{t("table.error")}</div>
     );
   }
 

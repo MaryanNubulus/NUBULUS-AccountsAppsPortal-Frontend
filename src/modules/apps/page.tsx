@@ -5,10 +5,8 @@ import { AddNewAppModal } from "./components/AddNewAppModal";
 import { EditAppModal } from "./components/EditAppModal";
 import { ConfirmStateChangeDialog } from "./components/ConfirmStateChangeDialog";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 
 export default function AppsPage() {
-  const { t } = useTranslation("apps");
   const {
     apps,
     isLoading,
@@ -25,6 +23,7 @@ export default function AppsPage() {
     handleStartEdit,
     handleEditApp,
     editAppState,
+    t,
   } = useAppsViewModel();
 
   const [confirmationOpen, setConfirmationOpen] = useState(false);
@@ -60,6 +59,7 @@ export default function AppsPage() {
         error={error}
         onEdit={handleStartEdit}
         onStateChange={handleStateChange}
+        t={t}
       />
 
       <AddNewAppModal

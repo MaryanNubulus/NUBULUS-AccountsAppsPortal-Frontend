@@ -1,7 +1,6 @@
 "use client";
 
 import { IconDotsVertical, IconLogout } from "@tabler/icons-react";
-import { useTranslation } from "react-i18next";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -22,9 +21,8 @@ import { LanguageSelector } from "@/components/language-selector";
 
 export function NavEmployee() {
   const { isMobile } = useSidebar();
-  const { employee, isLoading, error, handleSignOut } =
+  const { employee, isLoading, error, handleSignOut, t } =
     useEmployeeSessionViewModel();
-  const { t } = useTranslation("shared");
 
   if (isLoading) {
     return (
@@ -44,20 +42,6 @@ export function NavEmployee() {
     );
   }
 
-  if (error || !employee) {
-    return (
-      <SidebarMenu>
-        <SidebarMenuItem>
-          <SidebarMenuButton size="lg" disabled>
-            <div className="text-sm text-red-500">
-              {error || t("layout.header.employee.error")}
-            </div>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
-      </SidebarMenu>
-    );
-  }
-
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -69,18 +53,28 @@ export function NavEmployee() {
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarFallback className="rounded-lg">
-                  {employee.name
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")
-                    .toUpperCase()}
+                  {error || !employee
+                    ? "?"
+                    : employee.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")
+                        .toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{employee.name}</span>
-                <span className="text-muted-foreground truncate text-xs">
-                  {employee.email}
-                </span>
+              <div className="grid flex-1 text-left text-xs leading-tight">
+                {error || !employee ? (
+                  <span className="text-xs text-red-500">
+                    {t("layout.header.employee.error")}
+                  </span>
+                ) : (
+                  <>
+                    <span className="truncate text-sm">{employee.name}</span>
+                    <span className="text-muted-foreground truncate text-xs">
+                      {employee.email}
+                    </span>
+                  </>
+                )}
               </div>
               <IconDotsVertical className="ml-auto size-4" />
             </SidebarMenuButton>

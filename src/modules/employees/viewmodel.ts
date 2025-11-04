@@ -4,11 +4,13 @@ import type {
   EmployeeInfoDTO,
 } from "@/modules/employees/types";
 import { getEmployees } from "./service";
+import { useTranslation } from "react-i18next";
 
 export function useEmployeesViewModel() {
   const [employees, setEmployees] = useState<EmployeeInfoDTO[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { t } = useTranslation("employees");
 
   useEffect(() => {
     let isMounted = true;
@@ -20,16 +22,12 @@ export function useEmployeesViewModel() {
 
         const response: GetEmployeesResponse = await getEmployees();
 
-        if (!response.success) {
-          throw new Error(response.message ?? "Unknown error");
-        }
-
         if (isMounted) {
           setEmployees(response.employees ?? []);
         }
       } catch (err) {
         if (isMounted) {
-          setError("Error fetching employees. Please try again later.");
+          setError(t("page.error"));
         }
       } finally {
         if (isMounted) setIsLoading(false);
@@ -47,5 +45,6 @@ export function useEmployeesViewModel() {
     employees,
     isLoading,
     error,
+    t,
   };
 }

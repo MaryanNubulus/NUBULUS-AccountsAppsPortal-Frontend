@@ -1,6 +1,4 @@
 export interface GetEmployeesResponse {
-  success: boolean;
-  message: string | null;
   employees: EmployeeInfoDTO[] | null;
 }
 

@@ -13,7 +13,16 @@
     "messages": {
       "success": "Aplicació creada amb èxit",
       "keyExists": "Ja existeix una aplicació amb aquesta clau",
+      "validationError": "Les dades proporcionades no són vàlides",
       "failed": "Error en crear l'aplicació. Si us plau, torneu-ho a provar."
+    },
+    "validation": {
+      "keyRequired": "La clau és obligatòria",
+      "keyTooShort": "La clau ha de tenir almenys 5 caràcters",
+      "keyTooLong": "La clau no pot tenir més de 50 caràcters",
+      "nameRequired": "El nom és obligatori",
+      "nameTooShort": "El nom ha de tenir almenys 2 caràcters",
+      "nameTooLong": "El nom no pot tenir més de 256 caràcters"
     },
     "form": {
       "key": "Clau",
@@ -37,7 +46,8 @@
       "inactive": "Inactiva"
     },
     "loading": "Carregant aplicacions...",
-    "noApps": "No s'han trobat aplicacions."
+    "noApps": "No s'han trobat aplicacions.",
+    "error": "Error al carregar les aplicacions. Si us plau, torneu-ho a provar."
   },
   "confirmDialog": {
     "title": "Confirmar Acció",
@@ -51,7 +61,14 @@
     "description": "Actualitzeu els detalls de la vostra aplicació.",
     "messages": {
       "success": "Aplicació actualitzada amb èxit",
+      "notFound": "L'aplicació no s'ha trobat",
+      "validationError": "Les dades proporcionades no són vàlides",
       "failed": "Error en actualitzar l'aplicació. Si us plau, torneu-ho a provar."
+    },
+    "validation": {
+      "nameRequired": "El nom és obligatori",
+      "nameTooShort": "El nom ha de tenir almenys 2 caràcters",
+      "nameTooLong": "El nom no pot tenir més de 256 caràcters"
     },
     "form": {
       "key": "Clau",

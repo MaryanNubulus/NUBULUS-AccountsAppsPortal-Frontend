@@ -19,9 +19,6 @@
       }
     },
     "sidebar": {
-      "dashboard": "Dashboard",
-      "employees": "Employees",
-      "applications": "Applications",
       "collapse": "Collapse sidebar",
       "expand": "Expand sidebar",
       "title": "Main menu",

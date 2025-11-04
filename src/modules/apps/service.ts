@@ -14,7 +14,10 @@ export async function getApps(): Promise<GetAppsResponse> {
     credentials: "include",
     headers: { Accept: "application/json" },
   });
-  const data: GetAppsResponse = await response.json();
+  if (!response.ok) {
+    throw new Error("Failed to fetch apps");
+  }
+  const data: GetAppsResponse = { apps: await response.json() };
 
   return data;
 }
@@ -29,8 +32,9 @@ export async function createApp(request: CreateAppRequest) {
     body: JSON.stringify(request),
   });
 
-  if (response.status == 409) return "key_exists";
-  if (response.ok) return "created";
+  if (response.status === 201) return "created";
+  if (response.status === 409) return "key_exists";
+  if (response.status === 400) return "validation_error";
 
   return "failed";
 }
@@ -46,6 +50,9 @@ export async function pauseResumeApp(appId: string, pause: boolean) {
   });
 
   if (response.ok) return "success";
+  if (response.status === 404) return "not_found";
+  if (response.status === 400) return "validation_error";
+
   return "failed";
 }
 
@@ -60,5 +67,8 @@ export async function updateApp(appId: string, request: UpdateAppRequest) {
   });
 
   if (response.ok) return "success";
+  if (response.status === 404) return "not_found";
+  if (response.status === 400) return "validation_error";
+
   return "failed";
 }

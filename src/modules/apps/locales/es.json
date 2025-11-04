@@ -13,7 +13,16 @@
     "messages": {
       "success": "Aplicación creada con éxito",
       "keyExists": "Ya existe una aplicación con esta clave",
+      "validationError": "Los datos proporcionados no son válidos",
       "failed": "Error al crear la aplicación. Por favor, inténtelo de nuevo."
+    },
+    "validation": {
+      "keyRequired": "La clave es obligatoria",
+      "keyTooShort": "La clave debe tener al menos 5 caracteres",
+      "keyTooLong": "La clave no puede tener más de 50 caracteres",
+      "nameRequired": "El nombre es obligatorio",
+      "nameTooShort": "El nombre debe tener al menos 2 caracteres",
+      "nameTooLong": "El nombre no puede tener más de 256 caracteres"
     },
     "form": {
       "key": "Clave",
@@ -37,7 +46,8 @@
       "inactive": "Inactiva"
     },
     "loading": "Cargando aplicaciones...",
-    "noApps": "No se encontraron aplicaciones."
+    "noApps": "No se encontraron aplicaciones.",
+    "error": "Error al cargar las aplicaciones. Por favor, inténtelo de nuevo."
   },
   "confirmDialog": {
     "title": "Confirmar Acción",
@@ -51,7 +61,14 @@
     "description": "Actualice los detalles de su aplicación a continuación.",
     "messages": {
       "success": "Aplicación actualizada con éxito",
+      "notFound": "La aplicación no se encontró",
+      "validationError": "Los datos proporcionados no son válidos",
       "failed": "Error al actualizar la aplicación. Por favor, inténtelo de nuevo."
+    },
+    "validation": {
+      "nameRequired": "El nombre es obligatorio",
+      "nameTooShort": "El nombre debe tener al menos 2 caracteres",
+      "nameTooLong": "El nombre no puede tener más de 256 caracteres"
     },
     "form": {
       "key": "Clave",

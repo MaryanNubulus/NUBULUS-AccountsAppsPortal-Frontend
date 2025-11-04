@@ -9,21 +9,21 @@ import {
 } from "@/components/ui/table";
 import { Loader2 } from "lucide-react";
 import type { EmployeeInfoDTO } from "../types";
-import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 
 interface EmployeesTableProps {
   employees?: EmployeeInfoDTO[];
   isLoading?: boolean;
   error?: string | null;
+  t: TFunction<"employees", undefined>;
 }
 
 export default function EmployeesTable({
   employees = [],
   isLoading = false,
   error = null,
+  t,
 }: EmployeesTableProps) {
-  const { t } = useTranslation("employees");
-
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -36,7 +36,9 @@ export default function EmployeesTable({
   }
 
   if (error) {
-    return <div className="text-red-500 text-center py-8">{error}</div>;
+    return (
+      <div className="text-red-500 text-center py-8">{t("page.error")}</div>
+    );
   }
 
   if (!employees || employees.length === 0) {
