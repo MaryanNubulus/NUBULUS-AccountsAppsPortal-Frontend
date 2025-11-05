@@ -18,6 +18,7 @@
       "inactive": "Inactiu"
     },
     "actions": {
+      "users": "Usuaris",
       "edit": "Editar",
       "activate": "Activar",
       "deactivate": "Desactivar"

@@ -8,6 +8,7 @@ import Auth from "./modules/auth";
 import "./modules/employees";
 import "./modules/apps";
 import "./modules/accounts";
+import "./modules/accounts/users";
 
 const router = createBrowserRouter([
   {

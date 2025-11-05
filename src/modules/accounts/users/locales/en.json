@@ -1,0 +1,112 @@
+{
+  "page": {
+    "title": "Account Users",
+    "description": "Manage users and their roles within this account",
+    "addButton": "Add User"
+  },
+  "table": {
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "role": "Role",
+    "status": "Status",
+    "actions": "Actions",
+    "active": "Active",
+    "inactive": "Inactive",
+    "noData": "No registered users",
+    "edit": "Edit",
+    "activate": "Activate",
+    "deactivate": "Deactivate"
+  },
+  "addModal": {
+    "title": "Add New User",
+    "submit": "Create User",
+    "submitting": "Creating...",
+    "cancel": "Cancel",
+    "form": {
+      "name": "Name",
+      "namePlaceholder": "User's full name",
+      "email": "Email",
+      "emailPlaceholder": "user@example.com",
+      "phone": "Phone",
+      "phonePlaceholder": "+34600123456",
+      "role": "Role",
+      "roleUser": "User",
+      "roleAdmin": "Admin"
+    },
+    "validation": {
+      "nameRequired": "Name is required",
+      "nameMinLength": "Name must be at least 2 characters",
+      "nameMaxLength": "Name cannot exceed 256 characters",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Email format is invalid",
+      "phoneRequired": "Phone is required",
+      "phoneMinLength": "Phone must be at least 7 characters",
+      "phoneMaxLength": "Phone cannot exceed 15 characters",
+      "roleRequired": "Role is required",
+      "roleInvalid": "Role must be Admin or User"
+    },
+    "messages": {
+      "success": "User created successfully",
+      "error": "Error creating user"
+    }
+  },
+  "editModal": {
+    "title": "Edit User",
+    "submit": "Save Changes",
+    "submitting": "Saving...",
+    "cancel": "Cancel",
+    "form": {
+      "name": "Name",
+      "namePlaceholder": "User's full name",
+      "email": "Email",
+      "emailPlaceholder": "user@example.com",
+      "phone": "Phone",
+      "phonePlaceholder": "+34600123456",
+      "role": "Role",
+      "roleUser": "User",
+      "roleAdmin": "Admin",
+      "roleOwner": "Owner",
+      "roleOwnerNote": "The owner role cannot be modified"
+    },
+    "validation": {
+      "nameRequired": "Name is required",
+      "nameMinLength": "Name must be at least 2 characters",
+      "nameMaxLength": "Name cannot exceed 256 characters",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Email format is invalid",
+      "phoneRequired": "Phone is required",
+      "phoneMinLength": "Phone must be at least 7 characters",
+      "phoneMaxLength": "Phone cannot exceed 15 characters",
+      "roleRequired": "Role is required",
+      "roleInvalid": "Role must be Admin or User"
+    },
+    "messages": {
+      "success": "User updated successfully",
+      "error": "Error updating user"
+    }
+  },
+  "confirmDialog": {
+    "title": "Confirm State Change",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "submitting": "Processing...",
+    "activate": {
+      "title": "Activate User",
+      "description": "Are you sure you want to activate this user?"
+    },
+    "deactivate": {
+      "title": "Deactivate User",
+      "description": "Are you sure you want to deactivate this user?"
+    }
+  },
+  "errors": {
+    "emailExists": "A user with this email already exists",
+    "phoneExists": "A user with this phone number already exists",
+    "accountNotFound": "Account does not exist",
+    "userNotFound": "User does not exist",
+    "cannotModifyOwner": "Cannot change the owner user's role",
+    "changeStateFailed": "Error changing user state",
+    "invalidAccountId": "Invalid account ID"
+  }
+}

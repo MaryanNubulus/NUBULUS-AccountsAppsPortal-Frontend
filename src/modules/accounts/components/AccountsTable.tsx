@@ -1,7 +1,8 @@
 // AccountsTable.tsx - Table component for displaying accounts
 
-import { Edit, Power, PowerOff } from "lucide-react";
+import { Edit, Power, PowerOff, Users } from "lucide-react";
 import { Button } from "../../../components/ui/button";
+import { useNavigate } from "react-router-dom";
 import {
   Table,
   TableBody,
@@ -25,6 +26,8 @@ export function AccountsTable({
   onChangeState,
   t,
 }: AccountsTableProps) {
+  const navigate = useNavigate();
+
   if (accounts.length === 0) {
     return (
       <div className="text-center py-8 text-muted-foreground">
@@ -70,6 +73,16 @@ export function AccountsTable({
               </TableCell>
               <TableCell className="text-right">
                 <div className="flex justify-end gap-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() =>
+                      navigate(`/private/accounts/${account.id}/users`)
+                    }
+                    title={t("table.actions.users")}
+                  >
+                    <Users className="h-4 w-4" />
+                  </Button>
                   <Button
                     variant="ghost"
                     size="sm"
