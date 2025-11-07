@@ -134,9 +134,7 @@
     "createFailed": "Error creating account",
     "updateFailed": "Error updating account",
     "stateChangeFailed": "Error changing account state",
-    "nameExists": "An account with this name already exists",
-    "emailExists": "A user with this email already exists",
-    "phoneExists": "A user with this phone already exists",
+    "alreadyExists": "An account with the same name, email, phone, or Tax ID already exists",
     "validationError": "Validation error. Please check the entered data"
   }
 }

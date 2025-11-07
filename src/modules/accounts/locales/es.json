@@ -134,9 +134,7 @@
     "createFailed": "Error al crear la cuenta",
     "updateFailed": "Error al actualizar la cuenta",
     "stateChangeFailed": "Error al cambiar el estado de la cuenta",
-    "nameExists": "Ya existe una cuenta con este nombre",
-    "emailExists": "Ya existe un usuario con este email",
-    "phoneExists": "Ya existe un usuario con este teléfono",
+    "alreadyExists": "Ya existe una cuenta con el mismo nombre, email, teléfono o CIF/NIF",
     "validationError": "Error de validación. Verifica los datos ingresados"
   }
 }

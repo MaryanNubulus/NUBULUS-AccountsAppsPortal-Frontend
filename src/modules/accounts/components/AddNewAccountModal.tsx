@@ -1,6 +1,6 @@
 // AddNewAccountModal.tsx - Modal for creating new accounts
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "../../../components/ui/button";
 import {
   Dialog,
@@ -26,8 +26,14 @@ export function AddNewAccountModal({
   onClose,
   onSuccess,
 }: AddNewAccountModalProps) {
-  const { createAccount, modalState, validationErrors, clearError, t } =
-    useCreateAccount(onSuccess);
+  const {
+    createAccount,
+    modalState,
+    validationErrors,
+    clearError,
+    resetModal,
+    t,
+  } = useCreateAccount(onSuccess);
 
   const [formData, setFormData] = useState<CreateAccountRequest>({
     name: "",
@@ -37,6 +43,21 @@ export function AddNewAccountModal({
     address: "",
     numberId: "",
   });
+
+  // Reset form and modal state when modal closes
+  useEffect(() => {
+    if (!isOpen) {
+      setFormData({
+        name: "",
+        fullName: "",
+        email: "",
+        phone: "",
+        address: "",
+        numberId: "",
+      });
+      resetModal();
+    }
+  }, [isOpen, resetModal]);
 
   const handleChange = (field: keyof CreateAccountRequest, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -50,14 +71,6 @@ export function AddNewAccountModal({
 
   const handleClose = () => {
     if (!modalState.isSubmitting) {
-      setFormData({
-        name: "",
-        fullName: "",
-        email: "",
-        phone: "",
-        address: "",
-        numberId: "",
-      });
       onClose();
     }
   };

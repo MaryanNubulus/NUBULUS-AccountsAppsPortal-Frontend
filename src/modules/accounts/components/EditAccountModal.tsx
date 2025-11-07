@@ -28,26 +28,52 @@ export function EditAccountModal({
   onSuccess,
   account,
 }: EditAccountModalProps) {
-  const { updateAccount, modalState, validationErrors, clearError, t } =
-    useUpdateAccount(onSuccess);
+  const {
+    updateAccount,
+    modalState,
+    validationErrors,
+    clearError,
+    resetModal,
+    t,
+  } = useUpdateAccount(onSuccess);
 
   const [formData, setFormData] = useState<UpdateAccountRequest>({
     name: "",
-    userName: "",
-    userEmail: "",
-    userPhone: "",
+    fullName: "",
+    email: "",
+    phone: "",
+    address: "",
+    numberId: "",
   });
 
+  // Load account data when account changes
   useEffect(() => {
-    if (account) {
+    if (account && isOpen) {
       setFormData({
         name: account.name,
-        userName: account.userName,
-        userEmail: account.userEmail,
-        userPhone: account.userPhone,
+        fullName: "", // El backend no devuelve fullName, usar vacío o el que sea necesario
+        email: account.email,
+        phone: account.phone,
+        address: "", // El backend no devuelve address
+        numberId: account.numberId,
       });
     }
-  }, [account]);
+  }, [account, isOpen]);
+
+  // Reset form and modal state when modal closes
+  useEffect(() => {
+    if (!isOpen) {
+      setFormData({
+        name: "",
+        fullName: "",
+        email: "",
+        phone: "",
+        address: "",
+        numberId: "",
+      });
+      resetModal();
+    }
+  }, [isOpen, resetModal]);
 
   const handleChange = (field: keyof UpdateAccountRequest, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -57,7 +83,7 @@ export function EditAccountModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (account) {
-      await updateAccount(account.id, formData);
+      await updateAccount(account.key, formData);
     }
   };
 
@@ -77,7 +103,7 @@ export function EditAccountModal({
 
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4 py-4">
-            {/* Account Name */}
+            {/* Name */}
             <div className="grid gap-2">
               <Label htmlFor="name">{t("editModal.form.name")}</Label>
               <Input
@@ -89,7 +115,7 @@ export function EditAccountModal({
                 disabled={modalState.isSubmitting}
                 className={validationErrors.name ? "border-red-500" : ""}
                 minLength={2}
-                maxLength={256}
+                maxLength={100}
                 required
               />
               {validationErrors.name && (
@@ -97,66 +123,106 @@ export function EditAccountModal({
               )}
             </div>
 
-            {/* User Name */}
+            {/* Full Name */}
             <div className="grid gap-2">
-              <Label htmlFor="userName">{t("editModal.form.userName")}</Label>
+              <Label htmlFor="fullName">{t("editModal.form.fullName")}</Label>
               <Input
-                id="userName"
+                id="fullName"
                 type="text"
-                value={formData.userName}
-                onChange={(e) => handleChange("userName", e.target.value)}
-                placeholder={t("editModal.form.userNamePlaceholder")}
+                value={formData.fullName}
+                onChange={(e) => handleChange("fullName", e.target.value)}
+                placeholder={t("editModal.form.fullNamePlaceholder")}
                 disabled={modalState.isSubmitting}
-                className={validationErrors.userName ? "border-red-500" : ""}
-                minLength={2}
-                maxLength={256}
-                required
+                className={validationErrors.fullName ? "border-red-500" : ""}
+                maxLength={200}
               />
-              {validationErrors.userName && (
+              {validationErrors.fullName && (
                 <p className="text-sm text-red-500">
-                  {validationErrors.userName}
+                  {validationErrors.fullName}
                 </p>
               )}
             </div>
 
-            {/* User Email */}
+            {/* Email */}
             <div className="grid gap-2">
-              <Label htmlFor="userEmail">{t("editModal.form.userEmail")}</Label>
+              <Label htmlFor="email">{t("editModal.form.email")}</Label>
               <Input
-                id="userEmail"
+                id="email"
                 type="email"
-                value={formData.userEmail}
-                onChange={(e) => handleChange("userEmail", e.target.value)}
-                placeholder={t("editModal.form.userEmailPlaceholder")}
+                value={formData.email}
+                onChange={(e) => handleChange("email", e.target.value)}
+                placeholder={t("editModal.form.emailPlaceholder")}
                 disabled={modalState.isSubmitting}
-                className={validationErrors.userEmail ? "border-red-500" : ""}
+                className={validationErrors.email ? "border-red-500" : ""}
+                minLength={5}
+                maxLength={100}
                 required
               />
-              {validationErrors.userEmail && (
-                <p className="text-sm text-red-500">
-                  {validationErrors.userEmail}
-                </p>
+              {validationErrors.email && (
+                <p className="text-sm text-red-500">{validationErrors.email}</p>
               )}
             </div>
 
-            {/* User Phone */}
+            {/* Phone */}
             <div className="grid gap-2">
-              <Label htmlFor="userPhone">{t("editModal.form.userPhone")}</Label>
+              <Label htmlFor="phone">{t("editModal.form.phone")}</Label>
               <Input
-                id="userPhone"
+                id="phone"
                 type="tel"
-                value={formData.userPhone}
-                onChange={(e) => handleChange("userPhone", e.target.value)}
-                placeholder={t("editModal.form.userPhonePlaceholder")}
+                value={formData.phone}
+                onChange={(e) => handleChange("phone", e.target.value)}
+                placeholder={t("editModal.form.phonePlaceholder")}
                 disabled={modalState.isSubmitting}
-                className={validationErrors.userPhone ? "border-red-500" : ""}
-                minLength={7}
+                className={validationErrors.phone ? "border-red-500" : ""}
+                minLength={10}
                 maxLength={15}
                 required
               />
-              {validationErrors.userPhone && (
+              {validationErrors.phone && (
+                <p className="text-sm text-red-500">{validationErrors.phone}</p>
+              )}
+            </div>
+
+            {/* Address */}
+            <div className="grid gap-2">
+              <Label htmlFor="address">{t("editModal.form.address")}</Label>
+              <Input
+                id="address"
+                type="text"
+                value={formData.address}
+                onChange={(e) => handleChange("address", e.target.value)}
+                placeholder={t("editModal.form.addressPlaceholder")}
+                disabled={modalState.isSubmitting}
+                className={validationErrors.address ? "border-red-500" : ""}
+                minLength={5}
+                maxLength={200}
+                required
+              />
+              {validationErrors.address && (
                 <p className="text-sm text-red-500">
-                  {validationErrors.userPhone}
+                  {validationErrors.address}
+                </p>
+              )}
+            </div>
+
+            {/* Number ID */}
+            <div className="grid gap-2">
+              <Label htmlFor="numberId">{t("editModal.form.numberId")}</Label>
+              <Input
+                id="numberId"
+                type="text"
+                value={formData.numberId}
+                onChange={(e) => handleChange("numberId", e.target.value)}
+                placeholder={t("editModal.form.numberIdPlaceholder")}
+                disabled={modalState.isSubmitting}
+                className={validationErrors.numberId ? "border-red-500" : ""}
+                minLength={5}
+                maxLength={50}
+                required
+              />
+              {validationErrors.numberId && (
+                <p className="text-sm text-red-500">
+                  {validationErrors.numberId}
                 </p>
               )}
             </div>

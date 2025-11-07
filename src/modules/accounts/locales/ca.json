@@ -134,9 +134,7 @@
     "createFailed": "Error en crear el compte",
     "updateFailed": "Error en actualitzar el compte",
     "stateChangeFailed": "Error en canviar l'estat del compte",
-    "nameExists": "Ja existeix un compte amb aquest nom",
-    "emailExists": "Ja existeix un usuari amb aquest email",
-    "phoneExists": "Ja existeix un usuari amb aquest telèfon",
+    "alreadyExists": "Ja existeix un compte amb el mateix nom, email, telèfon o CIF/NIF",
     "validationError": "Error de validació. Verifica les dades introduïdes"
   }
 }

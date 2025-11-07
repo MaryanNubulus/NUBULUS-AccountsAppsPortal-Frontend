@@ -1,5 +1,3 @@
-// viewmodel.ts - Account module viewmodel hooks
-
 import { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import type {
@@ -124,7 +122,6 @@ export function useCreateAccount(onSuccess: () => void) {
   );
 
   const createAccount = async (data: CreateAccountRequest) => {
-    // Client-side validation
     const errors = validateCreateAccountRequest(data, t);
     if (Object.keys(errors).length > 0) {
       setValidationErrors(errors);
@@ -147,15 +144,10 @@ export function useCreateAccount(onSuccess: () => void) {
       setTimeout(() => {
         onSuccess();
       }, 1000);
-    } else if (result === "name_exists") {
+    } else if (result === "already_exists") {
       setModalState({
         isSubmitting: false,
-        status: { type: "error", message: t("errors.nameExists") },
-      });
-    } else if (result === "email_exists") {
-      setModalState({
-        isSubmitting: false,
-        status: { type: "error", message: t("errors.emailExists") },
+        status: { type: "error", message: t("errors.alreadyExists") },
       });
     } else if (result === "validation_error") {
       setModalState({
@@ -178,11 +170,20 @@ export function useCreateAccount(onSuccess: () => void) {
     });
   };
 
+  const resetModal = () => {
+    setModalState({
+      isSubmitting: false,
+      status: { type: "none", message: "" },
+    });
+    setValidationErrors({});
+  };
+
   return {
     createAccount,
     modalState,
     validationErrors,
     clearError,
+    resetModal,
     t,
   };
 }
@@ -224,20 +225,10 @@ export function useUpdateAccount(onSuccess: () => void) {
       setTimeout(() => {
         onSuccess();
       }, 1000);
-    } else if (result === "name_exists") {
+    } else if (result === "already_exists") {
       setModalState({
         isSubmitting: false,
-        status: { type: "error", message: t("errors.nameExists") },
-      });
-    } else if (result === "email_exists") {
-      setModalState({
-        isSubmitting: false,
-        status: { type: "error", message: t("errors.emailExists") },
-      });
-    } else if (result === "phone_exists") {
-      setModalState({
-        isSubmitting: false,
-        status: { type: "error", message: t("errors.phoneExists") },
+        status: { type: "error", message: t("errors.alreadyExists") },
       });
     } else if (result === "validation_error") {
       setModalState({
@@ -260,11 +251,20 @@ export function useUpdateAccount(onSuccess: () => void) {
     });
   };
 
+  const resetModal = () => {
+    setModalState({
+      isSubmitting: false,
+      status: { type: "none", message: "" },
+    });
+    setValidationErrors({});
+  };
+
   return {
     updateAccount,
     modalState,
     validationErrors,
     clearError,
+    resetModal,
     t,
   };
 }

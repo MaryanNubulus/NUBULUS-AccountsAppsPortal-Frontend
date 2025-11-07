@@ -43,9 +43,7 @@ export async function getAccounts(
 
 export async function createAccount(
   request: CreateAccountRequest
-): Promise<
-  "created" | "name_exists" | "email_exists" | "validation_error" | "failed"
-> {
+): Promise<"created" | "already_exists" | "validation_error" | "failed"> {
   try {
     const response = await fetch(`${API_BASE}/api/v1/accounts`, {
       method: "POST",
@@ -57,11 +55,7 @@ export async function createAccount(
     });
 
     if (response.status === 201) return "created";
-    if (response.status === 409) {
-      const data = await response.json();
-      if (data.message?.includes("name")) return "name_exists";
-      if (data.message?.includes("email")) return "email_exists";
-    }
+    if (response.status === 409) return "already_exists";
     if (response.status === 400) return "validation_error";
 
     return "failed";
@@ -74,14 +68,7 @@ export async function createAccount(
 export async function updateAccount(
   accountId: string,
   request: UpdateAccountRequest
-): Promise<
-  | "updated"
-  | "name_exists"
-  | "email_exists"
-  | "phone_exists"
-  | "validation_error"
-  | "failed"
-> {
+): Promise<"updated" | "already_exists" | "validation_error" | "failed"> {
   try {
     const response = await fetch(`${API_BASE}/api/v1/accounts/${accountId}`, {
       method: "PUT",
@@ -93,12 +80,7 @@ export async function updateAccount(
     });
 
     if (response.status === 200) return "updated";
-    if (response.status === 409) {
-      const data = await response.json();
-      if (data.message?.includes("name")) return "name_exists";
-      if (data.message?.includes("email")) return "email_exists";
-      if (data.message?.includes("phone")) return "phone_exists";
-    }
+    if (response.status === 409) return "already_exists";
     if (response.status === 400) return "validation_error";
 
     return "failed";
