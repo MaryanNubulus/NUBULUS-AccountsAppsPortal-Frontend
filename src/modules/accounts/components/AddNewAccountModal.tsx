@@ -30,10 +30,12 @@ export function AddNewAccountModal({
     useCreateAccount(onSuccess);
 
   const [formData, setFormData] = useState<CreateAccountRequest>({
-    accountName: "",
-    userName: "",
-    userEmail: "",
-    userPhone: "",
+    name: "",
+    fullName: "",
+    email: "",
+    phone: "",
+    address: "",
+    numberId: "",
   });
 
   const handleChange = (field: keyof CreateAccountRequest, value: string) => {
@@ -49,10 +51,12 @@ export function AddNewAccountModal({
   const handleClose = () => {
     if (!modalState.isSubmitting) {
       setFormData({
-        accountName: "",
-        userName: "",
-        userEmail: "",
-        userPhone: "",
+        name: "",
+        fullName: "",
+        email: "",
+        phone: "",
+        address: "",
+        numberId: "",
       });
       onClose();
     }
@@ -68,90 +72,126 @@ export function AddNewAccountModal({
 
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4 py-4">
-            {/* Account Name */}
+            {/* Name */}
             <div className="grid gap-2">
-              <Label htmlFor="accountName">
-                {t("addModal.form.accountName")}
-              </Label>
+              <Label htmlFor="name">{t("addModal.form.name")}</Label>
               <Input
-                id="accountName"
+                id="name"
                 type="text"
-                value={formData.accountName}
-                onChange={(e) => handleChange("accountName", e.target.value)}
-                placeholder={t("addModal.form.accountNamePlaceholder")}
+                value={formData.name}
+                onChange={(e) => handleChange("name", e.target.value)}
+                placeholder={t("addModal.form.namePlaceholder")}
                 disabled={modalState.isSubmitting}
-                className={validationErrors.accountName ? "border-red-500" : ""}
+                className={validationErrors.name ? "border-red-500" : ""}
                 minLength={2}
-                maxLength={256}
+                maxLength={100}
                 required
               />
-              {validationErrors.accountName && (
+              {validationErrors.name && (
+                <p className="text-sm text-red-500">{validationErrors.name}</p>
+              )}
+            </div>
+
+            {/* Full Name */}
+            <div className="grid gap-2">
+              <Label htmlFor="fullName">{t("addModal.form.fullName")}</Label>
+              <Input
+                id="fullName"
+                type="text"
+                value={formData.fullName}
+                onChange={(e) => handleChange("fullName", e.target.value)}
+                placeholder={t("addModal.form.fullNamePlaceholder")}
+                disabled={modalState.isSubmitting}
+                className={validationErrors.fullName ? "border-red-500" : ""}
+                maxLength={200}
+              />
+              {validationErrors.fullName && (
                 <p className="text-sm text-red-500">
-                  {validationErrors.accountName}
+                  {validationErrors.fullName}
                 </p>
               )}
             </div>
 
-            {/* User Name */}
+            {/* Email */}
             <div className="grid gap-2">
-              <Label htmlFor="userName">{t("addModal.form.userName")}</Label>
+              <Label htmlFor="email">{t("addModal.form.email")}</Label>
               <Input
-                id="userName"
-                type="text"
-                value={formData.userName}
-                onChange={(e) => handleChange("userName", e.target.value)}
-                placeholder={t("addModal.form.userNamePlaceholder")}
-                disabled={modalState.isSubmitting}
-                className={validationErrors.userName ? "border-red-500" : ""}
-                minLength={2}
-                maxLength={256}
-                required
-              />
-              {validationErrors.userName && (
-                <p className="text-sm text-red-500">
-                  {validationErrors.userName}
-                </p>
-              )}
-            </div>
-
-            {/* User Email */}
-            <div className="grid gap-2">
-              <Label htmlFor="userEmail">{t("addModal.form.userEmail")}</Label>
-              <Input
-                id="userEmail"
+                id="email"
                 type="email"
-                value={formData.userEmail}
-                onChange={(e) => handleChange("userEmail", e.target.value)}
-                placeholder={t("addModal.form.userEmailPlaceholder")}
+                value={formData.email}
+                onChange={(e) => handleChange("email", e.target.value)}
+                placeholder={t("addModal.form.emailPlaceholder")}
                 disabled={modalState.isSubmitting}
-                className={validationErrors.userEmail ? "border-red-500" : ""}
+                className={validationErrors.email ? "border-red-500" : ""}
+                minLength={5}
+                maxLength={100}
                 required
               />
-              {validationErrors.userEmail && (
-                <p className="text-sm text-red-500">
-                  {validationErrors.userEmail}
-                </p>
+              {validationErrors.email && (
+                <p className="text-sm text-red-500">{validationErrors.email}</p>
               )}
             </div>
 
-            {/* User Phone */}
+            {/* Phone */}
             <div className="grid gap-2">
-              <Label htmlFor="userPhone">{t("addModal.form.userPhone")}</Label>
+              <Label htmlFor="phone">{t("addModal.form.phone")}</Label>
               <Input
-                id="userPhone"
+                id="phone"
                 type="tel"
-                value={formData.userPhone}
-                onChange={(e) => handleChange("userPhone", e.target.value)}
-                placeholder={t("addModal.form.userPhonePlaceholder")}
+                value={formData.phone}
+                onChange={(e) => handleChange("phone", e.target.value)}
+                placeholder={t("addModal.form.phonePlaceholder")}
                 disabled={modalState.isSubmitting}
-                className={validationErrors.userPhone ? "border-red-500" : ""}
-                minLength={7}
+                className={validationErrors.phone ? "border-red-500" : ""}
+                minLength={10}
                 maxLength={15}
                 required
               />
-              {validationErrors.userPhone && (
+              {validationErrors.phone && (
+                <p className="text-sm text-red-500">{validationErrors.phone}</p>
+              )}
+            </div>
+
+            {/* Address */}
+            <div className="grid gap-2">
+              <Label htmlFor="address">{t("addModal.form.address")}</Label>
+              <Input
+                id="address"
+                type="text"
+                value={formData.address}
+                onChange={(e) => handleChange("address", e.target.value)}
+                placeholder={t("addModal.form.addressPlaceholder")}
+                disabled={modalState.isSubmitting}
+                className={validationErrors.address ? "border-red-500" : ""}
+                minLength={5}
+                maxLength={200}
+                required
+              />
+              {validationErrors.address && (
                 <p className="text-sm text-red-500">
-                  {validationErrors.userPhone}
+                  {validationErrors.address}
+                </p>
+              )}
+            </div>
+
+            {/* Number ID */}
+            <div className="grid gap-2">
+              <Label htmlFor="numberId">{t("addModal.form.numberId")}</Label>
+              <Input
+                id="numberId"
+                type="text"
+                value={formData.numberId}
+                onChange={(e) => handleChange("numberId", e.target.value)}
+                placeholder={t("addModal.form.numberIdPlaceholder")}
+                disabled={modalState.isSubmitting}
+                className={validationErrors.numberId ? "border-red-500" : ""}
+                minLength={5}
+                maxLength={50}
+                required
+              />
+              {validationErrors.numberId && (
+                <p className="text-sm text-red-500">
+                  {validationErrors.numberId}
                 </p>
               )}
             </div>

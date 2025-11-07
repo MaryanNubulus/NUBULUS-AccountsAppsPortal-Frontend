@@ -1,8 +1,9 @@
 // page.tsx - Accounts module main page
 
 import { useState } from "react";
-import { Plus } from "lucide-react";
+import { Plus, ChevronLeft, ChevronRight, Search, X } from "lucide-react";
 import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
 import {
   Card,
   CardContent,
@@ -18,7 +19,23 @@ import { useAccounts } from "./viewmodel";
 import type { Account } from "./types";
 
 export default function AccountsPage() {
-  const { accounts, isLoading, error, reload, t } = useAccounts();
+  const {
+    accounts,
+    isLoading,
+    error,
+    reload,
+    currentPage,
+    totalPages,
+    totalCount,
+    hasPreviousPage,
+    hasNextPage,
+    nextPage,
+    previousPage,
+    goToPage,
+    searchTerm,
+    search,
+    t,
+  } = useAccounts();
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -27,6 +44,7 @@ export default function AccountsPage() {
   const [stateChangeAction, setStateChangeAction] = useState<
     "activate" | "deactivate" | null
   >(null);
+  const [localSearchTerm, setLocalSearchTerm] = useState("");
 
   const handleAddSuccess = () => {
     setIsAddModalOpen(false);
@@ -64,6 +82,16 @@ export default function AccountsPage() {
     setStateChangeAction(null);
   };
 
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    search(localSearchTerm);
+  };
+
+  const handleClearSearch = () => {
+    setLocalSearchTerm("");
+    search("");
+  };
+
   return (
     <div className="container mx-auto py-6 space-y-6">
       <Card>
@@ -80,6 +108,36 @@ export default function AccountsPage() {
           </Button>
         </CardHeader>
         <CardContent>
+          {/* Search Bar */}
+          <form onSubmit={handleSearch} className="mb-4">
+            <div className="flex gap-2">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder={t("page.searchPlaceholder")}
+                  value={localSearchTerm}
+                  onChange={(e) => setLocalSearchTerm(e.target.value)}
+                  className="pl-9"
+                />
+              </div>
+              <Button type="submit" variant="default">
+                <Search className="h-4 w-4 mr-2" />
+                {t("page.searchButton")}
+              </Button>
+              {searchTerm && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleClearSearch}
+                >
+                  <X className="h-4 w-4 mr-2" />
+                  {t("page.clearButton")}
+                </Button>
+              )}
+            </div>
+          </form>
+
           {error && (
             <div className="mb-4 p-3 rounded-md text-sm bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
               {error}
@@ -91,12 +149,94 @@ export default function AccountsPage() {
               {t("table.loading")}
             </div>
           ) : (
-            <AccountsTable
-              accounts={accounts}
-              onEdit={handleEditClick}
-              onChangeState={handleStateChangeClick}
-              t={t}
-            />
+            <>
+              <AccountsTable
+                accounts={accounts}
+                onEdit={handleEditClick}
+                onChangeState={handleStateChangeClick}
+                t={t}
+              />
+
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="flex items-center justify-between mt-4 pt-4 border-t">
+                  <div className="text-sm text-muted-foreground">
+                    {t("table.pagination.showing", {
+                      from:
+                        accounts.length > 0 ? (currentPage - 1) * 10 + 1 : 0,
+                      to: (currentPage - 1) * 10 + accounts.length,
+                      total: totalCount,
+                    })}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={previousPage}
+                      disabled={!hasPreviousPage}
+                    >
+                      <ChevronLeft className="h-4 w-4 mr-1" />
+                      {t("table.pagination.previous")}
+                    </Button>
+
+                    <div className="flex items-center gap-1">
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                        (page) => {
+                          // Show first page, last page, current page, and pages around current
+                          const showPage =
+                            page === 1 ||
+                            page === totalPages ||
+                            (page >= currentPage - 1 &&
+                              page <= currentPage + 1);
+
+                          const showEllipsis =
+                            (page === currentPage - 2 && currentPage > 3) ||
+                            (page === currentPage + 2 &&
+                              currentPage < totalPages - 2);
+
+                          if (showEllipsis) {
+                            return (
+                              <span
+                                key={page}
+                                className="px-2 text-muted-foreground"
+                              >
+                                ...
+                              </span>
+                            );
+                          }
+
+                          if (!showPage) return null;
+
+                          return (
+                            <Button
+                              key={page}
+                              variant={
+                                currentPage === page ? "default" : "outline"
+                              }
+                              size="sm"
+                              onClick={() => goToPage(page)}
+                              className="min-w-[2.5rem]"
+                            >
+                              {page}
+                            </Button>
+                          );
+                        }
+                      )}
+                    </div>
+
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={nextPage}
+                      disabled={!hasNextPage}
+                    >
+                      {t("table.pagination.next")}
+                      <ChevronRight className="h-4 w-4 ml-1" />
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </CardContent>
       </Card>

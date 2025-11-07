@@ -1,34 +1,43 @@
 // types.ts - Account module types and validation
 
+import type { PaginatedRequest, PaginatedResponse } from "../shared/types";
+
+export type { PaginatedRequest, PaginatedResponse };
+
 export interface Account {
-  id: string;
+  key: string;
   name: string;
-  isActive: boolean;
-  userName: string;
-  userEmail: string;
-  userPhone: string;
+  email: string;
+  phone: string;
+  numberId: string;
+  status: string;
 }
 
 export interface CreateAccountRequest {
-  accountName: string;
-  userName: string;
-  userEmail: string;
-  userPhone: string;
+  name: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  address: string;
+  numberId: string;
 }
 
 export interface UpdateAccountRequest {
   name: string;
-  userName: string;
-  userEmail: string;
-  userPhone: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  address: string;
+  numberId: string;
 }
 
 export interface ValidationErrors {
-  accountName?: string;
   name?: string;
-  userName?: string;
-  userEmail?: string;
-  userPhone?: string;
+  fullName?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  numberId?: string;
 }
 
 // Validation functions
@@ -38,39 +47,52 @@ export function validateCreateAccountRequest(
 ): ValidationErrors {
   const errors: ValidationErrors = {};
 
-  // Validate accountName
-  if (!data.accountName || data.accountName.trim().length === 0) {
-    errors.accountName = t("addModal.validation.accountNameRequired");
-  } else if (data.accountName.trim().length < 2) {
-    errors.accountName = t("addModal.validation.accountNameMinLength");
-  } else if (data.accountName.length > 256) {
-    errors.accountName = t("addModal.validation.accountNameMaxLength");
+  // Validate name (2-100 characters)
+  if (!data.name || data.name.trim().length === 0) {
+    errors.name = t("addModal.validation.nameRequired");
+  } else if (data.name.trim().length < 2) {
+    errors.name = t("addModal.validation.nameMinLength");
+  } else if (data.name.length > 100) {
+    errors.name = t("addModal.validation.nameMaxLength");
   }
 
-  // Validate userName
-  if (!data.userName || data.userName.trim().length === 0) {
-    errors.userName = t("addModal.validation.userNameRequired");
-  } else if (data.userName.trim().length < 2) {
-    errors.userName = t("addModal.validation.userNameMinLength");
-  } else if (data.userName.length > 256) {
-    errors.userName = t("addModal.validation.userNameMaxLength");
+  // Validate fullName (optional, but if provided should be reasonable)
+  if (data.fullName && data.fullName.length > 200) {
+    errors.fullName = t("addModal.validation.fullNameMaxLength");
   }
 
-  // Validate userEmail
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!data.userEmail || data.userEmail.trim().length === 0) {
-    errors.userEmail = t("addModal.validation.userEmailRequired");
-  } else if (!emailPattern.test(data.userEmail)) {
-    errors.userEmail = t("addModal.validation.userEmailInvalid");
+  // Validate email (5-100 characters, valid format)
+  const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!data.email || data.email.trim().length === 0) {
+    errors.email = t("addModal.validation.emailRequired");
+  } else if (data.email.length < 5 || data.email.length > 100) {
+    errors.email = t("addModal.validation.emailLength");
+  } else if (!emailPattern.test(data.email)) {
+    errors.email = t("addModal.validation.emailInvalid");
   }
 
-  // Validate userPhone
-  if (!data.userPhone || data.userPhone.trim().length === 0) {
-    errors.userPhone = t("addModal.validation.userPhoneRequired");
-  } else if (data.userPhone.trim().length < 7) {
-    errors.userPhone = t("addModal.validation.userPhoneMinLength");
-  } else if (data.userPhone.length > 15) {
-    errors.userPhone = t("addModal.validation.userPhoneMaxLength");
+  // Validate phone (10-15 characters, numeric with optional +)
+  const phonePattern = /^\+?[0-9]{10,15}$/;
+  if (!data.phone || data.phone.trim().length === 0) {
+    errors.phone = t("addModal.validation.phoneRequired");
+  } else if (data.phone.length < 10 || data.phone.length > 15) {
+    errors.phone = t("addModal.validation.phoneLength");
+  } else if (!phonePattern.test(data.phone)) {
+    errors.phone = t("addModal.validation.phoneInvalid");
+  }
+
+  // Validate address (5-200 characters)
+  if (!data.address || data.address.trim().length === 0) {
+    errors.address = t("addModal.validation.addressRequired");
+  } else if (data.address.length < 5 || data.address.length > 200) {
+    errors.address = t("addModal.validation.addressLength");
+  }
+
+  // Validate numberId (5-50 characters)
+  if (!data.numberId || data.numberId.trim().length === 0) {
+    errors.numberId = t("addModal.validation.numberIdRequired");
+  } else if (data.numberId.length < 5 || data.numberId.length > 50) {
+    errors.numberId = t("addModal.validation.numberIdLength");
   }
 
   return errors;
@@ -82,39 +104,52 @@ export function validateUpdateAccountRequest(
 ): ValidationErrors {
   const errors: ValidationErrors = {};
 
-  // Validate name
+  // Validate name (2-100 characters)
   if (!data.name || data.name.trim().length === 0) {
     errors.name = t("editModal.validation.nameRequired");
   } else if (data.name.trim().length < 2) {
     errors.name = t("editModal.validation.nameMinLength");
-  } else if (data.name.length > 256) {
+  } else if (data.name.length > 100) {
     errors.name = t("editModal.validation.nameMaxLength");
   }
 
-  // Validate userName
-  if (!data.userName || data.userName.trim().length === 0) {
-    errors.userName = t("editModal.validation.userNameRequired");
-  } else if (data.userName.trim().length < 2) {
-    errors.userName = t("editModal.validation.userNameMinLength");
-  } else if (data.userName.length > 256) {
-    errors.userName = t("editModal.validation.userNameMaxLength");
+  // Validate fullName (optional, but if provided should be reasonable)
+  if (data.fullName && data.fullName.length > 200) {
+    errors.fullName = t("editModal.validation.fullNameMaxLength");
   }
 
-  // Validate userEmail
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!data.userEmail || data.userEmail.trim().length === 0) {
-    errors.userEmail = t("editModal.validation.userEmailRequired");
-  } else if (!emailPattern.test(data.userEmail)) {
-    errors.userEmail = t("editModal.validation.userEmailInvalid");
+  // Validate email (5-100 characters, valid format)
+  const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!data.email || data.email.trim().length === 0) {
+    errors.email = t("editModal.validation.emailRequired");
+  } else if (data.email.length < 5 || data.email.length > 100) {
+    errors.email = t("editModal.validation.emailLength");
+  } else if (!emailPattern.test(data.email)) {
+    errors.email = t("editModal.validation.emailInvalid");
   }
 
-  // Validate userPhone
-  if (!data.userPhone || data.userPhone.trim().length === 0) {
-    errors.userPhone = t("editModal.validation.userPhoneRequired");
-  } else if (data.userPhone.trim().length < 7) {
-    errors.userPhone = t("editModal.validation.userPhoneMinLength");
-  } else if (data.userPhone.length > 15) {
-    errors.userPhone = t("editModal.validation.userPhoneMaxLength");
+  // Validate phone (10-15 characters, numeric with optional +)
+  const phonePattern = /^\+?[0-9]{10,15}$/;
+  if (!data.phone || data.phone.trim().length === 0) {
+    errors.phone = t("editModal.validation.phoneRequired");
+  } else if (data.phone.length < 10 || data.phone.length > 15) {
+    errors.phone = t("editModal.validation.phoneLength");
+  } else if (!phonePattern.test(data.phone)) {
+    errors.phone = t("editModal.validation.phoneInvalid");
+  }
+
+  // Validate address (5-200 characters)
+  if (!data.address || data.address.trim().length === 0) {
+    errors.address = t("editModal.validation.addressRequired");
+  } else if (data.address.length < 5 || data.address.length > 200) {
+    errors.address = t("editModal.validation.addressLength");
+  }
+
+  // Validate numberId (5-50 characters)
+  if (!data.numberId || data.numberId.trim().length === 0) {
+    errors.numberId = t("editModal.validation.numberIdRequired");
+  } else if (data.numberId.length < 5 || data.numberId.length > 50) {
+    errors.numberId = t("editModal.validation.numberIdLength");
   }
 
   return errors;

@@ -21,3 +21,18 @@ export interface RouteDefinition {
   children?: RouteDefinition[];
   title: string;
 }
+
+// Generic pagination interfaces
+export interface PaginatedRequest {
+  pageNumber?: number;
+  pageSize?: number;
+  searchTerm?: string;
+}
+
+export interface PaginatedResponse<T> {
+  items: T[];
+  pageNumber: number;
+  pageSize: number;
+  totalCount: number;
+  totalPages: number;
+}

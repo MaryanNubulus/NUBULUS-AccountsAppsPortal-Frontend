@@ -2,14 +2,17 @@
   "page": {
     "title": "Accounts",
     "description": "Manage accounts and their owner users",
-    "addButton": "Add Account"
+    "addButton": "Add Account",
+    "searchPlaceholder": "Search by name, email, phone or Tax ID...",
+    "searchButton": "Search",
+    "clearButton": "Clear"
   },
   "table": {
     "headers": {
-      "name": "Account Name",
-      "userName": "Owner User",
-      "userEmail": "Email",
-      "userPhone": "Phone",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "numberId": "Tax ID",
       "status": "Status",
       "actions": "Actions"
     },
@@ -24,20 +27,29 @@
       "deactivate": "Deactivate"
     },
     "empty": "No accounts registered",
-    "loading": "Loading accounts..."
+    "loading": "Loading accounts...",
+    "pagination": {
+      "showing": "Showing {{from}} to {{to}} of {{total}} results",
+      "previous": "Previous",
+      "next": "Next"
+    }
   },
   "addModal": {
     "title": "Add New Account",
-    "description": "Create a new account with an associated owner user",
+    "description": "Create a new account with all required information",
     "form": {
-      "accountName": "Account Name",
-      "accountNamePlaceholder": "E.g.: Acme Corporation",
-      "userName": "Owner User Name",
-      "userNamePlaceholder": "E.g.: John Doe",
-      "userEmail": "User Email",
-      "userEmailPlaceholder": "E.g.: john.doe@acme.com",
-      "userPhone": "User Phone",
-      "userPhonePlaceholder": "E.g.: +34600123456"
+      "name": "Name",
+      "namePlaceholder": "E.g.: Acme Corporation",
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "E.g.: Acme Corporation Ltd.",
+      "email": "Email",
+      "emailPlaceholder": "E.g.: contact@acme.com",
+      "phone": "Phone",
+      "phonePlaceholder": "E.g.: +34600123456",
+      "address": "Address",
+      "addressPlaceholder": "E.g.: Main Street 123, Madrid",
+      "numberId": "Identification Number",
+      "numberIdPlaceholder": "E.g.: B12345678"
     },
     "buttons": {
       "cancel": "Cancel",
@@ -45,17 +57,20 @@
       "creating": "Creating..."
     },
     "validation": {
-      "accountNameRequired": "Account name is required",
-      "accountNameMinLength": "Name must be at least 2 characters",
-      "accountNameMaxLength": "Name cannot exceed 256 characters",
-      "userNameRequired": "User name is required",
-      "userNameMinLength": "Name must be at least 2 characters",
-      "userNameMaxLength": "Name cannot exceed 256 characters",
-      "userEmailRequired": "Email is required",
-      "userEmailInvalid": "Invalid email format",
-      "userPhoneRequired": "Phone is required",
-      "userPhoneMinLength": "Phone must be at least 7 characters",
-      "userPhoneMaxLength": "Phone cannot exceed 15 characters"
+      "nameRequired": "Name is required",
+      "nameMinLength": "Name must be at least 2 characters",
+      "nameMaxLength": "Name cannot exceed 100 characters",
+      "fullNameMaxLength": "Full name cannot exceed 200 characters",
+      "emailRequired": "Email is required",
+      "emailLength": "Email must be between 5 and 100 characters",
+      "emailInvalid": "Invalid email format",
+      "phoneRequired": "Phone is required",
+      "phoneLength": "Phone must be between 10 and 15 characters",
+      "phoneInvalid": "Invalid phone format (use numbers and optionally +)",
+      "addressRequired": "Address is required",
+      "addressLength": "Address must be between 5 and 200 characters",
+      "numberIdRequired": "Identification number is required",
+      "numberIdLength": "Identification number must be between 5 and 50 characters"
     },
     "messages": {
       "success": "Account created successfully"

@@ -2,14 +2,17 @@
   "page": {
     "title": "Comptes",
     "description": "Gestiona els comptes i els seus usuaris propietaris",
-    "addButton": "Afegir Compte"
+    "addButton": "Afegir Compte",
+    "searchPlaceholder": "Cercar per nom, email, telèfon o CIF/NIF...",
+    "searchButton": "Cercar",
+    "clearButton": "Netejar"
   },
   "table": {
     "headers": {
-      "name": "Nom del Compte",
-      "userName": "Usuari Propietari",
-      "userEmail": "Email",
-      "userPhone": "Telèfon",
+      "name": "Nom",
+      "email": "Email",
+      "phone": "Telèfon",
+      "numberId": "CIF/NIF",
       "status": "Estat",
       "actions": "Accions"
     },
@@ -24,20 +27,29 @@
       "deactivate": "Desactivar"
     },
     "empty": "No hi ha comptes registrats",
-    "loading": "Carregant comptes..."
+    "loading": "Carregant comptes...",
+    "pagination": {
+      "showing": "Mostrant {{from}} a {{to}} de {{total}} resultats",
+      "previous": "Anterior",
+      "next": "Següent"
+    }
   },
   "addModal": {
     "title": "Afegir Nou Compte",
-    "description": "Crea un nou compte amb un usuari propietari associat",
+    "description": "Crea un nou compte amb tota la informació requerida",
     "form": {
-      "accountName": "Nom del Compte",
-      "accountNamePlaceholder": "Ex: Acme Corporation",
-      "userName": "Nom de l'Usuari Propietari",
-      "userNamePlaceholder": "Ex: Joan Pérez",
-      "userEmail": "Email de l'Usuari",
-      "userEmailPlaceholder": "Ex: joan.perez@acme.com",
-      "userPhone": "Telèfon de l'Usuari",
-      "userPhonePlaceholder": "Ex: +34600123456"
+      "name": "Nom",
+      "namePlaceholder": "Ex: Acme Corporation",
+      "fullName": "Nom Complet",
+      "fullNamePlaceholder": "Ex: Acme Corporation S.L.",
+      "email": "Email",
+      "emailPlaceholder": "Ex: contacte@acme.com",
+      "phone": "Telèfon",
+      "phonePlaceholder": "Ex: +34600123456",
+      "address": "Adreça",
+      "addressPlaceholder": "Ex: Carrer Principal 123, Madrid",
+      "numberId": "Número d'Identificació",
+      "numberIdPlaceholder": "Ex: B12345678"
     },
     "buttons": {
       "cancel": "Cancel·lar",
@@ -45,17 +57,20 @@
       "creating": "Creant..."
     },
     "validation": {
-      "accountNameRequired": "El nom del compte és obligatori",
-      "accountNameMinLength": "El nom ha de tenir almenys 2 caràcters",
-      "accountNameMaxLength": "El nom no pot excedir 256 caràcters",
-      "userNameRequired": "El nom de l'usuari és obligatori",
-      "userNameMinLength": "El nom ha de tenir almenys 2 caràcters",
-      "userNameMaxLength": "El nom no pot excedir 256 caràcters",
-      "userEmailRequired": "L'email és obligatori",
-      "userEmailInvalid": "Format d'email invàlid",
-      "userPhoneRequired": "El telèfon és obligatori",
-      "userPhoneMinLength": "El telèfon ha de tenir almenys 7 caràcters",
-      "userPhoneMaxLength": "El telèfon no pot excedir 15 caràcters"
+      "nameRequired": "El nom és obligatori",
+      "nameMinLength": "El nom ha de tenir almenys 2 caràcters",
+      "nameMaxLength": "El nom no pot excedir 100 caràcters",
+      "fullNameMaxLength": "El nom complet no pot excedir 200 caràcters",
+      "emailRequired": "L'email és obligatori",
+      "emailLength": "L'email ha de tenir entre 5 i 100 caràcters",
+      "emailInvalid": "Format d'email invàlid",
+      "phoneRequired": "El telèfon és obligatori",
+      "phoneLength": "El telèfon ha de tenir entre 10 i 15 caràcters",
+      "phoneInvalid": "Format de telèfon invàlid (utilitza números i opcionalment +)",
+      "addressRequired": "L'adreça és obligatòria",
+      "addressLength": "L'adreça ha de tenir entre 5 i 200 caràcters",
+      "numberIdRequired": "El número d'identificació és obligatori",
+      "numberIdLength": "El número d'identificació ha de tenir entre 5 i 50 caràcters"
     },
     "messages": {
       "success": "Compte creat amb èxit"

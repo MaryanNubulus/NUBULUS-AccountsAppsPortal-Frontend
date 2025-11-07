@@ -5,12 +5,27 @@ import type {
   CreateAccountRequest,
   UpdateAccountRequest,
 } from "./types";
+import type { PaginatedRequest, PaginatedResponse } from "../shared/types";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "";
 
-export async function getAllAccounts(): Promise<Account[] | null> {
+export async function getAccounts(
+  request: PaginatedRequest
+): Promise<PaginatedResponse<Account> | null> {
   try {
-    const response = await fetch(`${API_BASE}/api/v1/accounts`, {
+    const params = new URLSearchParams();
+
+    if (request.pageNumber) {
+      params.append("pageNumber", request.pageNumber.toString());
+    }
+    if (request.pageSize) {
+      params.append("pageSize", request.pageSize.toString());
+    }
+    if (request.searchTerm && request.searchTerm.trim() !== "") {
+      params.append("searchTerm", request.searchTerm.trim());
+    }
+
+    const response = await fetch(`${API_BASE}/api/v1/accounts?${params}`, {
       method: "GET",
       credentials: "include",
     });

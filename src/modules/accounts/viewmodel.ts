@@ -24,32 +24,91 @@ export function useAccounts() {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(10);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
+  const [hasPreviousPage, setHasPreviousPage] = useState(false);
+  const [hasNextPage, setHasNextPage] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const loadAccounts = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
+  const loadAccounts = useCallback(
+    async (page: number = currentPage, search: string = searchTerm) => {
+      setIsLoading(true);
+      setError(null);
 
-    const data = await service.getAllAccounts();
+      const data = await service.getAccounts({
+        pageNumber: page,
+        pageSize: pageSize,
+        searchTerm: search,
+      });
 
-    if (data === null) {
-      setError(t("errors.loadFailed"));
-      setAccounts([]);
-    } else {
-      setAccounts(data);
-    }
+      if (data === null) {
+        setError(t("errors.loadFailed"));
+        setAccounts([]);
+        setTotalPages(0);
+        setTotalCount(0);
+        setHasPreviousPage(false);
+        setHasNextPage(false);
+      } else {
+        setAccounts(data.items);
+        setCurrentPage(data.pageNumber);
+        setTotalPages(data.totalPages);
+        setTotalCount(data.totalCount);
+        setHasPreviousPage(data.pageNumber > 1);
+        setHasNextPage(data.pageNumber < data.totalPages);
+      }
 
-    setIsLoading(false);
-  }, [t]);
+      setIsLoading(false);
+    },
+    [currentPage, pageSize, searchTerm, t]
+  );
 
   useEffect(() => {
-    loadAccounts();
-  }, [loadAccounts]);
+    loadAccounts(1, searchTerm);
+  }, []);
+
+  const search = (term: string) => {
+    setSearchTerm(term);
+    setCurrentPage(1);
+    loadAccounts(1, term);
+  };
+
+  const goToPage = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+      loadAccounts(page, searchTerm);
+    }
+  };
+
+  const nextPage = () => {
+    if (hasNextPage) {
+      goToPage(currentPage + 1);
+    }
+  };
+
+  const previousPage = () => {
+    if (hasPreviousPage) {
+      goToPage(currentPage - 1);
+    }
+  };
 
   return {
     accounts,
     isLoading,
     error,
-    reload: loadAccounts,
+    currentPage,
+    pageSize,
+    totalPages,
+    totalCount,
+    hasPreviousPage,
+    hasNextPage,
+    searchTerm,
+    search,
+    reload: () => loadAccounts(currentPage, searchTerm),
+    goToPage,
+    nextPage,
+    previousPage,
     t,
   };
 }

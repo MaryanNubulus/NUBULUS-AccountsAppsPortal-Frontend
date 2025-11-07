@@ -42,9 +42,9 @@ export function AccountsTable({
         <TableHeader>
           <TableRow>
             <TableHead>{t("table.headers.name")}</TableHead>
-            <TableHead>{t("table.headers.userName")}</TableHead>
-            <TableHead>{t("table.headers.userEmail")}</TableHead>
-            <TableHead>{t("table.headers.userPhone")}</TableHead>
+            <TableHead>{t("table.headers.email")}</TableHead>
+            <TableHead>{t("table.headers.phone")}</TableHead>
+            <TableHead>{t("table.headers.numberId")}</TableHead>
             <TableHead>{t("table.headers.status")}</TableHead>
             <TableHead className="text-right">
               {t("table.headers.actions")}
@@ -52,68 +52,71 @@ export function AccountsTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {accounts.map((account) => (
-            <TableRow key={account.id}>
-              <TableCell className="font-medium">{account.name}</TableCell>
-              <TableCell>{account.userName}</TableCell>
-              <TableCell>{account.userEmail}</TableCell>
-              <TableCell>{account.userPhone}</TableCell>
-              <TableCell>
-                <span
-                  className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                    account.isActive
-                      ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                      : "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200"
-                  }`}
-                >
-                  {account.isActive
-                    ? t("table.status.active")
-                    : t("table.status.inactive")}
-                </span>
-              </TableCell>
-              <TableCell className="text-right">
-                <div className="flex justify-end gap-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() =>
-                      navigate(`/private/accounts/${account.id}/users`)
-                    }
-                    title={t("table.actions.users")}
+          {accounts.map((account) => {
+            const isActive = account.status.toLowerCase() === "active";
+            return (
+              <TableRow key={account.key}>
+                <TableCell className="font-medium">{account.name}</TableCell>
+                <TableCell>{account.email}</TableCell>
+                <TableCell>{account.phone}</TableCell>
+                <TableCell>{account.numberId}</TableCell>
+                <TableCell>
+                  <span
+                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      isActive
+                        ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                        : "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200"
+                    }`}
                   >
-                    <Users className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => onEdit(account)}
-                    title={t("table.actions.edit")}
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  {account.isActive ? (
+                    {isActive
+                      ? t("table.status.active")
+                      : t("table.status.inactive")}
+                  </span>
+                </TableCell>
+                <TableCell className="text-right">
+                  <div className="flex justify-end gap-2">
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => onChangeState(account, false)}
-                      title={t("table.actions.deactivate")}
+                      onClick={() =>
+                        navigate(`/private/accounts/${account.key}/users`)
+                      }
+                      title={t("table.actions.users")}
                     >
-                      <PowerOff className="h-4 w-4 text-red-500" />
+                      <Users className="h-4 w-4" />
                     </Button>
-                  ) : (
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => onChangeState(account, true)}
-                      title={t("table.actions.activate")}
+                      onClick={() => onEdit(account)}
+                      title={t("table.actions.edit")}
                     >
-                      <Power className="h-4 w-4 text-green-500" />
+                      <Edit className="h-4 w-4" />
                     </Button>
-                  )}
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
+                    {isActive ? (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => onChangeState(account, false)}
+                        title={t("table.actions.deactivate")}
+                      >
+                        <PowerOff className="h-4 w-4 text-red-500" />
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => onChangeState(account, true)}
+                        title={t("table.actions.activate")}
+                      >
+                        <Power className="h-4 w-4 text-green-500" />
+                      </Button>
+                    )}
+                  </div>
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </div>
