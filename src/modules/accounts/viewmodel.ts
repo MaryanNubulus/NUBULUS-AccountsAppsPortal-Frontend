@@ -31,7 +31,7 @@ export function useAccounts() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const loadAccounts = useCallback(
-    async (page: number = currentPage, search: string = searchTerm) => {
+    async (page: number, search: string) => {
       setIsLoading(true);
       setError(null);
 
@@ -59,11 +59,12 @@ export function useAccounts() {
 
       setIsLoading(false);
     },
-    [currentPage, pageSize, searchTerm, t]
+    [pageSize, t]
   );
 
   useEffect(() => {
-    loadAccounts(1, searchTerm);
+    loadAccounts(1, "");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const search = (term: string) => {
@@ -91,6 +92,10 @@ export function useAccounts() {
     }
   };
 
+  const reload = useCallback(() => {
+    loadAccounts(currentPage, searchTerm);
+  }, [loadAccounts, currentPage, searchTerm]);
+
   return {
     accounts,
     isLoading,
@@ -103,7 +108,7 @@ export function useAccounts() {
     hasNextPage,
     searchTerm,
     search,
-    reload: () => loadAccounts(currentPage, searchTerm),
+    reload,
     goToPage,
     nextPage,
     previousPage,
@@ -170,13 +175,13 @@ export function useCreateAccount(onSuccess: () => void) {
     });
   };
 
-  const resetModal = () => {
+  const resetModal = useCallback(() => {
     setModalState({
       isSubmitting: false,
       status: { type: "none", message: "" },
     });
     setValidationErrors({});
-  };
+  }, []);
 
   return {
     createAccount,
@@ -251,13 +256,13 @@ export function useUpdateAccount(onSuccess: () => void) {
     });
   };
 
-  const resetModal = () => {
+  const resetModal = useCallback(() => {
     setModalState({
       isSubmitting: false,
       status: { type: "none", message: "" },
     });
     setValidationErrors({});
-  };
+  }, []);
 
   return {
     updateAccount,
