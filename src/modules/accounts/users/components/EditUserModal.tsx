@@ -9,13 +9,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import type { User, UpdateUserRequest } from "../types";
 import { useUpdateUser } from "../viewmodel";
 
@@ -35,8 +28,6 @@ export function EditUserModal({
   const [formData, setFormData] = useState<UpdateUserRequest>({
     name: "",
     email: "",
-    phone: "",
-    role: "User",
   });
 
   const {
@@ -56,8 +47,6 @@ export function EditUserModal({
       setFormData({
         name: user.name,
         email: user.email,
-        phone: user.phone,
-        role: user.role,
       });
       clearErrors();
     }
@@ -71,7 +60,7 @@ export function EditUserModal({
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (user) {
-      handleSubmit(user.id, formData);
+      handleSubmit(user.userId.toString(), formData);
     }
   };
 
@@ -92,7 +81,7 @@ export function EditUserModal({
                 placeholder={t("editModal.form.namePlaceholder")}
                 required
                 minLength={2}
-                maxLength={256}
+                maxLength={100}
                 className={validationErrors.name ? "border-red-500" : ""}
               />
               {validationErrors.name && (
@@ -109,67 +98,12 @@ export function EditUserModal({
                 onChange={(e) => handleInputChange("email", e.target.value)}
                 placeholder={t("editModal.form.emailPlaceholder")}
                 required
+                minLength={5}
+                maxLength={100}
                 className={validationErrors.email ? "border-red-500" : ""}
               />
               {validationErrors.email && (
                 <p className="text-sm text-red-500">{validationErrors.email}</p>
-              )}
-            </div>
-
-            <div className="grid gap-2">
-              <Label htmlFor="edit-phone">{t("editModal.form.phone")}</Label>
-              <Input
-                id="edit-phone"
-                type="tel"
-                value={formData.phone}
-                onChange={(e) => handleInputChange("phone", e.target.value)}
-                placeholder={t("editModal.form.phonePlaceholder")}
-                required
-                minLength={7}
-                maxLength={15}
-                className={validationErrors.phone ? "border-red-500" : ""}
-              />
-              {validationErrors.phone && (
-                <p className="text-sm text-red-500">{validationErrors.phone}</p>
-              )}
-            </div>
-
-            <div className="grid gap-2">
-              <Label htmlFor="edit-role">{t("editModal.form.role")}</Label>
-              <Select
-                value={formData.role}
-                onValueChange={(value) =>
-                  handleInputChange("role", value as "Admin" | "User")
-                }
-                disabled={user?.role === "Owner"}
-              >
-                <SelectTrigger
-                  className={validationErrors.role ? "border-red-500" : ""}
-                  disabled={user?.role === "Owner"}
-                >
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="User">
-                    {t("editModal.form.roleUser")}
-                  </SelectItem>
-                  <SelectItem value="Admin">
-                    {t("editModal.form.roleAdmin")}
-                  </SelectItem>
-                  {user?.role === "Owner" && (
-                    <SelectItem value="Owner">
-                      {t("editModal.form.roleOwner")}
-                    </SelectItem>
-                  )}
-                </SelectContent>
-              </Select>
-              {user?.role === "Owner" && (
-                <p className="text-sm text-muted-foreground">
-                  {t("editModal.form.roleOwnerNote")}
-                </p>
-              )}
-              {validationErrors.role && (
-                <p className="text-sm text-red-500">{validationErrors.role}</p>
               )}
             </div>
 

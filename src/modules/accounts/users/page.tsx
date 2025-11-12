@@ -25,16 +25,16 @@ export function UsersPage() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [shouldActivate, setShouldActivate] = useState(false);
+  const [shouldResume, setShouldResume] = useState(false);
 
   const handleEdit = (user: User) => {
     setSelectedUser(user);
     setIsEditModalOpen(true);
   };
 
-  const handleChangeState = (user: User, activate: boolean) => {
+  const handleChangeState = (user: User, resume: boolean) => {
     setSelectedUser(user);
-    setShouldActivate(activate);
+    setShouldResume(resume);
     setIsConfirmDialogOpen(true);
   };
 
@@ -107,7 +107,7 @@ export function UsersPage() {
         onOpenChange={setIsConfirmDialogOpen}
         onSuccess={handleSuccess}
         user={selectedUser}
-        shouldActivate={shouldActivate}
+        shouldResume={shouldResume}
       />
     </div>
   );

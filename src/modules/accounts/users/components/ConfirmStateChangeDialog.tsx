@@ -15,7 +15,7 @@ interface ConfirmStateChangeDialogProps {
   onOpenChange: (open: boolean) => void;
   onSuccess: () => void;
   user: User | null;
-  shouldActivate: boolean;
+  shouldResume: boolean;
 }
 
 export function ConfirmStateChangeDialog({
@@ -23,7 +23,7 @@ export function ConfirmStateChangeDialog({
   onOpenChange,
   onSuccess,
   user,
-  shouldActivate,
+  shouldResume,
 }: ConfirmStateChangeDialogProps) {
   const { handleChangeState, isSubmitting, error, clearError, t } =
     useChangeUserState(() => {
@@ -33,7 +33,7 @@ export function ConfirmStateChangeDialog({
 
   const handleConfirm = () => {
     if (user) {
-      handleChangeState(user.id, shouldActivate);
+      handleChangeState(user.userId.toString(), shouldResume);
     }
   };
 
@@ -42,12 +42,12 @@ export function ConfirmStateChangeDialog({
     onOpenChange(false);
   };
 
-  const title = shouldActivate
-    ? t("confirmDialog.activate.title")
-    : t("confirmDialog.deactivate.title");
-  const description = shouldActivate
-    ? t("confirmDialog.activate.description")
-    : t("confirmDialog.deactivate.description");
+  const title = shouldResume
+    ? t("confirmDialog.resume.title")
+    : t("confirmDialog.pause.title");
+  const description = shouldResume
+    ? t("confirmDialog.resume.description")
+    : t("confirmDialog.pause.description");
 
   return (
     <Sheet open={open} onOpenChange={handleClose}>
@@ -62,7 +62,6 @@ export function ConfirmStateChangeDialog({
             <div className="rounded-md bg-muted p-4">
               <p className="font-semibold">{user.name}</p>
               <p className="text-sm text-muted-foreground">{user.email}</p>
-              <p className="text-sm text-muted-foreground">{user.phone}</p>
             </div>
           </div>
         )}

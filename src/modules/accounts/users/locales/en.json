@@ -1,22 +1,25 @@
 {
   "page": {
     "title": "Account Users",
-    "description": "Manage users and their roles within this account",
+    "description": "Manage users within this account",
     "addButton": "Add User"
   },
   "table": {
     "name": "Name",
     "email": "Email",
-    "phone": "Phone",
-    "role": "Role",
     "status": "Status",
+    "isCreator": "Creator",
     "actions": "Actions",
     "active": "Active",
-    "inactive": "Inactive",
-    "noData": "No registered users",
+    "inactive": "Paused",
+    "noData": "No users registered",
     "edit": "Edit",
-    "activate": "Activate",
-    "deactivate": "Deactivate"
+    "resume": "Resume",
+    "pause": "Pause",
+    "creator": {
+      "yes": "Yes",
+      "no": "No"
+    }
   },
   "addModal": {
     "title": "Add New User",
@@ -27,24 +30,16 @@
       "name": "Name",
       "namePlaceholder": "User's full name",
       "email": "Email",
-      "emailPlaceholder": "user@example.com",
-      "phone": "Phone",
-      "phonePlaceholder": "+34600123456",
-      "role": "Role",
-      "roleUser": "User",
-      "roleAdmin": "Admin"
+      "emailPlaceholder": "user@example.com"
     },
     "validation": {
       "nameRequired": "Name is required",
       "nameMinLength": "Name must be at least 2 characters",
-      "nameMaxLength": "Name cannot exceed 256 characters",
+      "nameMaxLength": "Name cannot exceed 100 characters",
       "emailRequired": "Email is required",
-      "emailInvalid": "Email format is invalid",
-      "phoneRequired": "Phone is required",
-      "phoneMinLength": "Phone must be at least 7 characters",
-      "phoneMaxLength": "Phone cannot exceed 15 characters",
-      "roleRequired": "Role is required",
-      "roleInvalid": "Role must be Admin or User"
+      "emailMinLength": "Email must be at least 5 characters",
+      "emailMaxLength": "Email cannot exceed 100 characters",
+      "emailInvalid": "Email format is invalid"
     },
     "messages": {
       "success": "User created successfully",
@@ -60,26 +55,16 @@
       "name": "Name",
       "namePlaceholder": "User's full name",
       "email": "Email",
-      "emailPlaceholder": "user@example.com",
-      "phone": "Phone",
-      "phonePlaceholder": "+34600123456",
-      "role": "Role",
-      "roleUser": "User",
-      "roleAdmin": "Admin",
-      "roleOwner": "Owner",
-      "roleOwnerNote": "The owner role cannot be modified"
+      "emailPlaceholder": "user@example.com"
     },
     "validation": {
       "nameRequired": "Name is required",
       "nameMinLength": "Name must be at least 2 characters",
-      "nameMaxLength": "Name cannot exceed 256 characters",
+      "nameMaxLength": "Name cannot exceed 100 characters",
       "emailRequired": "Email is required",
-      "emailInvalid": "Email format is invalid",
-      "phoneRequired": "Phone is required",
-      "phoneMinLength": "Phone must be at least 7 characters",
-      "phoneMaxLength": "Phone cannot exceed 15 characters",
-      "roleRequired": "Role is required",
-      "roleInvalid": "Role must be Admin or User"
+      "emailMinLength": "Email must be at least 5 characters",
+      "emailMaxLength": "Email cannot exceed 100 characters",
+      "emailInvalid": "Email format is invalid"
     },
     "messages": {
       "success": "User updated successfully",
@@ -91,21 +76,19 @@
     "confirm": "Confirm",
     "cancel": "Cancel",
     "submitting": "Processing...",
-    "activate": {
-      "title": "Activate User",
-      "description": "Are you sure you want to activate this user?"
+    "resume": {
+      "title": "Resume User",
+      "description": "Are you sure you want to resume this user?"
     },
-    "deactivate": {
-      "title": "Deactivate User",
-      "description": "Are you sure you want to deactivate this user?"
+    "pause": {
+      "title": "Pause User",
+      "description": "Are you sure you want to pause this user? The user will not be able to access this account."
     }
   },
   "errors": {
-    "emailExists": "A user with this email already exists",
-    "phoneExists": "A user with this phone number already exists",
+    "userExists": "A user with this name or email already exists",
     "accountNotFound": "Account does not exist",
-    "userNotFound": "User does not exist",
-    "cannotModifyOwner": "Cannot change the owner user's role",
+    "userNotFound": "User does not exist or does not belong to this account",
     "changeStateFailed": "Error changing user state",
     "invalidAccountId": "Invalid account ID"
   }

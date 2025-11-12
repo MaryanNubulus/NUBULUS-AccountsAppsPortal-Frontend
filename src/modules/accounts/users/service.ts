@@ -1,10 +1,24 @@
-import type { CreateUserRequest, UpdateUserRequest, User } from "./types";
+import type {
+  CreateUserRequest,
+  UpdateUserRequest,
+  PaginatedUsersResponse,
+} from "./types";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "";
 
-export async function getAllUsers(accountId: string): Promise<User[]> {
+export async function getUsers(
+  accountId: string,
+  searchTerm?: string,
+  pageNumber: number = 1,
+  pageSize: number = 10
+): Promise<PaginatedUsersResponse> {
+  const params = new URLSearchParams();
+  if (searchTerm) params.append("searchTerm", searchTerm);
+  params.append("pageNumber", pageNumber.toString());
+  params.append("pageSize", pageSize.toString());
+
   const response = await fetch(
-    `${API_BASE}/api/v1/accounts/${accountId}/users`,
+    `${API_BASE}/api/v1/accounts/${accountId}/users?${params}`,
     {
       method: "GET",
       credentials: "include",
@@ -15,7 +29,12 @@ export async function getAllUsers(accountId: string): Promise<User[]> {
     return await response.json();
   }
 
-  return [];
+  return {
+    totalCount: 0,
+    pageNumber: 1,
+    pageSize: 10,
+    items: [],
+  };
 }
 
 export async function createUser(
@@ -23,8 +42,7 @@ export async function createUser(
   request: CreateUserRequest
 ): Promise<
   | "created"
-  | "email_exists"
-  | "phone_exists"
+  | "user_exists"
   | "validation_error"
   | "account_not_found"
   | "failed"
@@ -44,11 +62,7 @@ export async function createUser(
   if (response.status === 201) return "created";
   if (response.status === 404) return "account_not_found";
   if (response.status === 400) return "validation_error";
-  if (response.status === 409) {
-    const error = await response.json();
-    if (error.message.includes("email")) return "email_exists";
-    if (error.message.includes("phone")) return "phone_exists";
-  }
+  if (response.status === 409) return "user_exists";
 
   return "failed";
 }
@@ -58,13 +72,7 @@ export async function updateUser(
   userId: string,
   request: UpdateUserRequest
 ): Promise<
-  | "updated"
-  | "email_exists"
-  | "phone_exists"
-  | "validation_error"
-  | "not_found"
-  | "cannot_modify_owner"
-  | "failed"
+  "updated" | "user_exists" | "validation_error" | "not_found" | "failed"
 > {
   const response = await fetch(
     `${API_BASE}/api/v1/accounts/${accountId}/users/${userId}`,
@@ -80,60 +88,44 @@ export async function updateUser(
 
   if (response.status === 200) return "updated";
   if (response.status === 404) return "not_found";
-  if (response.status === 400) {
-    const error = await response.json();
-    if (error.message?.includes("Owner")) return "cannot_modify_owner";
-    return "validation_error";
-  }
-  if (response.status === 409) {
-    const error = await response.json();
-    if (error.message.includes("email")) return "email_exists";
-    if (error.message.includes("phone")) return "phone_exists";
-  }
+  if (response.status === 400) return "validation_error";
+  if (response.status === 409) return "user_exists";
 
   return "failed";
 }
 
-export async function deactivateUser(
+export async function pauseUser(
   accountId: string,
   userId: string
-): Promise<"deactivated" | "not_found" | "cannot_deactivate_owner" | "failed"> {
+): Promise<"paused" | "not_found" | "failed"> {
   const response = await fetch(
-    `${API_BASE}/api/v1/accounts/${accountId}/users/${userId}/deactivate`,
+    `${API_BASE}/api/v1/accounts/${accountId}/users/${userId}/pause`,
     {
-      method: "POST",
+      method: "PATCH",
       credentials: "include",
     }
   );
 
-  if (response.status === 200) return "deactivated";
+  if (response.status === 200) return "paused";
   if (response.status === 404) return "not_found";
-  if (response.status === 400) {
-    const error = await response.json();
-    if (error.message?.includes("Owner")) return "cannot_deactivate_owner";
-  }
 
   return "failed";
 }
 
-export async function activateUser(
+export async function resumeUser(
   accountId: string,
   userId: string
-): Promise<"activated" | "not_found" | "cannot_activate_owner" | "failed"> {
+): Promise<"resumed" | "not_found" | "failed"> {
   const response = await fetch(
-    `${API_BASE}/api/v1/accounts/${accountId}/users/${userId}/activate`,
+    `${API_BASE}/api/v1/accounts/${accountId}/users/${userId}/resume`,
     {
-      method: "POST",
+      method: "PATCH",
       credentials: "include",
     }
   );
 
-  if (response.status === 200) return "activated";
+  if (response.status === 200) return "resumed";
   if (response.status === 404) return "not_found";
-  if (response.status === 400) {
-    const error = await response.json();
-    if (error.message?.includes("Owner")) return "cannot_activate_owner";
-  }
 
   return "failed";
 }

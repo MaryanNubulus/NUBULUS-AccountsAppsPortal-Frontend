@@ -1,22 +1,25 @@
 {
   "page": {
     "title": "Usuaris del Compte",
-    "description": "Gestiona els usuaris i els seus rols dins d'aquest compte",
+    "description": "Gestiona els usuaris dins d'aquest compte",
     "addButton": "Afegir Usuari"
   },
   "table": {
     "name": "Nom",
     "email": "Email",
-    "phone": "Telèfon",
-    "role": "Rol",
     "status": "Estat",
+    "isCreator": "Creador",
     "actions": "Accions",
     "active": "Actiu",
-    "inactive": "Inactiu",
+    "inactive": "Pausat",
     "noData": "No hi ha usuaris registrats",
     "edit": "Editar",
-    "activate": "Activar",
-    "deactivate": "Desactivar"
+    "resume": "Reactivar",
+    "pause": "Pausar",
+    "creator": {
+      "yes": "Sí",
+      "no": "No"
+    }
   },
   "addModal": {
     "title": "Afegir Nou Usuari",
@@ -27,24 +30,16 @@
       "name": "Nom",
       "namePlaceholder": "Nom complet de l'usuari",
       "email": "Email",
-      "emailPlaceholder": "usuari@exemple.com",
-      "phone": "Telèfon",
-      "phonePlaceholder": "+34600123456",
-      "role": "Rol",
-      "roleUser": "Usuari",
-      "roleAdmin": "Administrador"
+      "emailPlaceholder": "usuari@exemple.com"
     },
     "validation": {
       "nameRequired": "El nom és obligatori",
       "nameMinLength": "El nom ha de tenir almenys 2 caràcters",
-      "nameMaxLength": "El nom no pot superar els 256 caràcters",
+      "nameMaxLength": "El nom no pot superar els 100 caràcters",
       "emailRequired": "L'email és obligatori",
-      "emailInvalid": "El format de l'email no és vàlid",
-      "phoneRequired": "El telèfon és obligatori",
-      "phoneMinLength": "El telèfon ha de tenir almenys 7 caràcters",
-      "phoneMaxLength": "El telèfon no pot superar els 15 caràcters",
-      "roleRequired": "El rol és obligatori",
-      "roleInvalid": "El rol ha de ser Administrador o Usuari"
+      "emailMinLength": "L'email ha de tenir almenys 5 caràcters",
+      "emailMaxLength": "L'email no pot superar els 100 caràcters",
+      "emailInvalid": "El format de l'email no és vàlid"
     },
     "messages": {
       "success": "Usuari creat correctament",
@@ -60,26 +55,16 @@
       "name": "Nom",
       "namePlaceholder": "Nom complet de l'usuari",
       "email": "Email",
-      "emailPlaceholder": "usuari@exemple.com",
-      "phone": "Telèfon",
-      "phonePlaceholder": "+34600123456",
-      "role": "Rol",
-      "roleUser": "Usuari",
-      "roleAdmin": "Administrador",
-      "roleOwner": "Propietari",
-      "roleOwnerNote": "El rol de propietari no es pot modificar"
+      "emailPlaceholder": "usuari@exemple.com"
     },
     "validation": {
       "nameRequired": "El nom és obligatori",
       "nameMinLength": "El nom ha de tenir almenys 2 caràcters",
-      "nameMaxLength": "El nom no pot superar els 256 caràcters",
+      "nameMaxLength": "El nom no pot superar els 100 caràcters",
       "emailRequired": "L'email és obligatori",
-      "emailInvalid": "El format de l'email no és vàlid",
-      "phoneRequired": "El telèfon és obligatori",
-      "phoneMinLength": "El telèfon ha de tenir almenys 7 caràcters",
-      "phoneMaxLength": "El telèfon no pot superar els 15 caràcters",
-      "roleRequired": "El rol és obligatori",
-      "roleInvalid": "El rol ha de ser Administrador o Usuari"
+      "emailMinLength": "L'email ha de tenir almenys 5 caràcters",
+      "emailMaxLength": "L'email no pot superar els 100 caràcters",
+      "emailInvalid": "El format de l'email no és vàlid"
     },
     "messages": {
       "success": "Usuari actualitzat correctament",
@@ -91,21 +76,19 @@
     "confirm": "Confirmar",
     "cancel": "Cancel·lar",
     "submitting": "Processant...",
-    "activate": {
-      "title": "Activar Usuari",
-      "description": "Estàs segur que vols activar aquest usuari?"
+    "resume": {
+      "title": "Reactivar Usuari",
+      "description": "Estàs segur que vols reactivar aquest usuari?"
     },
-    "deactivate": {
-      "title": "Desactivar Usuari",
-      "description": "Estàs segur que vols desactivar aquest usuari?"
+    "pause": {
+      "title": "Pausar Usuari",
+      "description": "Estàs segur que vols pausar aquest usuari? L'usuari no podrà accedir a aquest compte."
     }
   },
   "errors": {
-    "emailExists": "Ja existeix un usuari amb aquest email",
-    "phoneExists": "Ja existeix un usuari amb aquest telèfon",
+    "userExists": "Ja existeix un usuari amb aquest nom o email",
     "accountNotFound": "El compte no existeix",
-    "userNotFound": "L'usuari no existeix",
-    "cannotModifyOwner": "No es pot canviar el rol de l'usuari propietari",
+    "userNotFound": "L'usuari no existeix o no pertany a aquest compte",
     "changeStateFailed": "Error en canviar l'estat de l'usuari",
     "invalidAccountId": "ID de compte invàlid"
   }

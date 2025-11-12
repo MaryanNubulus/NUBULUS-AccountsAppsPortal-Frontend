@@ -1,22 +1,25 @@
 {
   "page": {
     "title": "Usuarios de la Cuenta",
-    "description": "Gestiona los usuarios y sus roles dentro de esta cuenta",
+    "description": "Gestiona los usuarios dentro de esta cuenta",
     "addButton": "Añadir Usuario"
   },
   "table": {
     "name": "Nombre",
     "email": "Email",
-    "phone": "Teléfono",
-    "role": "Rol",
     "status": "Estado",
+    "isCreator": "Creador",
     "actions": "Acciones",
     "active": "Activo",
-    "inactive": "Inactivo",
+    "inactive": "Pausado",
     "noData": "No hay usuarios registrados",
     "edit": "Editar",
-    "activate": "Activar",
-    "deactivate": "Desactivar"
+    "resume": "Reactivar",
+    "pause": "Pausar",
+    "creator": {
+      "yes": "Sí",
+      "no": "No"
+    }
   },
   "addModal": {
     "title": "Añadir Nuevo Usuario",
@@ -27,24 +30,16 @@
       "name": "Nombre",
       "namePlaceholder": "Nombre completo del usuario",
       "email": "Email",
-      "emailPlaceholder": "usuario@ejemplo.com",
-      "phone": "Teléfono",
-      "phonePlaceholder": "+34600123456",
-      "role": "Rol",
-      "roleUser": "Usuario",
-      "roleAdmin": "Administrador"
+      "emailPlaceholder": "usuario@ejemplo.com"
     },
     "validation": {
       "nameRequired": "El nombre es obligatorio",
       "nameMinLength": "El nombre debe tener al menos 2 caracteres",
-      "nameMaxLength": "El nombre no puede superar los 256 caracteres",
+      "nameMaxLength": "El nombre no puede superar los 100 caracteres",
       "emailRequired": "El email es obligatorio",
-      "emailInvalid": "El formato del email no es válido",
-      "phoneRequired": "El teléfono es obligatorio",
-      "phoneMinLength": "El teléfono debe tener al menos 7 caracteres",
-      "phoneMaxLength": "El teléfono no puede superar los 15 caracteres",
-      "roleRequired": "El rol es obligatorio",
-      "roleInvalid": "El rol debe ser Administrador o Usuario"
+      "emailMinLength": "El email debe tener al menos 5 caracteres",
+      "emailMaxLength": "El email no puede superar los 100 caracteres",
+      "emailInvalid": "El formato del email no es válido"
     },
     "messages": {
       "success": "Usuario creado correctamente",
@@ -60,26 +55,16 @@
       "name": "Nombre",
       "namePlaceholder": "Nombre completo del usuario",
       "email": "Email",
-      "emailPlaceholder": "usuario@ejemplo.com",
-      "phone": "Teléfono",
-      "phonePlaceholder": "+34600123456",
-      "role": "Rol",
-      "roleUser": "Usuario",
-      "roleAdmin": "Administrador",
-      "roleOwner": "Propietario",
-      "roleOwnerNote": "El rol de propietario no se puede modificar"
+      "emailPlaceholder": "usuario@ejemplo.com"
     },
     "validation": {
       "nameRequired": "El nombre es obligatorio",
       "nameMinLength": "El nombre debe tener al menos 2 caracteres",
-      "nameMaxLength": "El nombre no puede superar los 256 caracteres",
+      "nameMaxLength": "El nombre no puede superar los 100 caracteres",
       "emailRequired": "El email es obligatorio",
-      "emailInvalid": "El formato del email no es válido",
-      "phoneRequired": "El teléfono es obligatorio",
-      "phoneMinLength": "El teléfono debe tener al menos 7 caracteres",
-      "phoneMaxLength": "El teléfono no puede superar los 15 caracteres",
-      "roleRequired": "El rol es obligatorio",
-      "roleInvalid": "El rol debe ser Administrador o Usuario"
+      "emailMinLength": "El email debe tener al menos 5 caracteres",
+      "emailMaxLength": "El email no puede superar los 100 caracteres",
+      "emailInvalid": "El formato del email no es válido"
     },
     "messages": {
       "success": "Usuario actualizado correctamente",
@@ -91,21 +76,19 @@
     "confirm": "Confirmar",
     "cancel": "Cancelar",
     "submitting": "Procesando...",
-    "activate": {
-      "title": "Activar Usuario",
-      "description": "¿Estás seguro de que deseas activar este usuario?"
+    "resume": {
+      "title": "Reactivar Usuario",
+      "description": "¿Estás seguro de que deseas reactivar este usuario?"
     },
-    "deactivate": {
-      "title": "Desactivar Usuario",
-      "description": "¿Estás seguro de que deseas desactivar este usuario?"
+    "pause": {
+      "title": "Pausar Usuario",
+      "description": "¿Estás seguro de que deseas pausar este usuario? El usuario no podrá acceder a esta cuenta."
     }
   },
   "errors": {
-    "emailExists": "Ya existe un usuario con este email",
-    "phoneExists": "Ya existe un usuario con este teléfono",
+    "userExists": "Ya existe un usuario con este nombre o email",
     "accountNotFound": "La cuenta no existe",
-    "userNotFound": "El usuario no existe",
-    "cannotModifyOwner": "No se puede cambiar el rol del usuario propietario",
+    "userNotFound": "El usuario no existe o no pertenece a esta cuenta",
     "changeStateFailed": "Error al cambiar el estado del usuario",
     "invalidAccountId": "ID de cuenta inválido"
   }

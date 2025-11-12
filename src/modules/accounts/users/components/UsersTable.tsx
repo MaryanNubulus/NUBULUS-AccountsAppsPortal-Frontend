@@ -1,4 +1,4 @@
-import { Edit, Power, PowerOff } from "lucide-react";
+import { Edit, Play, Pause } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -14,7 +14,7 @@ import type { User } from "../types";
 interface UsersTableProps {
   users: User[];
   onEdit: (user: User) => void;
-  onChangeState: (user: User, shouldActivate: boolean) => void;
+  onChangeState: (user: User, shouldResume: boolean) => void;
   t: (key: string) => string;
 }
 
@@ -31,9 +31,8 @@ export function UsersTable({
           <TableRow>
             <TableHead>{t("table.name")}</TableHead>
             <TableHead>{t("table.email")}</TableHead>
-            <TableHead>{t("table.phone")}</TableHead>
-            <TableHead>{t("table.role")}</TableHead>
             <TableHead>{t("table.status")}</TableHead>
+            <TableHead>{t("table.isCreator")}</TableHead>
             <TableHead className="text-right">{t("table.actions")}</TableHead>
           </TableRow>
         </TableHeader>
@@ -41,7 +40,7 @@ export function UsersTable({
           {users.length === 0 ? (
             <TableRow>
               <TableCell
-                colSpan={6}
+                colSpan={5}
                 className="text-center text-muted-foreground"
               >
                 {t("table.noData")}
@@ -49,33 +48,33 @@ export function UsersTable({
             </TableRow>
           ) : (
             users.map((user) => (
-              <TableRow key={user.id}>
+              <TableRow key={user.userId}>
                 <TableCell className="font-medium">{user.name}</TableCell>
                 <TableCell>{user.email}</TableCell>
-                <TableCell>{user.phone}</TableCell>
                 <TableCell>
                   <Badge
-                    variant={
-                      user.role === "Owner"
-                        ? "default"
-                        : user.role === "Admin"
-                        ? "secondary"
-                        : "outline"
-                    }
-                  >
-                    {user.role}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  <Badge
-                    variant={user.isActive ? "default" : "secondary"}
+                    variant={user.status === "A" ? "default" : "secondary"}
                     className={
-                      user.isActive
+                      user.status === "A"
                         ? "bg-green-500 dark:bg-green-700"
                         : "bg-gray-400 dark:bg-gray-600"
                     }
                   >
-                    {user.isActive ? t("table.active") : t("table.inactive")}
+                    {user.status === "A"
+                      ? t("table.active")
+                      : t("table.inactive")}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  <Badge
+                    variant={user.isCreator ? "default" : "outline"}
+                    className={
+                      user.isCreator ? "bg-blue-500 dark:bg-blue-700" : ""
+                    }
+                  >
+                    {user.isCreator
+                      ? t("table.creator.yes")
+                      : t("table.creator.no")}
                   </Badge>
                 </TableCell>
                 <TableCell className="text-right">
@@ -88,28 +87,24 @@ export function UsersTable({
                     >
                       <Edit className="h-4 w-4" />
                     </Button>
-                    {user.role !== "Owner" && (
-                      <>
-                        {user.isActive ? (
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => onChangeState(user, false)}
-                            title={t("table.deactivate")}
-                          >
-                            <PowerOff className="h-4 w-4 text-red-500" />
-                          </Button>
-                        ) : (
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => onChangeState(user, true)}
-                            title={t("table.activate")}
-                          >
-                            <Power className="h-4 w-4 text-green-500" />
-                          </Button>
-                        )}
-                      </>
+                    {user.status === "A" ? (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => onChangeState(user, false)}
+                        title={t("table.pause")}
+                      >
+                        <Pause className="h-4 w-4 text-orange-500" />
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => onChangeState(user, true)}
+                        title={t("table.resume")}
+                      >
+                        <Play className="h-4 w-4 text-green-500" />
+                      </Button>
                     )}
                   </div>
                 </TableCell>

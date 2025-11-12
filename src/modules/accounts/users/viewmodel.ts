@@ -6,6 +6,7 @@ import type {
   UpdateUserRequest,
   User,
   ValidationErrors,
+  PaginatedUsersResponse,
 } from "./types";
 import { validateCreateUserRequest, validateUpdateUserRequest } from "./types";
 import * as userService from "./service";
@@ -23,15 +24,23 @@ export function useUsers() {
   const { t } = useTranslation("users");
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [totalCount, setTotalCount] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const loadUsers = useCallback(async () => {
     if (!accountId) return;
 
     setIsLoading(true);
-    const data = await userService.getAllUsers(accountId);
-    setUsers(data);
+    const data: PaginatedUsersResponse = await userService.getUsers(
+      accountId,
+      searchTerm || undefined,
+      1,
+      100 // Carregar tots els usuaris per simplicitat
+    );
+    setUsers(data.items);
+    setTotalCount(data.totalCount);
     setIsLoading(false);
-  }, [accountId]);
+  }, [accountId, searchTerm]);
 
   useEffect(() => {
     loadUsers();
@@ -40,6 +49,9 @@ export function useUsers() {
   return {
     users,
     isLoading,
+    totalCount,
+    searchTerm,
+    setSearchTerm,
     reload: loadUsers,
     t,
   };
@@ -77,15 +89,10 @@ export function useCreateUser(onSuccess: () => void) {
           status: { type: "success", message: t("addModal.messages.success") },
         });
         setTimeout(onSuccess, 1000);
-      } else if (result === "email_exists") {
+      } else if (result === "user_exists") {
         setState({
           isSubmitting: false,
-          status: { type: "error", message: t("errors.emailExists") },
-        });
-      } else if (result === "phone_exists") {
-        setState({
-          isSubmitting: false,
-          status: { type: "error", message: t("errors.phoneExists") },
+          status: { type: "error", message: t("errors.userExists") },
         });
       } else if (result === "account_not_found") {
         setState({
@@ -151,25 +158,15 @@ export function useUpdateUser(onSuccess: () => void) {
           },
         });
         setTimeout(onSuccess, 1000);
-      } else if (result === "email_exists") {
+      } else if (result === "user_exists") {
         setState({
           isSubmitting: false,
-          status: { type: "error", message: t("errors.emailExists") },
-        });
-      } else if (result === "phone_exists") {
-        setState({
-          isSubmitting: false,
-          status: { type: "error", message: t("errors.phoneExists") },
+          status: { type: "error", message: t("errors.userExists") },
         });
       } else if (result === "not_found") {
         setState({
           isSubmitting: false,
           status: { type: "error", message: t("errors.userNotFound") },
-        });
-      } else if (result === "cannot_modify_owner") {
-        setState({
-          isSubmitting: false,
-          status: { type: "error", message: t("errors.cannotModifyOwner") },
         });
       } else {
         setState({
@@ -202,28 +199,22 @@ export function useChangeUserState(onSuccess: () => void) {
   const [error, setError] = useState<string>("");
 
   const handleChangeState = useCallback(
-    async (userId: string, shouldActivate: boolean) => {
+    async (userId: string, shouldResume: boolean) => {
       if (!accountId) return;
 
       setIsSubmitting(true);
       setError("");
 
-      const result = shouldActivate
-        ? await userService.activateUser(accountId, userId)
-        : await userService.deactivateUser(accountId, userId);
+      const result = shouldResume
+        ? await userService.resumeUser(accountId, userId)
+        : await userService.pauseUser(accountId, userId);
 
-      if (result === "activated" || result === "deactivated") {
+      if (result === "resumed" || result === "paused") {
         setIsSubmitting(false);
         onSuccess();
       } else if (result === "not_found") {
         setIsSubmitting(false);
         setError(t("errors.userNotFound"));
-      } else if (
-        result === "cannot_activate_owner" ||
-        result === "cannot_deactivate_owner"
-      ) {
-        setIsSubmitting(false);
-        setError(t("errors.cannotModifyOwner"));
       } else {
         setIsSubmitting(false);
         setError(t("errors.changeStateFailed"));
