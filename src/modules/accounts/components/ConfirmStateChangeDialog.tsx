@@ -1,4 +1,4 @@
-// ConfirmStateChangeDialog.tsx - Confirmation dialog for activate/deactivate actions
+// ConfirmStateChangeDialog.tsx - Confirmation dialog for pause/resume actions
 
 import {
   Sheet,
@@ -17,7 +17,7 @@ interface ConfirmStateChangeDialogProps {
   onClose: () => void;
   onSuccess: () => void;
   account: Account | null;
-  action: "activate" | "deactivate" | null;
+  action: "pause" | "resume" | null;
 }
 
 export function ConfirmStateChangeDialog({
@@ -32,19 +32,19 @@ export function ConfirmStateChangeDialog({
 
   const handleConfirm = async () => {
     if (account && action) {
-      await changeState(account.id, action === "activate");
+      await changeState(account.accountId, action === "pause");
     }
   };
 
   const title =
-    action === "activate"
-      ? t("confirmDialog.activate.title")
-      : t("confirmDialog.deactivate.title");
+    action === "pause"
+      ? t("confirmDialog.pause.title")
+      : t("confirmDialog.resume.title");
 
   const description =
-    action === "activate"
-      ? t("confirmDialog.activate.description")
-      : t("confirmDialog.deactivate.description");
+    action === "pause"
+      ? t("confirmDialog.pause.description")
+      : t("confirmDialog.resume.description");
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
@@ -55,7 +55,7 @@ export function ConfirmStateChangeDialog({
         </SheetHeader>
 
         {error && (
-          <div className="mt-4 p-3 rounded-md text-sm bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+          <div className="mx-4 mt-4 p-3 rounded-md text-sm bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
             {error}
           </div>
         )}

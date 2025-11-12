@@ -5,12 +5,13 @@ import type { PaginatedRequest, PaginatedResponse } from "../shared/types";
 export type { PaginatedRequest, PaginatedResponse };
 
 export interface Account {
-  key: string;
-  name: string;
-  email: string;
-  phone: string;
-  numberId: string;
-  status: string;
+  accountId: number; // ID numérico único (del backend)
+  name: string; // Nombre de la cuenta
+  fullName: string; // Nombre completo del creador (JOIN con users)
+  email: string; // Email de la cuenta
+  phone: string; // Teléfono
+  numberId: string; // Número de identificación (CIF/NIF)
+  status: string; // "A" = Active, "I" = Inactive
 }
 
 export interface CreateAccountRequest {

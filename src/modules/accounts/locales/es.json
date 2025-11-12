@@ -10,6 +10,7 @@
   "table": {
     "headers": {
       "name": "Nombre",
+      "fullName": "Creador",
       "email": "Email",
       "phone": "Teléfono",
       "numberId": "CIF/NIF",
@@ -18,13 +19,13 @@
     },
     "status": {
       "active": "Activa",
-      "inactive": "Inactiva"
+      "inactive": "Pausada"
     },
     "actions": {
       "users": "Usuarios",
       "edit": "Editar",
-      "activate": "Activar",
-      "deactivate": "Desactivar"
+      "resume": "Reanudar",
+      "pause": "Pausar"
     },
     "empty": "No hay cuentas registradas",
     "loading": "Cargando cuentas...",
@@ -79,15 +80,20 @@
   "editModal": {
     "title": "Editar Cuenta",
     "description": "Actualiza la información de la cuenta y su usuario propietario",
+    "loading": "Cargando datos de la cuenta...",
     "form": {
       "name": "Nombre de la Cuenta",
       "namePlaceholder": "Ej: Acme Corporation",
-      "userName": "Nombre del Usuario Propietario",
-      "userNamePlaceholder": "Ej: Juan Pérez",
-      "userEmail": "Email del Usuario",
-      "userEmailPlaceholder": "Ej: juan.perez@acme.com",
-      "userPhone": "Teléfono del Usuario",
-      "userPhonePlaceholder": "Ej: +34600123456"
+      "fullName": "Nombre Completo",
+      "fullNamePlaceholder": "Ej: Acme Corporation S.L.",
+      "email": "Email",
+      "emailPlaceholder": "Ej: contacto@acme.com",
+      "phone": "Teléfono",
+      "phonePlaceholder": "Ej: +34600123456",
+      "address": "Dirección",
+      "addressPlaceholder": "Ej: Calle Principal 123, Madrid",
+      "numberId": "Número de Identificación",
+      "numberIdPlaceholder": "Ej: B12345678"
     },
     "buttons": {
       "cancel": "Cancelar",
@@ -97,15 +103,18 @@
     "validation": {
       "nameRequired": "El nombre de la cuenta es obligatorio",
       "nameMinLength": "El nombre debe tener al menos 2 caracteres",
-      "nameMaxLength": "El nombre no puede exceder 256 caracteres",
-      "userNameRequired": "El nombre del usuario es obligatorio",
-      "userNameMinLength": "El nombre debe tener al menos 2 caracteres",
-      "userNameMaxLength": "El nombre no puede exceder 256 caracteres",
-      "userEmailRequired": "El email es obligatorio",
-      "userEmailInvalid": "Formato de email inválido",
-      "userPhoneRequired": "El teléfono es obligatorio",
-      "userPhoneMinLength": "El teléfono debe tener al menos 7 caracteres",
-      "userPhoneMaxLength": "El teléfono no puede exceder 15 caracteres"
+      "nameMaxLength": "El nombre no puede exceder 100 caracteres",
+      "fullNameMaxLength": "El nombre completo no puede exceder 200 caracteres",
+      "emailRequired": "El email es obligatorio",
+      "emailLength": "El email debe tener entre 5 y 100 caracteres",
+      "emailInvalid": "Formato de email inválido",
+      "phoneRequired": "El teléfono es obligatorio",
+      "phoneLength": "El teléfono debe tener entre 10 y 15 caracteres",
+      "phoneInvalid": "Formato de teléfono inválido (usa números y opcionalmente +)",
+      "addressRequired": "La dirección es obligatoria",
+      "addressLength": "La dirección debe tener entre 5 y 200 caracteres",
+      "numberIdRequired": "El número de identificación es obligatorio",
+      "numberIdLength": "El número de identificación debe tener entre 5 y 50 caracteres"
     },
     "messages": {
       "success": "Cuenta actualizada exitosamente"
@@ -115,13 +124,13 @@
     "title": "Confirmar Acción",
     "confirm": "Confirmar",
     "cancel": "Cancelar",
-    "activate": {
-      "title": "Activar Cuenta",
-      "description": "¿Estás seguro de que deseas activar esta cuenta? Todos los usuarios asociados también serán activados."
+    "resume": {
+      "title": "Reanudar Cuenta",
+      "description": "¿Estás seguro de que deseas reanudar esta cuenta? Todos los usuarios asociados también serán reactivados."
     },
-    "deactivate": {
-      "title": "Desactivar Cuenta",
-      "description": "¿Estás seguro de que deseas desactivar esta cuenta? Todos los usuarios asociados también serán desactivados. Los datos no se eliminarán."
+    "pause": {
+      "title": "Pausar Cuenta",
+      "description": "¿Estás seguro de que deseas pausar esta cuenta? Todos los usuarios asociados también serán pausados. Los datos no se eliminarán."
     },
     "buttons": {
       "cancel": "Cancelar",
@@ -135,6 +144,7 @@
     "updateFailed": "Error al actualizar la cuenta",
     "stateChangeFailed": "Error al cambiar el estado de la cuenta",
     "alreadyExists": "Ya existe una cuenta con el mismo nombre, email, teléfono o CIF/NIF",
-    "validationError": "Error de validación. Verifica los datos ingresados"
+    "validationError": "Error de validación. Verifica los datos ingresados",
+    "notFound": "Cuenta no encontrada"
   }
 }

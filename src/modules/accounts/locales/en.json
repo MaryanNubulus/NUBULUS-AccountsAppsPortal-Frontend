@@ -10,6 +10,7 @@
   "table": {
     "headers": {
       "name": "Name",
+      "fullName": "Creator",
       "email": "Email",
       "phone": "Phone",
       "numberId": "Tax ID",
@@ -18,13 +19,13 @@
     },
     "status": {
       "active": "Active",
-      "inactive": "Inactive"
+      "inactive": "Paused"
     },
     "actions": {
       "users": "Users",
       "edit": "Edit",
-      "activate": "Activate",
-      "deactivate": "Deactivate"
+      "resume": "Resume",
+      "pause": "Pause"
     },
     "empty": "No accounts registered",
     "loading": "Loading accounts...",
@@ -79,15 +80,20 @@
   "editModal": {
     "title": "Edit Account",
     "description": "Update account and owner user information",
+    "loading": "Loading account data...",
     "form": {
       "name": "Account Name",
       "namePlaceholder": "E.g.: Acme Corporation",
-      "userName": "Owner User Name",
-      "userNamePlaceholder": "E.g.: John Doe",
-      "userEmail": "User Email",
-      "userEmailPlaceholder": "E.g.: john.doe@acme.com",
-      "userPhone": "User Phone",
-      "userPhonePlaceholder": "E.g.: +34600123456"
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "E.g.: Acme Corporation Ltd.",
+      "email": "Email",
+      "emailPlaceholder": "E.g.: contact@acme.com",
+      "phone": "Phone",
+      "phonePlaceholder": "E.g.: +34600123456",
+      "address": "Address",
+      "addressPlaceholder": "E.g.: Main Street 123, Madrid",
+      "numberId": "Identification Number",
+      "numberIdPlaceholder": "E.g.: B12345678"
     },
     "buttons": {
       "cancel": "Cancel",
@@ -97,15 +103,18 @@
     "validation": {
       "nameRequired": "Account name is required",
       "nameMinLength": "Name must be at least 2 characters",
-      "nameMaxLength": "Name cannot exceed 256 characters",
-      "userNameRequired": "User name is required",
-      "userNameMinLength": "Name must be at least 2 characters",
-      "userNameMaxLength": "Name cannot exceed 256 characters",
-      "userEmailRequired": "Email is required",
-      "userEmailInvalid": "Invalid email format",
-      "userPhoneRequired": "Phone is required",
-      "userPhoneMinLength": "Phone must be at least 7 characters",
-      "userPhoneMaxLength": "Phone cannot exceed 15 characters"
+      "nameMaxLength": "Name cannot exceed 100 characters",
+      "fullNameMaxLength": "Full name cannot exceed 200 characters",
+      "emailRequired": "Email is required",
+      "emailLength": "Email must be between 5 and 100 characters",
+      "emailInvalid": "Invalid email format",
+      "phoneRequired": "Phone is required",
+      "phoneLength": "Phone must be between 10 and 15 characters",
+      "phoneInvalid": "Invalid phone format (use numbers and optionally +)",
+      "addressRequired": "Address is required",
+      "addressLength": "Address must be between 5 and 200 characters",
+      "numberIdRequired": "Identification number is required",
+      "numberIdLength": "Identification number must be between 5 and 50 characters"
     },
     "messages": {
       "success": "Account updated successfully"
@@ -115,13 +124,13 @@
     "title": "Confirm Action",
     "confirm": "Confirm",
     "cancel": "Cancel",
-    "activate": {
-      "title": "Activate Account",
-      "description": "Are you sure you want to activate this account? All associated users will also be activated."
+    "resume": {
+      "title": "Resume Account",
+      "description": "Are you sure you want to resume this account? All associated users will also be reactivated."
     },
-    "deactivate": {
-      "title": "Deactivate Account",
-      "description": "Are you sure you want to deactivate this account? All associated users will also be deactivated. Data will not be deleted."
+    "pause": {
+      "title": "Pause Account",
+      "description": "Are you sure you want to pause this account? All associated users will also be paused. Data will not be deleted."
     },
     "buttons": {
       "cancel": "Cancel",
@@ -135,6 +144,7 @@
     "updateFailed": "Error updating account",
     "stateChangeFailed": "Error changing account state",
     "alreadyExists": "An account with the same name, email, phone, or Tax ID already exists",
-    "validationError": "Validation error. Please check the entered data"
+    "validationError": "Validation error. Please check the entered data",
+    "notFound": "Account not found"
   }
 }

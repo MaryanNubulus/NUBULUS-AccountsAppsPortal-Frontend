@@ -42,7 +42,7 @@ export default function AccountsPage() {
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState<Account | null>(null);
   const [stateChangeAction, setStateChangeAction] = useState<
-    "activate" | "deactivate" | null
+    "pause" | "resume" | null
   >(null);
   const [localSearchTerm, setLocalSearchTerm] = useState("");
 
@@ -62,9 +62,9 @@ export default function AccountsPage() {
     reload();
   };
 
-  const handleStateChangeClick = (account: Account, activate: boolean) => {
+  const handleStateChangeClick = (account: Account, pause: boolean) => {
     setSelectedAccount(account);
-    setStateChangeAction(activate ? "activate" : "deactivate");
+    setStateChangeAction(pause ? "pause" : "resume");
     setIsConfirmDialogOpen(true);
   };
 

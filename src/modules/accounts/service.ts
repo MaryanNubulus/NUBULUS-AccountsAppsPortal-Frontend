@@ -9,6 +9,37 @@ import type { PaginatedRequest, PaginatedResponse } from "../shared/types";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "";
 
+export interface AccountInfo {
+  accountId: number;
+  name: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  numberId: string;
+  address: string;
+  status: string;
+}
+
+export async function getAccount(
+  accountId: number
+): Promise<AccountInfo | null> {
+  try {
+    const response = await fetch(`${API_BASE}/api/v1/accounts/${accountId}`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    if (response.status === 200) {
+      return await response.json();
+    }
+
+    return null;
+  } catch (error) {
+    console.error("Error fetching account:", error);
+    return null;
+  }
+}
+
 export async function getAccounts(
   request: PaginatedRequest
 ): Promise<PaginatedResponse<Account> | null> {
@@ -56,7 +87,7 @@ export async function createAccount(
 
     if (response.status === 201) return "created";
     if (response.status === 409) return "already_exists";
-    if (response.status === 400) return "validation_error";
+    if (response.status === 422) return "validation_error";
 
     return "failed";
   } catch (error) {
@@ -66,9 +97,11 @@ export async function createAccount(
 }
 
 export async function updateAccount(
-  accountId: string,
+  accountId: number,
   request: UpdateAccountRequest
-): Promise<"updated" | "already_exists" | "validation_error" | "failed"> {
+): Promise<
+  "updated" | "not_found" | "already_exists" | "validation_error" | "failed"
+> {
   try {
     const response = await fetch(`${API_BASE}/api/v1/accounts/${accountId}`, {
       method: "PUT",
@@ -80,8 +113,9 @@ export async function updateAccount(
     });
 
     if (response.status === 200) return "updated";
+    if (response.status === 404) return "not_found";
     if (response.status === 409) return "already_exists";
-    if (response.status === 400) return "validation_error";
+    if (response.status === 422) return "validation_error";
 
     return "failed";
   } catch (error) {
@@ -90,46 +124,46 @@ export async function updateAccount(
   }
 }
 
-export async function deactivateAccount(
-  accountId: string
-): Promise<"deactivated" | "validation_error" | "failed"> {
+export async function pauseAccount(
+  accountId: number
+): Promise<"paused" | "not_found" | "failed"> {
   try {
     const response = await fetch(
-      `${API_BASE}/api/v1/accounts/${accountId}/deactivate`,
+      `${API_BASE}/api/v1/accounts/${accountId}/pause`,
       {
-        method: "POST",
+        method: "PATCH",
         credentials: "include",
       }
     );
 
-    if (response.status === 200) return "deactivated";
-    if (response.status === 400) return "validation_error";
+    if (response.status === 200) return "paused";
+    if (response.status === 404) return "not_found";
 
     return "failed";
   } catch (error) {
-    console.error("Error deactivating account:", error);
+    console.error("Error pausing account:", error);
     return "failed";
   }
 }
 
-export async function activateAccount(
-  accountId: string
-): Promise<"activated" | "validation_error" | "failed"> {
+export async function resumeAccount(
+  accountId: number
+): Promise<"resumed" | "not_found" | "failed"> {
   try {
     const response = await fetch(
-      `${API_BASE}/api/v1/accounts/${accountId}/activate`,
+      `${API_BASE}/api/v1/accounts/${accountId}/resume`,
       {
-        method: "POST",
+        method: "PATCH",
         credentials: "include",
       }
     );
 
-    if (response.status === 200) return "activated";
-    if (response.status === 400) return "validation_error";
+    if (response.status === 200) return "resumed";
+    if (response.status === 404) return "not_found";
 
     return "failed";
   } catch (error) {
-    console.error("Error activating account:", error);
+    console.error("Error resuming account:", error);
     return "failed";
   }
 }

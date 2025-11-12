@@ -1,6 +1,6 @@
 // AccountsTable.tsx - Table component for displaying accounts
 
-import { Edit, Power, PowerOff, Users } from "lucide-react";
+import { Edit, Pause, Play, Users } from "lucide-react";
 import { Button } from "../../../components/ui/button";
 import { useNavigate } from "react-router-dom";
 import {
@@ -16,7 +16,7 @@ import type { Account } from "../types";
 interface AccountsTableProps {
   accounts: Account[];
   onEdit: (account: Account) => void;
-  onChangeState: (account: Account, activate: boolean) => void;
+  onChangeState: (account: Account, pause: boolean) => void;
   t: (key: string) => string;
 }
 
@@ -42,6 +42,7 @@ export function AccountsTable({
         <TableHeader>
           <TableRow>
             <TableHead>{t("table.headers.name")}</TableHead>
+            <TableHead>{t("table.headers.fullName")}</TableHead>
             <TableHead>{t("table.headers.email")}</TableHead>
             <TableHead>{t("table.headers.phone")}</TableHead>
             <TableHead>{t("table.headers.numberId")}</TableHead>
@@ -53,10 +54,11 @@ export function AccountsTable({
         </TableHeader>
         <TableBody>
           {accounts.map((account) => {
-            const isActive = account.status.toLowerCase() === "active";
+            const isActive = account.status.toLowerCase() === "a";
             return (
-              <TableRow key={account.key}>
+              <TableRow key={account.accountId}>
                 <TableCell className="font-medium">{account.name}</TableCell>
+                <TableCell>{account.fullName}</TableCell>
                 <TableCell>{account.email}</TableCell>
                 <TableCell>{account.phone}</TableCell>
                 <TableCell>{account.numberId}</TableCell>
@@ -79,7 +81,7 @@ export function AccountsTable({
                       variant="ghost"
                       size="sm"
                       onClick={() =>
-                        navigate(`/private/accounts/${account.key}/users`)
+                        navigate(`/private/accounts/${account.accountId}/users`)
                       }
                       title={t("table.actions.users")}
                     >
@@ -97,19 +99,19 @@ export function AccountsTable({
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => onChangeState(account, false)}
-                        title={t("table.actions.deactivate")}
+                        onClick={() => onChangeState(account, true)}
+                        title={t("table.actions.pause")}
                       >
-                        <PowerOff className="h-4 w-4 text-red-500" />
+                        <Pause className="h-4 w-4 text-orange-500" />
                       </Button>
                     ) : (
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => onChangeState(account, true)}
-                        title={t("table.actions.activate")}
+                        onClick={() => onChangeState(account, false)}
+                        title={t("table.actions.resume")}
                       >
-                        <Power className="h-4 w-4 text-green-500" />
+                        <Play className="h-4 w-4 text-green-500" />
                       </Button>
                     )}
                   </div>

@@ -204,7 +204,7 @@ export function useUpdateAccount(onSuccess: () => void) {
   );
 
   const updateAccount = async (
-    accountId: string,
+    accountId: number,
     data: UpdateAccountRequest
   ) => {
     // Client-side validation
@@ -230,6 +230,11 @@ export function useUpdateAccount(onSuccess: () => void) {
       setTimeout(() => {
         onSuccess();
       }, 1000);
+    } else if (result === "not_found") {
+      setModalState({
+        isSubmitting: false,
+        status: { type: "error", message: t("errors.notFound") },
+      });
     } else if (result === "already_exists") {
       setModalState({
         isSubmitting: false,
@@ -279,20 +284,20 @@ export function useChangeAccountState(onSuccess: () => void) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const changeState = async (accountId: string, activate: boolean) => {
+  const changeState = async (accountId: number, pause: boolean) => {
     setIsSubmitting(true);
     setError(null);
 
-    const result = activate
-      ? await service.activateAccount(accountId)
-      : await service.deactivateAccount(accountId);
+    const result = pause
+      ? await service.pauseAccount(accountId)
+      : await service.resumeAccount(accountId);
 
-    if (result === "activated" || result === "deactivated") {
+    if (result === "paused" || result === "resumed") {
       setIsSubmitting(false);
       onSuccess();
-    } else if (result === "validation_error") {
+    } else if (result === "not_found") {
       setIsSubmitting(false);
-      setError(t("errors.validationError"));
+      setError(t("errors.notFound"));
     } else {
       setIsSubmitting(false);
       setError(t("errors.stateChangeFailed"));
