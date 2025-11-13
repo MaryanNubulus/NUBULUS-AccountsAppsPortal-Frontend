@@ -49,7 +49,7 @@ export function UsersTable({
           ) : (
             users.map((user) => (
               <TableRow key={user.userId}>
-                <TableCell className="font-medium">{user.name}</TableCell>
+                <TableCell className="font-medium">{user.fullName}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>
                   <Badge

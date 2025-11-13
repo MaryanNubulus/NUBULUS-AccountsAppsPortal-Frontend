@@ -2,7 +2,19 @@
   "page": {
     "title": "Usuaris del Compte",
     "description": "Gestiona els usuaris dins d'aquest compte",
-    "addButton": "Afegir Usuari"
+    "addButton": "Afegir Usuari",
+    "shareButton": "Compartir Usuari",
+    "backButton": "Tornar als Comptes",
+    "myUsers": "Els Meus Usuaris",
+    "sharedUsers": "Usuaris Compartits",
+    "searchPlaceholder": "Cercar usuaris...",
+    "searchButton": "Cercar",
+    "clearButton": "Netejar",
+    "showing": "Mostrant {{count}} de {{total}} usuaris",
+    "of": "de",
+    "users": "usuaris",
+    "previous": "Anterior",
+    "next": "Següent"
   },
   "table": {
     "name": "Nom",
@@ -27,10 +39,12 @@
     "submitting": "Creant...",
     "cancel": "Cancel·lar",
     "form": {
-      "name": "Nom",
+      "name": "Nom Complet",
       "namePlaceholder": "Nom complet de l'usuari",
       "email": "Email",
-      "emailPlaceholder": "usuari@exemple.com"
+      "emailPlaceholder": "usuari@exemple.com",
+      "phone": "Telèfon",
+      "phonePlaceholder": "+34612345678"
     },
     "validation": {
       "nameRequired": "El nom és obligatori",
@@ -39,7 +53,9 @@
       "emailRequired": "L'email és obligatori",
       "emailMinLength": "L'email ha de tenir almenys 5 caràcters",
       "emailMaxLength": "L'email no pot superar els 100 caràcters",
-      "emailInvalid": "El format de l'email no és vàlid"
+      "emailInvalid": "El format de l'email no és vàlid",
+      "phoneRequired": "El telèfon és obligatori",
+      "phoneMaxLength": "El telèfon no pot superar els 15 caràcters"
     },
     "messages": {
       "success": "Usuari creat correctament",
@@ -52,10 +68,12 @@
     "submitting": "Desant...",
     "cancel": "Cancel·lar",
     "form": {
-      "name": "Nom",
+      "name": "Nom Complet",
       "namePlaceholder": "Nom complet de l'usuari",
       "email": "Email",
-      "emailPlaceholder": "usuari@exemple.com"
+      "emailPlaceholder": "usuari@exemple.com",
+      "phone": "Telèfon",
+      "phonePlaceholder": "+34612345678"
     },
     "validation": {
       "nameRequired": "El nom és obligatori",
@@ -64,7 +82,9 @@
       "emailRequired": "L'email és obligatori",
       "emailMinLength": "L'email ha de tenir almenys 5 caràcters",
       "emailMaxLength": "L'email no pot superar els 100 caràcters",
-      "emailInvalid": "El format de l'email no és vàlid"
+      "emailInvalid": "El format de l'email no és vàlid",
+      "phoneRequired": "El telèfon és obligatori",
+      "phoneMaxLength": "El telèfon no pot superar els 15 caràcters"
     },
     "messages": {
       "success": "Usuari actualitzat correctament",
@@ -85,10 +105,41 @@
       "description": "Estàs segur que vols pausar aquest usuari? L'usuari no podrà accedir a aquest compte."
     }
   },
+  "sharedTable": {
+    "name": "Nom",
+    "email": "Email",
+    "actions": "Accions",
+    "noData": "No hi ha usuaris compartits",
+    "unshare": "Deixar de Compartir"
+  },
+  "selectModal": {
+    "title": "Seleccionar Usuari per Compartir",
+    "description": "Tria un usuari de la llista per compartir-lo amb aquest compte",
+    "name": "Nom",
+    "email": "Email",
+    "actions": "Accions",
+    "share": "Compartir",
+    "sharing": "Compartint...",
+    "searchPlaceholder": "Buscar usuaris...",
+    "searchButton": "Buscar",
+    "clearButton": "Netejar",
+    "noResults": "No s'han trobat usuaris amb aquests criteris",
+    "found": "Trobats",
+    "performSearch": "Realitza una cerca per veure els usuaris disponibles",
+    "noData": "No hi ha usuaris disponibles per compartir"
+  },
+  "confirmUnshareDialog": {
+    "title": "Deixar de Compartir Usuari",
+    "description": "Estàs segur que vols deixar de compartir aquest usuari? El usuari deixarà de tenir accés a aquest compte."
+  },
   "errors": {
     "userExists": "Ja existeix un usuari amb aquest nom o email",
     "accountNotFound": "El compte no existeix",
     "userNotFound": "L'usuari no existeix o no pertany a aquest compte",
+    "userAlreadyShared": "L'usuari ja està compartit amb aquest compte",
+    "cannotUnshareCreator": "No pots deixar de compartir el creador del compte",
+    "shareUserFailed": "Error en compartir l'usuari",
+    "unshareUserFailed": "Error en deixar de compartir l'usuari",
     "changeStateFailed": "Error en canviar l'estat de l'usuari",
     "invalidAccountId": "ID de compte invàlid"
   }

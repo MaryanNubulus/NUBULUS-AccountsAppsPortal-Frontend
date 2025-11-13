@@ -30,7 +30,9 @@
     "empty": "No hi ha comptes registrats",
     "loading": "Carregant comptes...",
     "pagination": {
-      "showing": "Mostrant {{from}} a {{to}} de {{total}} resultats",
+      "showing": "Mostrant {{count}} de {{total}} comptes",
+      "of": "de",
+      "accounts": "comptes",
       "previous": "Anterior",
       "next": "Següent"
     }

@@ -26,8 +26,9 @@ export function EditUserModal({
   user,
 }: EditUserModalProps) {
   const [formData, setFormData] = useState<UpdateUserRequest>({
-    name: "",
+    fullName: "",
     email: "",
+    phone: "",
   });
 
   const {
@@ -45,8 +46,9 @@ export function EditUserModal({
   useEffect(() => {
     if (open && user) {
       setFormData({
-        name: user.name,
+        fullName: user.fullName,
         email: user.email,
+        phone: user.phone,
       });
       clearErrors();
     }
@@ -73,19 +75,21 @@ export function EditUserModal({
         <form onSubmit={onSubmit}>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="edit-name">{t("editModal.form.name")}</Label>
+              <Label htmlFor="edit-fullName">{t("editModal.form.name")}</Label>
               <Input
-                id="edit-name"
-                value={formData.name}
-                onChange={(e) => handleInputChange("name", e.target.value)}
+                id="edit-fullName"
+                value={formData.fullName}
+                onChange={(e) => handleInputChange("fullName", e.target.value)}
                 placeholder={t("editModal.form.namePlaceholder")}
                 required
                 minLength={2}
                 maxLength={100}
-                className={validationErrors.name ? "border-red-500" : ""}
+                className={validationErrors.fullName ? "border-red-500" : ""}
               />
-              {validationErrors.name && (
-                <p className="text-sm text-red-500">{validationErrors.name}</p>
+              {validationErrors.fullName && (
+                <p className="text-sm text-red-500">
+                  {validationErrors.fullName}
+                </p>
               )}
             </div>
 
@@ -104,6 +108,23 @@ export function EditUserModal({
               />
               {validationErrors.email && (
                 <p className="text-sm text-red-500">{validationErrors.email}</p>
+              )}
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="edit-phone">{t("editModal.form.phone")}</Label>
+              <Input
+                id="edit-phone"
+                type="tel"
+                value={formData.phone}
+                onChange={(e) => handleInputChange("phone", e.target.value)}
+                placeholder={t("editModal.form.phonePlaceholder")}
+                required
+                maxLength={15}
+                className={validationErrors.phone ? "border-red-500" : ""}
+              />
+              {validationErrors.phone && (
+                <p className="text-sm text-red-500">{validationErrors.phone}</p>
               )}
             </div>
 

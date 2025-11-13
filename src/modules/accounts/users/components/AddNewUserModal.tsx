@@ -24,8 +24,9 @@ export function AddNewUserModal({
   onSuccess,
 }: AddNewUserModalProps) {
   const [formData, setFormData] = useState<CreateUserRequest>({
-    name: "",
+    fullName: "",
     email: "",
+    phone: "",
   });
 
   const {
@@ -43,8 +44,9 @@ export function AddNewUserModal({
   useEffect(() => {
     if (!open) {
       setFormData({
-        name: "",
+        fullName: "",
         email: "",
+        phone: "",
       });
       clearErrors();
     }
@@ -69,19 +71,21 @@ export function AddNewUserModal({
         <form onSubmit={onSubmit}>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="name">{t("addModal.form.name")}</Label>
+              <Label htmlFor="fullName">{t("addModal.form.name")}</Label>
               <Input
-                id="name"
-                value={formData.name}
-                onChange={(e) => handleInputChange("name", e.target.value)}
+                id="fullName"
+                value={formData.fullName}
+                onChange={(e) => handleInputChange("fullName", e.target.value)}
                 placeholder={t("addModal.form.namePlaceholder")}
                 required
                 minLength={2}
                 maxLength={100}
-                className={validationErrors.name ? "border-red-500" : ""}
+                className={validationErrors.fullName ? "border-red-500" : ""}
               />
-              {validationErrors.name && (
-                <p className="text-sm text-red-500">{validationErrors.name}</p>
+              {validationErrors.fullName && (
+                <p className="text-sm text-red-500">
+                  {validationErrors.fullName}
+                </p>
               )}
             </div>
 
@@ -100,6 +104,23 @@ export function AddNewUserModal({
               />
               {validationErrors.email && (
                 <p className="text-sm text-red-500">{validationErrors.email}</p>
+              )}
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="phone">{t("addModal.form.phone")}</Label>
+              <Input
+                id="phone"
+                type="tel"
+                value={formData.phone}
+                onChange={(e) => handleInputChange("phone", e.target.value)}
+                placeholder={t("addModal.form.phonePlaceholder")}
+                required
+                maxLength={15}
+                className={validationErrors.phone ? "border-red-500" : ""}
+              />
+              {validationErrors.phone && (
+                <p className="text-sm text-red-500">{validationErrors.phone}</p>
               )}
             </div>
 

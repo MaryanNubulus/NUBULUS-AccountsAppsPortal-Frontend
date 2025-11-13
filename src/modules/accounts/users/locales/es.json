@@ -2,7 +2,19 @@
   "page": {
     "title": "Usuarios de la Cuenta",
     "description": "Gestiona los usuarios dentro de esta cuenta",
-    "addButton": "Añadir Usuario"
+    "addButton": "Añadir Usuario",
+    "shareButton": "Compartir Usuario",
+    "backButton": "Volver a Cuentas",
+    "myUsers": "Mis Usuarios",
+    "sharedUsers": "Usuarios Compartidos",
+    "searchPlaceholder": "Buscar usuarios...",
+    "searchButton": "Buscar",
+    "clearButton": "Limpiar",
+    "showing": "Mostrando {{count}} de {{total}} usuarios",
+    "of": "de",
+    "users": "usuarios",
+    "previous": "Anterior",
+    "next": "Siguiente"
   },
   "table": {
     "name": "Nombre",
@@ -27,10 +39,12 @@
     "submitting": "Creando...",
     "cancel": "Cancelar",
     "form": {
-      "name": "Nombre",
+      "name": "Nombre Completo",
       "namePlaceholder": "Nombre completo del usuario",
       "email": "Email",
-      "emailPlaceholder": "usuario@ejemplo.com"
+      "emailPlaceholder": "usuario@ejemplo.com",
+      "phone": "Teléfono",
+      "phonePlaceholder": "+34612345678"
     },
     "validation": {
       "nameRequired": "El nombre es obligatorio",
@@ -39,7 +53,9 @@
       "emailRequired": "El email es obligatorio",
       "emailMinLength": "El email debe tener al menos 5 caracteres",
       "emailMaxLength": "El email no puede superar los 100 caracteres",
-      "emailInvalid": "El formato del email no es válido"
+      "emailInvalid": "El formato del email no es válido",
+      "phoneRequired": "El teléfono es obligatorio",
+      "phoneMaxLength": "El teléfono no puede superar los 15 caracteres"
     },
     "messages": {
       "success": "Usuario creado correctamente",
@@ -52,10 +68,12 @@
     "submitting": "Guardando...",
     "cancel": "Cancelar",
     "form": {
-      "name": "Nombre",
+      "name": "Nombre Completo",
       "namePlaceholder": "Nombre completo del usuario",
       "email": "Email",
-      "emailPlaceholder": "usuario@ejemplo.com"
+      "emailPlaceholder": "usuario@ejemplo.com",
+      "phone": "Teléfono",
+      "phonePlaceholder": "+34612345678"
     },
     "validation": {
       "nameRequired": "El nombre es obligatorio",
@@ -64,7 +82,9 @@
       "emailRequired": "El email es obligatorio",
       "emailMinLength": "El email debe tener al menos 5 caracteres",
       "emailMaxLength": "El email no puede superar los 100 caracteres",
-      "emailInvalid": "El formato del email no es válido"
+      "emailInvalid": "El formato del email no es válido",
+      "phoneRequired": "El teléfono es obligatorio",
+      "phoneMaxLength": "El teléfono no puede superar los 15 caracteres"
     },
     "messages": {
       "success": "Usuario actualizado correctamente",
@@ -78,17 +98,48 @@
     "submitting": "Procesando...",
     "resume": {
       "title": "Reactivar Usuario",
-      "description": "¿Estás seguro de que deseas reactivar este usuario?"
+      "description": "¿Estás seguro de que quieres reactivar este usuario?"
     },
     "pause": {
       "title": "Pausar Usuario",
-      "description": "¿Estás seguro de que deseas pausar este usuario? El usuario no podrá acceder a esta cuenta."
+      "description": "¿Estás seguro de que quieres pausar este usuario? El usuario no podrá acceder a esta cuenta."
     }
+  },
+  "sharedTable": {
+    "name": "Nombre",
+    "email": "Email",
+    "actions": "Acciones",
+    "noData": "No hay usuarios compartidos",
+    "unshare": "Dejar de Compartir"
+  },
+  "selectModal": {
+    "title": "Seleccionar Usuario para Compartir",
+    "description": "Elige un usuario de la lista para compartirlo con esta cuenta",
+    "name": "Nombre",
+    "email": "Email",
+    "actions": "Acciones",
+    "share": "Compartir",
+    "sharing": "Compartiendo...",
+    "searchPlaceholder": "Buscar usuarios...",
+    "searchButton": "Buscar",
+    "clearButton": "Limpiar",
+    "noResults": "No se encontraron usuarios con esos criterios",
+    "found": "Encontrados",
+    "performSearch": "Realiza una búsqueda para ver los usuarios disponibles",
+    "noData": "No hay usuarios disponibles para compartir"
+  },
+  "confirmUnshareDialog": {
+    "title": "Dejar de Compartir Usuario",
+    "description": "¿Estás seguro de que quieres dejar de compartir este usuario? El usuario dejará de tener acceso a esta cuenta."
   },
   "errors": {
     "userExists": "Ya existe un usuario con este nombre o email",
     "accountNotFound": "La cuenta no existe",
     "userNotFound": "El usuario no existe o no pertenece a esta cuenta",
+    "userAlreadyShared": "El usuario ya está compartido con esta cuenta",
+    "cannotUnshareCreator": "No puedes dejar de compartir el creador de la cuenta",
+    "shareUserFailed": "Error al compartir el usuario",
+    "unshareUserFailed": "Error al dejar de compartir el usuario",
     "changeStateFailed": "Error al cambiar el estado del usuario",
     "invalidAccountId": "ID de cuenta inválido"
   }

@@ -30,7 +30,9 @@
     "empty": "No hay cuentas registradas",
     "loading": "Cargando cuentas...",
     "pagination": {
-      "showing": "Mostrando {{from}} a {{to}} de {{total}} resultados",
+      "showing": "Mostrando {{count}} de {{total}} cuentas",
+      "of": "de",
+      "accounts": "cuentas",
       "previous": "Anterior",
       "next": "Siguiente"
     }

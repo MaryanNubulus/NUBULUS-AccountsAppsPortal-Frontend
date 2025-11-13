@@ -30,7 +30,9 @@
     "empty": "No accounts registered",
     "loading": "Loading accounts...",
     "pagination": {
-      "showing": "Showing {{from}} to {{to}} of {{total}} results",
+      "showing": "Showing {{count}} of {{total}} accounts",
+      "of": "of",
+      "accounts": "accounts",
       "previous": "Previous",
       "next": "Next"
     }

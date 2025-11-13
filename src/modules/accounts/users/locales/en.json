@@ -2,7 +2,19 @@
   "page": {
     "title": "Account Users",
     "description": "Manage users within this account",
-    "addButton": "Add User"
+    "addButton": "Add User",
+    "shareButton": "Share User",
+    "backButton": "Back to Accounts",
+    "myUsers": "My Users",
+    "sharedUsers": "Shared Users",
+    "searchPlaceholder": "Search users...",
+    "searchButton": "Search",
+    "clearButton": "Clear",
+    "showing": "Showing {{count}} of {{total}} users",
+    "of": "of",
+    "users": "users",
+    "previous": "Previous",
+    "next": "Next"
   },
   "table": {
     "name": "Name",
@@ -27,10 +39,12 @@
     "submitting": "Creating...",
     "cancel": "Cancel",
     "form": {
-      "name": "Name",
-      "namePlaceholder": "User's full name",
+      "name": "Full Name",
+      "namePlaceholder": "Full name of the user",
       "email": "Email",
-      "emailPlaceholder": "user@example.com"
+      "emailPlaceholder": "user@example.com",
+      "phone": "Phone",
+      "phonePlaceholder": "+34612345678"
     },
     "validation": {
       "nameRequired": "Name is required",
@@ -39,7 +53,9 @@
       "emailRequired": "Email is required",
       "emailMinLength": "Email must be at least 5 characters",
       "emailMaxLength": "Email cannot exceed 100 characters",
-      "emailInvalid": "Email format is invalid"
+      "emailInvalid": "Email format is invalid",
+      "phoneRequired": "Phone is required",
+      "phoneMaxLength": "Phone cannot exceed 15 characters"
     },
     "messages": {
       "success": "User created successfully",
@@ -52,10 +68,12 @@
     "submitting": "Saving...",
     "cancel": "Cancel",
     "form": {
-      "name": "Name",
-      "namePlaceholder": "User's full name",
+      "name": "Full Name",
+      "namePlaceholder": "Full name of the user",
       "email": "Email",
-      "emailPlaceholder": "user@example.com"
+      "emailPlaceholder": "user@example.com",
+      "phone": "Phone",
+      "phonePlaceholder": "+34612345678"
     },
     "validation": {
       "nameRequired": "Name is required",
@@ -64,7 +82,9 @@
       "emailRequired": "Email is required",
       "emailMinLength": "Email must be at least 5 characters",
       "emailMaxLength": "Email cannot exceed 100 characters",
-      "emailInvalid": "Email format is invalid"
+      "emailInvalid": "Email format is invalid",
+      "phoneRequired": "Phone is required",
+      "phoneMaxLength": "Phone cannot exceed 15 characters"
     },
     "messages": {
       "success": "User updated successfully",
@@ -72,7 +92,7 @@
     }
   },
   "confirmDialog": {
-    "title": "Confirm State Change",
+    "title": "Confirm Status Change",
     "confirm": "Confirm",
     "cancel": "Cancel",
     "submitting": "Processing...",
@@ -85,11 +105,42 @@
       "description": "Are you sure you want to pause this user? The user will not be able to access this account."
     }
   },
+  "sharedTable": {
+    "name": "Name",
+    "email": "Email",
+    "actions": "Actions",
+    "noData": "No shared users",
+    "unshare": "Unshare"
+  },
+  "selectModal": {
+    "title": "Select User to Share",
+    "description": "Choose a user from the list to share it with this account",
+    "name": "Name",
+    "email": "Email",
+    "actions": "Actions",
+    "share": "Share",
+    "sharing": "Sharing...",
+    "searchPlaceholder": "Search users...",
+    "searchButton": "Search",
+    "clearButton": "Clear",
+    "noResults": "No users found with those criteria",
+    "found": "Found",
+    "performSearch": "Perform a search to see available users",
+    "noData": "No users available to share"
+  },
+  "confirmUnshareDialog": {
+    "title": "Unshare User",
+    "description": "Are you sure you want to unshare this user? The user will no longer have access to this account."
+  },
   "errors": {
     "userExists": "A user with this name or email already exists",
-    "accountNotFound": "Account does not exist",
-    "userNotFound": "User does not exist or does not belong to this account",
-    "changeStateFailed": "Error changing user state",
+    "accountNotFound": "Account not found",
+    "userNotFound": "User not found or does not belong to this account",
+    "userAlreadyShared": "User is already shared with this account",
+    "cannotUnshareCreator": "You cannot unshare the account creator",
+    "shareUserFailed": "Error sharing user",
+    "unshareUserFailed": "Error unsharing user",
+    "changeStateFailed": "Error changing user status",
     "invalidAccountId": "Invalid account ID"
   }
 }

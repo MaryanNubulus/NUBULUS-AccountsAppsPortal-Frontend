@@ -60,7 +60,7 @@ export function ConfirmStateChangeDialog({
         {user && (
           <div className="py-4 px-2">
             <div className="rounded-md bg-muted p-4">
-              <p className="font-semibold">{user.name}</p>
+              <p className="font-semibold">{user.fullName}</p>
               <p className="text-sm text-muted-foreground">{user.email}</p>
             </div>
           </div>

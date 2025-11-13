@@ -23,7 +23,7 @@ export function useAccounts() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [hasPreviousPage, setHasPreviousPage] = useState(false);
@@ -31,7 +31,7 @@ export function useAccounts() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const loadAccounts = useCallback(
-    async (page: number, search: string) => {
+    async (page: number, pageSize: number, search: string) => {
       setIsLoading(true);
       setError(null);
 
@@ -51,10 +51,11 @@ export function useAccounts() {
       } else {
         setAccounts(data.items);
         setCurrentPage(data.pageNumber);
-        setTotalPages(data.totalPages);
+        const calculatedTotalPages = Math.ceil(data.totalCount / data.pageSize);
+        setTotalPages(calculatedTotalPages);
         setTotalCount(data.totalCount);
         setHasPreviousPage(data.pageNumber > 1);
-        setHasNextPage(data.pageNumber < data.totalPages);
+        setHasNextPage(data.pageNumber < calculatedTotalPages);
       }
 
       setIsLoading(false);
@@ -63,20 +64,20 @@ export function useAccounts() {
   );
 
   useEffect(() => {
-    loadAccounts(1, "");
+    loadAccounts(1, pageSize, searchTerm);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const search = (term: string) => {
     setSearchTerm(term);
     setCurrentPage(1);
-    loadAccounts(1, term);
+    loadAccounts(currentPage, pageSize, term);
   };
 
   const goToPage = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
-      loadAccounts(page, searchTerm);
+      loadAccounts(page, pageSize, searchTerm);
     }
   };
 
@@ -92,9 +93,15 @@ export function useAccounts() {
     }
   };
 
+  const changePageSize = (newSize: number) => {
+    setPageSize(newSize);
+    setCurrentPage(1);
+    loadAccounts(1, newSize, searchTerm);
+  };
+
   const reload = useCallback(() => {
-    loadAccounts(currentPage, searchTerm);
-  }, [loadAccounts, currentPage, searchTerm]);
+    loadAccounts(currentPage, pageSize, searchTerm);
+  }, [loadAccounts, currentPage, pageSize, searchTerm]);
 
   return {
     accounts,
@@ -112,6 +119,7 @@ export function useAccounts() {
     goToPage,
     nextPage,
     previousPage,
+    changePageSize,
     t,
   };
 }

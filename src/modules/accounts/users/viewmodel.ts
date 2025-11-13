@@ -5,6 +5,7 @@ import type {
   CreateUserRequest,
   UpdateUserRequest,
   User,
+  UserToShare,
   ValidationErrors,
   PaginatedUsersResponse,
 } from "./types";
@@ -25,34 +26,83 @@ export function useUsers() {
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
+  const [pageSize, setPageSize] = useState(5);
 
-  const loadUsers = useCallback(async () => {
-    if (!accountId) return;
+  const loadUsers = useCallback(
+    async (page: number = 1, search: string = "") => {
+      if (!accountId) return;
 
-    setIsLoading(true);
-    const data: PaginatedUsersResponse = await userService.getUsers(
-      accountId,
-      searchTerm || undefined,
-      1,
-      100 // Carregar tots els usuaris per simplicitat
-    );
-    setUsers(data.items);
-    setTotalCount(data.totalCount);
-    setIsLoading(false);
-  }, [accountId, searchTerm]);
+      setIsLoading(true);
+      const data: PaginatedUsersResponse = await userService.getUsers(
+        accountId,
+        search || undefined,
+        page,
+        pageSize
+      );
+      setUsers(data.items);
+      setTotalCount(data.totalCount);
+      setCurrentPage(data.pageNumber);
+      setTotalPages(Math.ceil(data.totalCount / pageSize));
+      setIsLoading(false);
+    },
+    [accountId]
+  );
 
   useEffect(() => {
-    loadUsers();
-  }, [loadUsers]);
+    loadUsers(currentPage, searchTerm);
+  }, [currentPage, searchTerm, loadUsers]);
+
+  const goToPage = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      goToPage(currentPage + 1);
+    }
+  };
+
+  const previousPage = () => {
+    if (currentPage > 1) {
+      goToPage(currentPage - 1);
+    }
+  };
+
+  const search = (term: string) => {
+    setSearchTerm(term);
+    setCurrentPage(1);
+  };
+
+  const hasPreviousPage = currentPage > 1;
+  const hasNextPage = currentPage < totalPages;
+
+  const changePageSize = (newSize: number) => {
+    setPageSize(newSize);
+    setCurrentPage(1);
+    loadUsers(1, searchTerm);
+  };
 
   return {
     users,
     isLoading,
     totalCount,
+    currentPage,
+    pageSize,
+    totalPages,
+    hasPreviousPage,
+    hasNextPage,
     searchTerm,
-    setSearchTerm,
-    reload: loadUsers,
+    setSearchTerm: search,
+    reload: () => loadUsers(1, ""),
+    goToPage,
+    nextPage,
+    previousPage,
+    changePageSize,
     t,
   };
 }
@@ -229,6 +279,271 @@ export function useChangeUserState(onSuccess: () => void) {
 
   return {
     handleChangeState,
+    isSubmitting,
+    error,
+    clearError,
+    t,
+  };
+}
+
+export function useGetSharedUsers() {
+  const { accountId } = useParams<{ accountId: string }>();
+  const { t } = useTranslation("users");
+  const [sharedUsers, setSharedUsers] = useState<UserToShare[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+  const [totalCount, setTotalCount] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const loadSharedUsers = useCallback(
+    async (page: number = 1, search: string = "") => {
+      if (!accountId) return;
+
+      setIsLoading(true);
+      const data = await userService.getSharedUsers(
+        accountId,
+        search || undefined,
+        page,
+        pageSize
+      );
+      setSharedUsers(data.items);
+      setTotalCount(data.totalCount);
+      setCurrentPage(data.pageNumber);
+      setTotalPages(Math.ceil(data.totalCount / pageSize));
+      setIsLoading(false);
+    },
+    [accountId, pageSize]
+  );
+
+  useEffect(() => {
+    loadSharedUsers(currentPage, searchTerm);
+  }, [currentPage, searchTerm, loadSharedUsers]);
+
+  const goToPage = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      goToPage(currentPage + 1);
+    }
+  };
+
+  const previousPage = () => {
+    if (currentPage > 1) {
+      goToPage(currentPage - 1);
+    }
+  };
+
+  const search = (term: string) => {
+    setSearchTerm(term);
+    setCurrentPage(1);
+  };
+
+  const changePageSize = (newSize: number) => {
+    setPageSize(newSize);
+    setCurrentPage(1);
+    loadSharedUsers(1, searchTerm);
+  };
+
+  const hasPreviousPage = currentPage > 1;
+  const hasNextPage = currentPage < totalPages;
+
+  return {
+    sharedUsers,
+    isLoading,
+    currentPage,
+    pageSize,
+    totalPages,
+    totalCount,
+    hasPreviousPage,
+    hasNextPage,
+    searchTerm,
+    setSearchTerm: search,
+    nextPage,
+    previousPage,
+    goToPage,
+    changePageSize,
+    reload: () => loadSharedUsers(currentPage, searchTerm),
+    t,
+  };
+}
+
+export function useGetUsersToShare() {
+  const { accountId } = useParams<{ accountId: string }>();
+  const { t } = useTranslation("users");
+  const [availableUsers, setAvailableUsers] = useState<UserToShare[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalCount, setTotalCount] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [hasSearched, setHasSearched] = useState(false);
+
+  const loadUsersToShare = useCallback(
+    async (page: number = 1, search: string = "") => {
+      if (!accountId) return;
+
+      setIsLoading(true);
+      const data = await userService.getUsersToShare(
+        accountId,
+        search || undefined,
+        page,
+        pageSize
+      );
+      setAvailableUsers(data.items);
+      setTotalCount(data.totalCount);
+      setCurrentPage(data.pageNumber);
+      setTotalPages(Math.ceil(data.totalCount / pageSize));
+      setIsLoading(false);
+      setHasSearched(true);
+    },
+    [accountId, pageSize]
+  );
+
+  const goToPage = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+      loadUsersToShare(page, searchTerm);
+    }
+  };
+
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      goToPage(currentPage + 1);
+    }
+  };
+
+  const previousPage = () => {
+    if (currentPage > 1) {
+      goToPage(currentPage - 1);
+    }
+  };
+
+  const search = (term: string) => {
+    setSearchTerm(term);
+    setCurrentPage(1);
+    loadUsersToShare(1, term);
+  };
+
+  const changePageSize = (newSize: number) => {
+    setPageSize(newSize);
+    setCurrentPage(1);
+    loadUsersToShare(1, searchTerm);
+  };
+
+  const hasPreviousPage = currentPage > 1;
+  const hasNextPage = currentPage < totalPages;
+
+  return {
+    availableUsers,
+    isLoading,
+    currentPage,
+    pageSize,
+    totalPages,
+    totalCount,
+    hasPreviousPage,
+    hasNextPage,
+    searchTerm,
+    setSearchTerm: search,
+    nextPage,
+    previousPage,
+    goToPage,
+    changePageSize,
+    hasSearched,
+    load: loadUsersToShare,
+    t,
+  };
+}
+
+export function useShareUser(onSuccess: () => void) {
+  const { accountId } = useParams<{ accountId: string }>();
+  const { t } = useTranslation("users");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleShare = useCallback(
+    async (userId: string) => {
+      if (!accountId) return;
+
+      setIsSubmitting(true);
+      setError("");
+
+      const result = await userService.shareUser(accountId, userId);
+
+      if (result === "shared") {
+        setIsSubmitting(false);
+        onSuccess();
+      } else if (result === "not_found") {
+        setIsSubmitting(false);
+        setError(t("errors.userNotFound"));
+      } else if (result === "already_shared") {
+        setIsSubmitting(false);
+        setError(t("errors.userAlreadyShared"));
+      } else {
+        setIsSubmitting(false);
+        setError(t("errors.shareUserFailed"));
+      }
+    },
+    [accountId, t, onSuccess]
+  );
+
+  const clearError = useCallback(() => {
+    setError("");
+  }, []);
+
+  return {
+    handleShare,
+    isSubmitting,
+    error,
+    clearError,
+    t,
+  };
+}
+
+export function useUnshareUser(onSuccess: () => void) {
+  const { accountId } = useParams<{ accountId: string }>();
+  const { t } = useTranslation("users");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleUnshare = useCallback(
+    async (userId: string) => {
+      if (!accountId) return;
+
+      setIsSubmitting(true);
+      setError("");
+
+      const result = await userService.unshareUser(accountId, userId);
+
+      if (result === "unshared") {
+        setIsSubmitting(false);
+        onSuccess();
+      } else if (result === "not_found") {
+        setIsSubmitting(false);
+        setError(t("errors.userNotFound"));
+      } else if (result === "cannot_unshare_creator") {
+        setIsSubmitting(false);
+        setError(t("errors.cannotUnshareCreator"));
+      } else {
+        setIsSubmitting(false);
+        setError(t("errors.unshareUserFailed"));
+      }
+    },
+    [accountId, t, onSuccess]
+  );
+
+  const clearError = useCallback(() => {
+    setError("");
+  }, []);
+
+  return {
+    handleUnshare,
     isSubmitting,
     error,
     clearError,

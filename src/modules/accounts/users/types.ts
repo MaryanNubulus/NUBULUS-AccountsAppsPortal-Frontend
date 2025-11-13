@@ -1,19 +1,29 @@
 export interface User {
   userId: number;
-  name: string;
+  userKey: string;
+  fullName: string;
   email: string;
+  phone: string;
   status: string; // "A" = Active, "I" = Inactive
   isCreator: boolean; // True si és el creador de l'Account
 }
 
-export interface CreateUserRequest {
-  name: string;
+export interface UserToShare {
+  userId: number;
+  fullName: string;
   email: string;
 }
 
-export interface UpdateUserRequest {
-  name: string;
+export interface CreateUserRequest {
+  fullName: string;
   email: string;
+  phone: string;
+}
+
+export interface UpdateUserRequest {
+  fullName: string;
+  email: string;
+  phone: string;
 }
 
 export interface PaginatedUsersResponse {
@@ -24,8 +34,9 @@ export interface PaginatedUsersResponse {
 }
 
 export interface ValidationErrors {
-  name?: string;
+  fullName?: string;
   email?: string;
+  phone?: string;
 }
 
 export function validateCreateUserRequest(
@@ -34,13 +45,13 @@ export function validateCreateUserRequest(
 ): ValidationErrors {
   const errors: ValidationErrors = {};
 
-  // Validar name: entre 2 i 100 caràcters
-  if (!data.name || data.name.trim().length === 0) {
-    errors.name = t("addModal.validation.nameRequired");
-  } else if (data.name.trim().length < 2) {
-    errors.name = t("addModal.validation.nameMinLength");
-  } else if (data.name.trim().length > 100) {
-    errors.name = t("addModal.validation.nameMaxLength");
+  // Validar fullName: entre 2 i 100 caràcters
+  if (!data.fullName || data.fullName.trim().length === 0) {
+    errors.fullName = t("addModal.validation.nameRequired");
+  } else if (data.fullName.trim().length < 2) {
+    errors.fullName = t("addModal.validation.nameMinLength");
+  } else if (data.fullName.trim().length > 100) {
+    errors.fullName = t("addModal.validation.nameMaxLength");
   }
 
   // Validar email: entre 5 i 100 caràcters, format vàlid
@@ -57,6 +68,13 @@ export function validateCreateUserRequest(
     }
   }
 
+  // Validar phone: requereix i màxim 15 caràcters
+  if (!data.phone || data.phone.trim().length === 0) {
+    errors.phone = t("addModal.validation.phoneRequired");
+  } else if (data.phone.trim().length > 15) {
+    errors.phone = t("addModal.validation.phoneMaxLength");
+  }
+
   return errors;
 }
 
@@ -66,13 +84,13 @@ export function validateUpdateUserRequest(
 ): ValidationErrors {
   const errors: ValidationErrors = {};
 
-  // Validar name: entre 2 i 100 caràcters
-  if (!data.name || data.name.trim().length === 0) {
-    errors.name = t("editModal.validation.nameRequired");
-  } else if (data.name.trim().length < 2) {
-    errors.name = t("editModal.validation.nameMinLength");
-  } else if (data.name.trim().length > 100) {
-    errors.name = t("editModal.validation.nameMaxLength");
+  // Validar fullName: entre 2 i 100 caràcters
+  if (!data.fullName || data.fullName.trim().length === 0) {
+    errors.fullName = t("editModal.validation.nameRequired");
+  } else if (data.fullName.trim().length < 2) {
+    errors.fullName = t("editModal.validation.nameMinLength");
+  } else if (data.fullName.trim().length > 100) {
+    errors.fullName = t("editModal.validation.nameMaxLength");
   }
 
   // Validar email: entre 5 i 100 caràcters, format vàlid
@@ -87,6 +105,13 @@ export function validateUpdateUserRequest(
     if (!emailRegex.test(data.email.trim())) {
       errors.email = t("editModal.validation.emailInvalid");
     }
+  }
+
+  // Validar phone: requereix i màxim 15 caràcters
+  if (!data.phone || data.phone.trim().length === 0) {
+    errors.phone = t("editModal.validation.phoneRequired");
+  } else if (data.phone.trim().length > 15) {
+    errors.phone = t("editModal.validation.phoneMaxLength");
   }
 
   return errors;
