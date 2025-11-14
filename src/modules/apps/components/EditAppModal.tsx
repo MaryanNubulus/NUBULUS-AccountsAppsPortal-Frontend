@@ -1,3 +1,6 @@
+// EditAppModal.tsx - Modal for editing existing apps
+
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,125 +12,161 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useTranslation } from "react-i18next";
-import type { AppInfoDTO, UpdateValidationErrors } from "../types";
-import { validateUpdateAppRequest } from "../types";
-import { useEffect, useState } from "react";
+import { useUpdateApp } from "../viewmodel";
+import { getApp } from "../service";
+import type { App, UpdateAppRequest } from "../types";
 
 interface EditAppModalProps {
-  app: AppInfoDTO | null;
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (
-    appId: string,
-    name: string
-  ) => Promise<"success" | "failed" | "not_found" | "validation_error">;
-  isSubmitting?: boolean;
-  status?: {
-    type: "none" | "error" | "success";
-    message: string;
-  };
+  onSuccess: () => void;
+  app: App | null;
 }
 
 export function EditAppModal({
-  app,
   isOpen,
   onClose,
-  onSubmit,
-  isSubmitting = false,
-  status = { type: "none", message: "" },
+  onSuccess,
+  app,
 }: EditAppModalProps) {
-  const { t } = useTranslation("apps");
-  const [name, setName] = useState("");
-  const [validationErrors, setValidationErrors] =
-    useState<UpdateValidationErrors>({});
+  const { updateApp, modalState, validationErrors, clearError, resetModal, t } =
+    useUpdateApp(onSuccess);
+
+  const [formData, setFormData] = useState<UpdateAppRequest>({
+    name: "",
+  });
+
+  const [appKey, setAppKey] = useState("");
+
+  const [isLoadingDetails, setIsLoadingDetails] = useState(false);
+
+  // Load app full details when modal opens
+  useEffect(() => {
+    if (app && isOpen) {
+      setIsLoadingDetails(true);
+      getApp(app.id).then((appInfo) => {
+        if (appInfo) {
+          setAppKey(appInfo.key);
+          setFormData({
+            name: appInfo.name,
+          });
+        }
+        setIsLoadingDetails(false);
+      });
+    }
+  }, [app, isOpen]);
+
+  // Reset form and modal state when modal closes
+  useEffect(() => {
+    if (!isOpen) {
+      setAppKey("");
+      setFormData({
+        name: "",
+      });
+      resetModal();
+    }
+  }, [isOpen, resetModal]);
+
+  const handleChange = (field: keyof UpdateAppRequest, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    clearError(field);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!app) return;
-
-    // Validate form
-    const errors = validateUpdateAppRequest({ name }, t);
-    setValidationErrors(errors);
-
-    // Only submit if no errors
-    if (Object.keys(errors).length === 0) {
-      await onSubmit(app.id, name);
+    if (app) {
+      await updateApp(app.id, formData);
     }
   };
 
-  useEffect(() => {
-    if (app) {
-      setName(app.name);
+  const handleClose = () => {
+    if (!modalState.isSubmitting) {
+      onClose();
     }
-  }, [app]);
+  };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
+    <Dialog open={isOpen} onOpenChange={handleClose}>
+      <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>{t("editModal.title")}</DialogTitle>
           <DialogDescription>{t("editModal.description")}</DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit}>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="app-key">{t("editModal.form.key")}</Label>
-              <Input id="app-key" value={app?.key ?? ""} disabled />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="app-name">{t("editModal.form.name")}</Label>
-              <Input
-                id="app-name"
-                value={name}
-                onChange={(e) => {
-                  setName(e.target.value);
-                  // Clear error when user starts typing
-                  if (validationErrors.name) {
-                    setValidationErrors({});
-                  }
-                }}
-                disabled={isSubmitting}
-                className={validationErrors.name ? "border-red-500" : ""}
-                minLength={2}
-                maxLength={256}
-                required
-              />
-              {validationErrors.name && (
-                <p className="text-sm text-red-500">{validationErrors.name}</p>
-              )}
+        {isLoadingDetails ? (
+          <div className="flex items-center justify-center py-8">
+            <div className="text-center text-muted-foreground">
+              {t("editModal.loading")}
             </div>
           </div>
+        ) : (
+          <form onSubmit={handleSubmit}>
+            <div className="grid gap-4 py-4">
+              {/* Key (read-only) */}
+              <div className="grid gap-2">
+                <Label htmlFor="key">{t("editModal.form.key")}</Label>
+                <Input
+                  id="key"
+                  type="text"
+                  value={appKey}
+                  disabled={true}
+                  className="bg-muted cursor-not-allowed"
+                />
+              </div>
 
-          {status.type !== "none" && (
-            <div
-              className={`p-3 mb-4 rounded-md ${
-                status.type === "error"
-                  ? "bg-red-100 text-red-700"
-                  : "bg-green-100 text-green-700"
-              }`}
-            >
-              {status.message}
+              {/* Name */}
+              <div className="grid gap-2">
+                <Label htmlFor="name">{t("editModal.form.name")}</Label>
+                <Input
+                  id="name"
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => handleChange("name", e.target.value)}
+                  placeholder={t("editModal.form.namePlaceholder")}
+                  disabled={modalState.isSubmitting}
+                  className={validationErrors.name ? "border-red-500" : ""}
+                  minLength={3}
+                  maxLength={100}
+                  required
+                />
+                {validationErrors.name && (
+                  <p className="text-sm text-red-500">
+                    {validationErrors.name}
+                  </p>
+                )}
+              </div>
             </div>
-          )}
 
-          <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={onClose}
-              disabled={isSubmitting}
-            >
-              {t("editModal.form.cancel")}
-            </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting
-                ? t("editModal.form.updating")
-                : t("editModal.form.update")}
-            </Button>
-          </DialogFooter>
-        </form>
+            {/* Status message */}
+            {modalState.status.type !== "none" && (
+              <div
+                className={`mb-4 p-3 rounded-md text-sm ${
+                  modalState.status.type === "error"
+                    ? "bg-red-50 text-red-900 dark:bg-red-900/20 dark:text-red-200"
+                    : "bg-green-50 text-green-900 dark:bg-green-900/20 dark:text-green-200"
+                }`}
+              >
+                {modalState.status.message}
+              </div>
+            )}
+
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleClose}
+                disabled={modalState.isSubmitting}
+              >
+                {t("editModal.buttons.cancel")}
+              </Button>
+              <Button type="submit" disabled={modalState.isSubmitting}>
+                {modalState.isSubmitting
+                  ? t("editModal.buttons.updating")
+                  : t("editModal.buttons.update")}
+              </Button>
+            </DialogFooter>
+          </form>
+        )}
       </DialogContent>
     </Dialog>
   );

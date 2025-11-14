@@ -1,41 +1,13 @@
 {
-  "errors": {
-    "fetchApps": "Error al cargar las aplicaciones. Por favor, inténtelo de nuevo más tarde.",
-    "unexpected": "Ha ocurrido un error inesperado"
-  },
   "page": {
     "title": "Aplicaciones",
-    "description": "Gestiona las aplicaciones registradas en el sistema",
-    "addButton": "Añadir Nueva"
-  },
-  "addModal": {
-    "title": "Crear Nueva Aplicación",
-    "description": "Complete los detalles para su nueva aplicación. La clave debe ser única.",
-    "messages": {
-      "success": "Aplicación creada con éxito",
-      "keyExists": "Ya existe una aplicación con esta clave",
-      "validationError": "Los datos proporcionados no son válidos",
-      "failed": "Error al crear la aplicación. Por favor, inténtelo de nuevo."
-    },
-    "validation": {
-      "keyRequired": "La clave es obligatoria",
-      "keyTooShort": "La clave debe tener al menos 5 caracteres",
-      "keyTooLong": "La clave no puede tener más de 50 caracteres",
-      "nameRequired": "El nombre es obligatorio",
-      "nameTooShort": "El nombre debe tener al menos 2 caracteres",
-      "nameTooLong": "El nombre no puede tener más de 256 caracteres"
-    },
-    "form": {
-      "key": "Clave",
-      "name": "Nombre",
-      "keyPlaceholder": "Use solo letras, números, guiones y guiones bajos",
-      "create": "Crear",
-      "creating": "Creando...",
-      "cancel": "Cancelar"
-    }
+    "description": "Gestiona las aplicaciones del sistema",
+    "addButton": "Añadir Aplicación",
+    "searchPlaceholder": "Buscar por clave o nombre...",
+    "searchButton": "Buscar",
+    "clearButton": "Limpiar"
   },
   "table": {
-    "caption": "Lista de Aplicaciones",
     "headers": {
       "key": "Clave",
       "name": "Nombre",
@@ -44,52 +16,105 @@
     },
     "status": {
       "active": "Activa",
-      "inactive": "Inactiva"
+      "inactive": "Pausada"
     },
     "actions": {
       "edit": "Editar",
-      "activate": "Activar",
-      "deactivate": "Desactivar"
+      "resume": "Reanudar",
+      "pause": "Pausar"
     },
+    "empty": "No hay aplicaciones registradas",
     "loading": "Cargando aplicaciones...",
-    "noApps": "No se encontraron aplicaciones.",
-    "error": "Error al cargar las aplicaciones. Por favor, inténtelo de nuevo."
+    "pagination": {
+      "showing": "Mostrando {{count}} de {{total}} aplicaciones",
+      "of": "de",
+      "apps": "aplicaciones",
+      "previous": "Anterior",
+      "next": "Siguiente"
+    }
+  },
+  "addModal": {
+    "title": "Añadir Nueva Aplicación",
+    "description": "Crea una nueva aplicación con clave única",
+    "form": {
+      "key": "Clave",
+      "keyPlaceholder": "Ej: my-app-key",
+      "name": "Nombre",
+      "namePlaceholder": "Ej: Aplicación Principal"
+    },
+    "buttons": {
+      "cancel": "Cancelar",
+      "create": "Crear Aplicación",
+      "creating": "Creando..."
+    },
+    "validation": {
+      "keyRequired": "La clave es obligatoria",
+      "keyMinLength": "La clave debe tener al menos 3 caracteres",
+      "keyMaxLength": "La clave no puede exceder 100 caracteres",
+      "keyInvalid": "La clave solo puede contener letras, números y guiones",
+      "nameRequired": "El nombre es obligatorio",
+      "nameMinLength": "El nombre debe tener al menos 3 caracteres",
+      "nameMaxLength": "El nombre no puede exceder 100 caracteres"
+    },
+    "messages": {
+      "success": "Aplicación creada exitosamente"
+    }
+  },
+  "editModal": {
+    "title": "Editar Aplicación",
+    "description": "Actualiza la información de la aplicación",
+    "loading": "Cargando datos de la aplicación...",
+    "form": {
+      "key": "Clave",
+      "keyPlaceholder": "Ej: my-app-key",
+      "name": "Nombre",
+      "namePlaceholder": "Ej: Aplicación Principal"
+    },
+    "buttons": {
+      "cancel": "Cancelar",
+      "update": "Actualizar",
+      "updating": "Actualizando..."
+    },
+    "validation": {
+      "keyRequired": "La clave es obligatoria",
+      "keyMinLength": "La clave debe tener al menos 3 caracteres",
+      "keyMaxLength": "La clave no puede exceder 100 caracteres",
+      "keyInvalid": "La clave solo puede contener letras, números y guiones",
+      "nameRequired": "El nombre es obligatorio",
+      "nameMinLength": "El nombre debe tener al menos 3 caracteres",
+      "nameMaxLength": "El nombre no puede exceder 100 caracteres"
+    },
+    "messages": {
+      "success": "Aplicación actualizada exitosamente"
+    }
   },
   "confirmDialog": {
     "title": "Confirmar Acción",
     "confirm": "Confirmar",
-    "cancel": "Cancelar",
-    "activate": {
-      "title": "Activar Aplicación",
-      "description": "¿Estás seguro de que deseas activar esta aplicación?"
+    "cancel": "Cancel·lar",
+    "resume": {
+      "title": "Reanudar Aplicación",
+      "description": "¿Estás seguro de que deseas reanudar esta aplicación?",
+      "success": "Aplicación reanudada exitosamente"
     },
-    "deactivate": {
-      "title": "Desactivar Aplicación",
-      "description": "¿Estás seguro de que deseas desactivar esta aplicación? Los datos no se eliminarán."
+    "pause": {
+      "title": "Pausar Aplicación",
+      "description": "¿Estás seguro de que deseas pausar esta aplicación? Los datos no se eliminarán.",
+      "success": "Aplicación pausada exitosamente"
     },
-    "pauseMessage": "¿Desea desactivar esta aplicación?",
-    "activateMessage": "¿Está seguro que desea activar esta aplicación?"
-  },
-  "editModal": {
-    "title": "Editar Aplicación",
-    "description": "Actualice los detalles de su aplicación a continuación.",
-    "messages": {
-      "success": "Aplicación actualizada con éxito",
-      "notFound": "La aplicación no se encontró",
-      "validationError": "Los datos proporcionados no son válidos",
-      "failed": "Error al actualizar la aplicación. Por favor, inténtelo de nuevo."
-    },
-    "validation": {
-      "nameRequired": "El nombre es obligatorio",
-      "nameTooShort": "El nombre debe tener al menos 2 caracteres",
-      "nameTooLong": "El nombre no puede tener más de 256 caracteres"
-    },
-    "form": {
-      "key": "Clave",
-      "name": "Nombre",
-      "update": "Actualizar",
-      "updating": "Actualizando...",
-      "cancel": "Cancelar"
+    "buttons": {
+      "cancel": "Cancelar",
+      "confirm": "Confirmar",
+      "processing": "Procesando..."
     }
+  },
+  "errors": {
+    "loadFailed": "Error al cargar las aplicaciones",
+    "createFailed": "Error al crear la aplicación",
+    "updateFailed": "Error al actualizar la aplicación",
+    "stateChangeFailed": "Error al cambiar el estado de la aplicación",
+    "keyExists": "Ya existe una aplicación con la misma clave",
+    "validationError": "Error de validación. Verifica los datos ingresados",
+    "notFound": "Aplicación no encontrada"
   }
 }

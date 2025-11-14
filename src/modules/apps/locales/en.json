@@ -1,41 +1,13 @@
 {
-  "errors": {
-    "fetchApps": "Error fetching apps. Please try again later.",
-    "unexpected": "An unexpected error occurred"
-  },
   "page": {
     "title": "Applications",
-    "description": "Manage registered applications in the system",
-    "addButton": "Add New"
-  },
-  "addModal": {
-    "title": "Create New App",
-    "description": "Fill in the details for your new application. The key must be unique.",
-    "messages": {
-      "success": "Application created successfully",
-      "keyExists": "An application with this key already exists",
-      "validationError": "The provided data is not valid",
-      "failed": "Failed to create application. Please try again."
-    },
-    "validation": {
-      "keyRequired": "Key is required",
-      "keyTooShort": "Key must be at least 5 characters long",
-      "keyTooLong": "Key cannot be longer than 50 characters",
-      "nameRequired": "Name is required",
-      "nameTooShort": "Name must be at least 2 characters long",
-      "nameTooLong": "Name cannot be longer than 256 characters"
-    },
-    "form": {
-      "key": "Key",
-      "name": "Name",
-      "keyPlaceholder": "Use only letters, numbers, hyphens and underscores",
-      "create": "Create",
-      "creating": "Creating...",
-      "cancel": "Cancel"
-    }
+    "description": "Manage system applications",
+    "addButton": "Add Application",
+    "searchPlaceholder": "Search by key or name...",
+    "searchButton": "Search",
+    "clearButton": "Clear"
   },
   "table": {
-    "caption": "Apps List",
     "headers": {
       "key": "Key",
       "name": "Name",
@@ -44,52 +16,105 @@
     },
     "status": {
       "active": "Active",
-      "inactive": "Inactive"
+      "inactive": "Paused"
     },
     "actions": {
       "edit": "Edit",
-      "activate": "Activate",
-      "deactivate": "Deactivate"
+      "resume": "Resume",
+      "pause": "Pause"
     },
-    "loading": "Loading apps...",
-    "noApps": "No apps found.",
-    "error": "Error loading apps. Please try again later."
+    "empty": "No applications registered",
+    "loading": "Loading applications...",
+    "pagination": {
+      "showing": "Showing {{count}} of {{total}} applications",
+      "of": "of",
+      "apps": "applications",
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "addModal": {
+    "title": "Add New Application",
+    "description": "Create a new application with a unique key",
+    "form": {
+      "key": "Key",
+      "keyPlaceholder": "E.g: my-app-key",
+      "name": "Name",
+      "namePlaceholder": "E.g: Main Application"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "create": "Create Application",
+      "creating": "Creating..."
+    },
+    "validation": {
+      "keyRequired": "Key is required",
+      "keyMinLength": "Key must be at least 3 characters",
+      "keyMaxLength": "Key cannot exceed 100 characters",
+      "keyInvalid": "Key can only contain letters, numbers, and hyphens",
+      "nameRequired": "Name is required",
+      "nameMinLength": "Name must be at least 3 characters",
+      "nameMaxLength": "Name cannot exceed 100 characters"
+    },
+    "messages": {
+      "success": "Application created successfully"
+    }
+  },
+  "editModal": {
+    "title": "Edit Application",
+    "description": "Update application information",
+    "loading": "Loading application data...",
+    "form": {
+      "key": "Key",
+      "keyPlaceholder": "E.g: my-app-key",
+      "name": "Name",
+      "namePlaceholder": "E.g: Main Application"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "update": "Update",
+      "updating": "Updating..."
+    },
+    "validation": {
+      "keyRequired": "Key is required",
+      "keyMinLength": "Key must be at least 3 characters",
+      "keyMaxLength": "Key cannot exceed 100 characters",
+      "keyInvalid": "Key can only contain letters, numbers, and hyphens",
+      "nameRequired": "Name is required",
+      "nameMinLength": "Name must be at least 3 characters",
+      "nameMaxLength": "Name cannot exceed 100 characters"
+    },
+    "messages": {
+      "success": "Application updated successfully"
+    }
   },
   "confirmDialog": {
     "title": "Confirm Action",
     "confirm": "Confirm",
     "cancel": "Cancel",
-    "activate": {
-      "title": "Activate Application",
-      "description": "Are you sure you want to activate this application?"
+    "resume": {
+      "title": "Resume Application",
+      "description": "Are you sure you want to resume this application?",
+      "success": "Application resumed successfully"
     },
-    "deactivate": {
-      "title": "Deactivate Application",
-      "description": "Are you sure you want to deactivate this application? Data will not be deleted."
+    "pause": {
+      "title": "Pause Application",
+      "description": "Are you sure you want to pause this application? Data will not be deleted.",
+      "success": "Application paused successfully"
     },
-    "pauseMessage": "Do you want to deactivate this application?",
-    "activateMessage": "Are you sure you want to activate this app?"
-  },
-  "editModal": {
-    "title": "Edit App",
-    "description": "Update the details of your application below.",
-    "messages": {
-      "success": "Application updated successfully",
-      "notFound": "Application not found",
-      "validationError": "The provided data is not valid",
-      "failed": "Failed to update application. Please try again."
-    },
-    "validation": {
-      "nameRequired": "Name is required",
-      "nameTooShort": "Name must be at least 2 characters long",
-      "nameTooLong": "Name cannot be longer than 256 characters"
-    },
-    "form": {
-      "key": "Key",
-      "name": "Name",
-      "update": "Update",
-      "updating": "Updating...",
-      "cancel": "Cancel"
+    "buttons": {
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "processing": "Processing..."
     }
+  },
+  "errors": {
+    "loadFailed": "Error loading applications",
+    "createFailed": "Error creating application",
+    "updateFailed": "Error updating application",
+    "stateChangeFailed": "Error changing application status",
+    "keyExists": "An application with the same key already exists",
+    "validationError": "Validation error. Please check the entered data",
+    "notFound": "Application not found"
   }
 }

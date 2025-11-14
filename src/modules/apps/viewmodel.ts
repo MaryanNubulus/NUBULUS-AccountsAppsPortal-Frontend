@@ -1,271 +1,369 @@
-import { useEffect, useState, useCallback } from "react";
-import type { AppInfoDTO, CreateAppRequest, GetAppsResponse } from "./types";
-import {
-  createApp as createAppService,
-  getApps,
-  pauseResumeApp,
-  updateApp,
-} from "./service";
+import { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import type {
+  App,
+  CreateAppRequest,
+  UpdateAppRequest,
+  ValidationErrors,
+} from "./types";
+import { validateCreateAppRequest, validateUpdateAppRequest } from "./types";
+import * as service from "./service";
 
 interface ModalState {
   isSubmitting: boolean;
-  status: {
-    type: "none" | "error" | "success";
-    message: string;
-  };
+  status: { type: "none" | "error" | "success"; message: string };
 }
 
-export function useAppsViewModel() {
+export function useApps() {
   const { t } = useTranslation("apps");
-  const [apps, setApps] = useState<AppInfoDTO[]>([]);
+  const [apps, setApps] = useState<App[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
+  const [hasPreviousPage, setHasPreviousPage] = useState(false);
+  const [hasNextPage, setHasNextPage] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [addAppState, setAddAppState] = useState<ModalState>({
-    isSubmitting: false,
-    status: { type: "none", message: "" },
-  });
-
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editingApp, setEditingApp] = useState<AppInfoDTO | null>(null);
-  const [editAppState, setEditAppState] = useState<ModalState>({
-    isSubmitting: false,
-    status: { type: "none", message: "" },
-  });
-
-  const loadApps = useCallback(async () => {
-    try {
+  const loadApps = useCallback(
+    async (page: number, pageSize: number, search: string) => {
       setIsLoading(true);
       setError(null);
 
-      const response: GetAppsResponse = await getApps();
+      const data = await service.getApps({
+        pageNumber: page,
+        pageSize: pageSize,
+        searchTerm: search,
+      });
 
-      setApps(response.apps ?? []);
-    } catch (err) {
-      setError(t("errors.fetchApps"));
-    } finally {
+      if (data === null) {
+        setError(t("errors.loadFailed"));
+        setApps([]);
+        setTotalPages(0);
+        setTotalCount(0);
+        setHasPreviousPage(false);
+        setHasNextPage(false);
+      } else {
+        setApps(data.items);
+        setCurrentPage(data.pageNumber);
+        const calculatedTotalPages = Math.ceil(data.totalCount / data.pageSize);
+        setTotalPages(calculatedTotalPages);
+        setTotalCount(data.totalCount);
+        setHasPreviousPage(data.pageNumber > 1);
+        setHasNextPage(data.pageNumber < calculatedTotalPages);
+      }
+
       setIsLoading(false);
-    }
-  }, []);
+    },
+    [pageSize, t]
+  );
 
   useEffect(() => {
-    loadApps();
-  }, [loadApps]);
-
-  const handleCreateApp = async (request: CreateAppRequest) => {
-    setAddAppState((prev) => ({
-      ...prev,
-      isSubmitting: true,
-      status: { type: "none", message: "" },
-    }));
-
-    try {
-      const result = await createAppService(request);
-
-      switch (result) {
-        case "created":
-          setAddAppState((prev) => ({
-            ...prev,
-            status: {
-              type: "success",
-              message: t("addModal.messages.success"),
-            },
-          }));
-          await loadApps();
-          setTimeout(() => {
-            setIsAddModalOpen(false);
-            setAddAppState((prev) => ({
-              ...prev,
-              status: { type: "none", message: "" },
-            }));
-          }, 1500);
-          return result;
-
-        case "key_exists":
-          setAddAppState((prev) => ({
-            ...prev,
-            status: {
-              type: "error",
-              message: t("addModal.messages.keyExists"),
-            },
-          }));
-          return result;
-
-        case "validation_error":
-          setAddAppState((prev) => ({
-            ...prev,
-            status: {
-              type: "error",
-              message: t("addModal.messages.validationError"),
-            },
-          }));
-          return result;
-
-        case "failed":
-          setAddAppState((prev) => ({
-            ...prev,
-            status: {
-              type: "error",
-              message: t("addModal.messages.failed"),
-            },
-          }));
-          return result;
-      }
-    } catch (error) {
-      setAddAppState((prev) => ({
-        ...prev,
-        status: {
-          type: "error",
-          message: t("errors.unexpected"),
-        },
-      }));
-    } finally {
-      setAddAppState((prev) => ({
-        ...prev,
-        isSubmitting: false,
-      }));
-    }
-
-    return addAppState.status;
-  };
-
-  const handleCloseModal = useCallback(() => {
-    setIsAddModalOpen(false);
-    setAddAppState({
-      isSubmitting: false,
-      status: { type: "none", message: "" },
-    });
+    loadApps(1, pageSize, searchTerm);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleCloseEditModal = useCallback(() => {
-    setIsEditModalOpen(false);
-    setEditingApp(null);
-    setEditAppState({
-      isSubmitting: false,
-      status: { type: "none", message: "" },
-    });
-  }, []);
+  const search = (term: string) => {
+    setSearchTerm(term);
+    setCurrentPage(1);
+    loadApps(1, pageSize, term);
+  };
 
-  const handleEditApp = async (
-    appId: string,
-    name: string
-  ): Promise<"success" | "failed" | "not_found" | "validation_error"> => {
-    setEditAppState((prev) => ({
-      ...prev,
-      isSubmitting: true,
-      status: { type: "none", message: "" },
-    }));
-
-    try {
-      const result = await updateApp(appId, { name });
-
-      if (result === "success") {
-        setEditAppState((prev) => ({
-          ...prev,
-          status: {
-            type: "success",
-            message: t("editModal.messages.success"),
-          },
-        }));
-        await loadApps();
-        setTimeout(() => {
-          setIsEditModalOpen(false);
-          setEditingApp(null);
-          setEditAppState((prev) => ({
-            ...prev,
-            status: { type: "none", message: "" },
-          }));
-        }, 1500);
-        return "success";
-      }
-
-      if (result === "not_found") {
-        setEditAppState((prev) => ({
-          ...prev,
-          status: {
-            type: "error",
-            message: t("editModal.messages.notFound"),
-          },
-        }));
-        return "not_found";
-      }
-
-      if (result === "validation_error") {
-        setEditAppState((prev) => ({
-          ...prev,
-          status: {
-            type: "error",
-            message: t("editModal.messages.validationError"),
-          },
-        }));
-        return "validation_error";
-      }
-
-      setEditAppState((prev) => ({
-        ...prev,
-        status: {
-          type: "error",
-          message: t("editModal.messages.failed"),
-        },
-      }));
-      return "failed";
-    } catch (error) {
-      setEditAppState((prev) => ({
-        ...prev,
-        status: {
-          type: "error",
-          message: t("errors.unexpected"),
-        },
-      }));
-      return "failed";
-    } finally {
-      setEditAppState((prev) => ({
-        ...prev,
-        isSubmitting: false,
-      }));
+  const goToPage = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+      loadApps(page, pageSize, searchTerm);
     }
   };
 
-  const handleStartEdit = (app: AppInfoDTO) => {
-    setEditingApp(app);
-    setIsEditModalOpen(true);
-  };
-
-  const handlePauseResumeApp = async (appId: string, pause: boolean) => {
-    const result = await pauseResumeApp(appId, pause);
-
-    if (result === "success") {
-      setApps((prev) =>
-        prev.map((app) =>
-          app.id === appId ? { ...app, isActive: !pause } : app
-        )
-      );
-    } else if (result === "not_found") {
-      // App not found, reload the list
-      await loadApps();
+  const nextPage = () => {
+    if (hasNextPage) {
+      goToPage(currentPage + 1);
     }
-    // For validation_error or failed, we could show a notification
-    // but for now we just ignore it
   };
+
+  const previousPage = () => {
+    if (hasPreviousPage) {
+      goToPage(currentPage - 1);
+    }
+  };
+
+  const changePageSize = (newSize: number) => {
+    setPageSize(newSize);
+    setCurrentPage(1);
+    loadApps(1, newSize, searchTerm);
+  };
+
+  const reload = useCallback(() => {
+    loadApps(currentPage, pageSize, searchTerm);
+  }, [loadApps, currentPage, pageSize, searchTerm]);
 
   return {
     apps,
     isLoading,
     error,
-    isAddModalOpen,
-    setIsAddModalOpen,
-    handleCloseModal,
-    createApp: handleCreateApp,
-    pauseResumeApp: handlePauseResumeApp,
-    addAppState,
-    editingApp,
-    isEditModalOpen,
-    handleCloseEditModal,
-    handleStartEdit,
-    handleEditApp,
-    editAppState,
+    currentPage,
+    pageSize,
+    totalPages,
+    totalCount,
+    hasPreviousPage,
+    hasNextPage,
+    searchTerm,
+    search,
+    reload,
+    goToPage,
+    nextPage,
+    previousPage,
+    changePageSize,
+    t,
+  };
+}
+
+export function useCreateApp(onSuccess: () => void) {
+  const { t } = useTranslation("apps");
+  const [modalState, setModalState] = useState<ModalState>({
+    isSubmitting: false,
+    status: { type: "none", message: "" },
+  });
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
+    {}
+  );
+
+  const createApp = async (data: CreateAppRequest) => {
+    const errors = validateCreateAppRequest(data, t);
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
+      return;
+    }
+
+    setModalState({
+      isSubmitting: true,
+      status: { type: "none", message: "" },
+    });
+    setValidationErrors({});
+
+    const result = await service.createApp(data);
+
+    if (result === "created") {
+      setModalState({
+        isSubmitting: false,
+        status: { type: "success", message: t("addModal.messages.success") },
+      });
+      setTimeout(() => {
+        onSuccess();
+      }, 1000);
+    } else if (result === "key_exists") {
+      setModalState({
+        isSubmitting: false,
+        status: { type: "error", message: t("errors.keyExists") },
+      });
+    } else if (result === "validation_error") {
+      setModalState({
+        isSubmitting: false,
+        status: { type: "error", message: t("errors.validationError") },
+      });
+    } else {
+      setModalState({
+        isSubmitting: false,
+        status: { type: "error", message: t("errors.createFailed") },
+      });
+    }
+  };
+
+  const clearError = (field: keyof ValidationErrors) => {
+    setValidationErrors((prev) => {
+      const newErrors = { ...prev };
+      delete newErrors[field];
+      return newErrors;
+    });
+  };
+
+  const resetModal = useCallback(() => {
+    setModalState({
+      isSubmitting: false,
+      status: { type: "none", message: "" },
+    });
+    setValidationErrors({});
+  }, []);
+
+  return {
+    createApp,
+    modalState,
+    validationErrors,
+    clearError,
+    resetModal,
+    t,
+  };
+}
+
+export function useUpdateApp(onSuccess: () => void) {
+  const { t } = useTranslation("apps");
+  const [modalState, setModalState] = useState<ModalState>({
+    isSubmitting: false,
+    status: { type: "none", message: "" },
+  });
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
+    {}
+  );
+
+  const updateApp = async (appId: number, data: UpdateAppRequest) => {
+    // Client-side validation
+    const errors = validateUpdateAppRequest(data, t);
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
+      return;
+    }
+
+    setModalState({
+      isSubmitting: true,
+      status: { type: "none", message: "" },
+    });
+    setValidationErrors({});
+
+    const result = await service.updateApp(appId, data);
+
+    if (result === "updated") {
+      setModalState({
+        isSubmitting: false,
+        status: { type: "success", message: t("editModal.messages.success") },
+      });
+      setTimeout(() => {
+        onSuccess();
+      }, 1000);
+    } else if (result === "key_exists") {
+      setModalState({
+        isSubmitting: false,
+        status: { type: "error", message: t("errors.keyExists") },
+      });
+    } else if (result === "validation_error") {
+      setModalState({
+        isSubmitting: false,
+        status: { type: "error", message: t("errors.validationError") },
+      });
+    } else if (result === "not_found") {
+      setModalState({
+        isSubmitting: false,
+        status: { type: "error", message: t("errors.notFound") },
+      });
+    } else {
+      setModalState({
+        isSubmitting: false,
+        status: { type: "error", message: t("errors.updateFailed") },
+      });
+    }
+  };
+
+  const clearError = (field: keyof ValidationErrors) => {
+    setValidationErrors((prev) => {
+      const newErrors = { ...prev };
+      delete newErrors[field];
+      return newErrors;
+    });
+  };
+
+  const resetModal = useCallback(() => {
+    setModalState({
+      isSubmitting: false,
+      status: { type: "none", message: "" },
+    });
+    setValidationErrors({});
+  }, []);
+
+  return {
+    updateApp,
+    modalState,
+    validationErrors,
+    clearError,
+    resetModal,
+    t,
+  };
+}
+
+export function useStateChangeApp(onSuccess: () => void) {
+  const { t } = useTranslation("apps");
+  const [modalState, setModalState] = useState<ModalState>({
+    isSubmitting: false,
+    status: { type: "none", message: "" },
+  });
+
+  const pauseApp = async (appId: number) => {
+    setModalState({
+      isSubmitting: true,
+      status: { type: "none", message: "" },
+    });
+
+    const result = await service.pauseApp(appId);
+
+    if (result === "paused") {
+      setModalState({
+        isSubmitting: false,
+        status: {
+          type: "success",
+          message: t("confirmDialog.pause.success"),
+        },
+      });
+      setTimeout(() => {
+        onSuccess();
+      }, 500);
+    } else if (result === "not_found") {
+      setModalState({
+        isSubmitting: false,
+        status: { type: "error", message: t("errors.notFound") },
+      });
+    } else {
+      setModalState({
+        isSubmitting: false,
+        status: { type: "error", message: t("errors.stateChangeFailed") },
+      });
+    }
+  };
+
+  const resumeApp = async (appId: number) => {
+    setModalState({
+      isSubmitting: true,
+      status: { type: "none", message: "" },
+    });
+
+    const result = await service.resumeApp(appId);
+
+    if (result === "resumed") {
+      setModalState({
+        isSubmitting: false,
+        status: {
+          type: "success",
+          message: t("confirmDialog.resume.success"),
+        },
+      });
+      setTimeout(() => {
+        onSuccess();
+      }, 500);
+    } else if (result === "not_found") {
+      setModalState({
+        isSubmitting: false,
+        status: { type: "error", message: t("errors.notFound") },
+      });
+    } else {
+      setModalState({
+        isSubmitting: false,
+        status: { type: "error", message: t("errors.stateChangeFailed") },
+      });
+    }
+  };
+
+  const resetModal = useCallback(() => {
+    setModalState({
+      isSubmitting: false,
+      status: { type: "none", message: "" },
+    });
+  }, []);
+
+  return {
+    pauseApp,
+    resumeApp,
+    modalState,
+    resetModal,
     t,
   };
 }

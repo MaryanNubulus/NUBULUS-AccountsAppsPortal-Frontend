@@ -138,23 +138,81 @@ async function createUser(
 
 ### useUsers
 
-Hook principal que gestiona la llista d'usuaris amb paginació.
+Hook principal que gestiona la llista d'usuaris amb paginació i cerca.
 
 ```typescript
-function useUsers(accountId: number) {
+function useUsers() {
   return {
     users: User[];
     isLoading: boolean;
-    error: string | null;
+    totalCount: number;
     currentPage: number;
+    pageSize: number;
+    totalPages: number;
+    hasPreviousPage: boolean;
+    hasNextPage: boolean;
+    searchTerm: string;
+    setSearchTerm: (term: string) => void;  // Executa cerca i recarrega
+    reload: () => void;                      // Recarrega sense cerca
+    goToPage: (page: number) => void;
+    nextPage: () => void;
+    previousPage: () => void;
+    changePageSize: (newSize: number) => void;
+    t: (key: string) => string;
+  };
+}
+```
+
+### useGetSharedUsers
+
+Hook que gestiona la llista d'usuaris ja compartits.
+
+```typescript
+function useGetSharedUsers() {
+  return {
+    sharedUsers: UserToShare[];
+    isLoading: boolean;
+    currentPage: number;
+    pageSize: number;
     totalPages: number;
     totalCount: number;
-    hasNextPage: boolean;
     hasPreviousPage: boolean;
+    hasNextPage: boolean;
+    searchTerm: string;
+    setSearchTerm: (term: string) => void;
     nextPage: () => void;
     previousPage: () => void;
     goToPage: (page: number) => void;
+    changePageSize: (newSize: number) => void;
     reload: () => void;
+    t: (key: string) => string;
+  };
+}
+```
+
+### useGetUsersToShare
+
+Hook que gestiona usuaris disponibles per compartir (deferred search).
+
+```typescript
+function useGetUsersToShare() {
+  return {
+    availableUsers: UserToShare[];
+    isLoading: boolean;
+    currentPage: number;
+    pageSize: number;
+    totalPages: number;
+    totalCount: number;
+    hasPreviousPage: boolean;
+    hasNextPage: boolean;
+    searchTerm: string;
+    hasSearched: boolean;              // True si s'ha fet almenys una cerca
+    setSearchTerm: (term: string) => void;
+    nextPage: () => void;
+    previousPage: () => void;
+    goToPage: (page: number) => void;
+    changePageSize: (newSize: number) => void;
+    load: (page: number, pageSize: number, search: string) => Promise<void>;
     t: (key: string) => string;
   };
 }
@@ -165,12 +223,14 @@ function useUsers(accountId: number) {
 Hook per crear nous usuaris amb validació.
 
 ```typescript
-function useCreateUser(accountId: number, onSuccess: () => void) {
+function useCreateUser(onSuccess: () => void) {
   return {
-    modalState: ModalState;
+    handleSubmit: (data: CreateUserRequest) => Promise<void>;
+    isSubmitting: boolean;
+    status: { type: "none" | "error" | "success"; message: string };
     validationErrors: ValidationErrors;
-    createUser: (data: CreateUserRequest) => Promise<void>;
-    clearValidationError: (field: string) => void;
+    clearErrors: () => void;
+    clearStatus: () => void;
     t: (key: string) => string;
   };
 }
@@ -181,12 +241,14 @@ function useCreateUser(accountId: number, onSuccess: () => void) {
 Hook per actualitzar usuaris existents.
 
 ```typescript
-function useUpdateUser(accountId: number, userId: number, onSuccess: () => void) {
+function useUpdateUser(onSuccess: () => void) {
   return {
-    modalState: ModalState;
+    handleSubmit: (userId: string, data: UpdateUserRequest) => Promise<void>;
+    isSubmitting: boolean;
+    status: { type: "none" | "error" | "success"; message: string };
     validationErrors: ValidationErrors;
-    updateUser: (data: UpdateUserRequest) => Promise<void>;
-    clearValidationError: (field: string) => void;
+    clearErrors: () => void;
+    clearStatus: () => void;
     t: (key: string) => string;
   };
 }
@@ -197,11 +259,59 @@ function useUpdateUser(accountId: number, userId: number, onSuccess: () => void)
 Hook per pausar/reprendre usuaris.
 
 ```typescript
-function useChangeUserState(accountId: number, onSuccess: () => void) {
+function useChangeUserState(onSuccess: () => void) {
   return {
-    dialogState: DialogState;
-    changeState: (userId: number, shouldResume: boolean) => Promise<void>;
+    handleChangeState: (userId: string, shouldResume: boolean) => Promise<void>;
+    isSubmitting: boolean;
+    error: string;
+    clearError: () => void;
     t: (key: string) => string;
+  };
+}
+```
+
+### useShareUser
+
+Hook per compartir usuaris.
+
+```typescript
+function useShareUser(onSuccess: () => void) {
+  return {
+    handleShare: (userId: string) => Promise<void>;
+    isSubmitting: boolean;
+    error: string;
+    clearError: () => void;
+    t: (key: string) => string;
+  };
+}
+```
+
+### useUnshareUser
+
+Hook per deixar de compartir usuaris.
+
+```typescript
+function useUnshareUser(onSuccess: () => void) {
+  return {
+    handleUnshare: (userId: string) => Promise<void>;
+    isSubmitting: boolean;
+    error: string;
+    clearError: () => void;
+    t: (key: string) => string;
+  };
+}
+```
+
+### useFetchUserInfo
+
+Hook per obtenir la informació completa d'un usuari.
+
+```typescript
+function useFetchUserInfo() {
+  return {
+    user: User | null;
+    isLoading: boolean;
+    fetchUser: (userId: string) => Promise<void>;
   };
 }
 ```
@@ -358,6 +468,120 @@ Diàleg de confirmació per pausar/reprendre usuaris amb:
 - **Botons**: "Cancel·lar" i "Confirmar"
 - **Loading**: "Processant..." durant l'operació
 
+## Componentes Reutilitzables
+
+### SearchBar
+
+Component reutilitzable per a cerca de usuaris amb interfície:
+
+```tsx
+<SearchBar
+  placeholder={t("page.searchPlaceholder")}
+  value={localSearchTerm}
+  onChange={setLocalSearchTerm}
+  onSearch={handleSearch}
+  onClear={handleClearSearch}
+  hasSearchTerm={!!searchTerm}
+  searchButton={t("page.searchButton")}
+  clearButton={t("page.clearButton")}
+/>
+```
+
+**Funcionalitats:**
+
+- Input de text per cercar
+- Botó "Cercar" per executar la cerca
+- Botó "Netejar" (visible si hi ha cerca activa)
+- Icona de cerca integrada
+- Permet cerques buides (refresca la taula amb tots els usuaris)
+
+**Props:**
+
+```typescript
+interface SearchBarProps {
+  placeholder: string;
+  value: string;
+  onChange: (value: string) => void;
+  onSearch: (e: React.FormEvent) => void;
+  onClear: () => void;
+  hasSearchTerm: boolean;
+}
+```
+
+### Pagination
+
+Component reutilitzable per a paginació amb:
+
+```tsx
+<Pagination
+  currentPage={currentPage}
+  totalPages={totalPages}
+  totalCount={totalCount}
+  pageSize={pageSize}
+  hasPreviousPage={hasPreviousPage}
+  hasNextPage={hasNextPage}
+  onNextPage={nextPage}
+  onPreviousPage={previousPage}
+  onGoToPage={goToPage}
+  onChangePageSize={changePageSize}
+  pageSizeOptions={[5, 10, 25, 50]}
+  t={t}
+/>
+```
+
+**Funcionalitats:**
+
+- Botons "Anterior" i "Següent" amb estats disabled
+- Selector de mida de pàgina (5, 10, 25, 50 items)
+- Indicador "Pàgina X de Y"
+- Indicador "Mostrant X a Y de Z resultats"
+
+### SelectUsersModal
+
+Modal per seleccionar usuaris disponibles per compartir amb:
+
+- **SearchBar**: Per filtrar usuaris disponibles
+- **Pagination**: Per navegar pels resultats
+- **Deferred Search**: No carrega fins clicar "Cercar" (flag `hasSearched`)
+- **SharedUsersTable**: Mostra usuaris ja compartits
+- **Pagination compartits**: Busca i paginació en usuaris compartits
+
+**Funcionalitats:**
+
+- Primera pestanya: Usuaris disponibles (amb deferred search)
+- Segona pestanya: Usuaris ja compartits
+- Botons d'acció: Compartir (primera) i Descompartir (segona)
+- Modal de confirmació integrat
+- Gestor d'errors i loading states
+
+**Ús des de page.tsx:**
+
+```typescript
+<SelectUsersModal
+  isOpen={isSelectModalOpen}
+  onClose={() => setIsSelectModalOpen(false)}
+  onSelectUser={handleSelectUser}
+  availableUsers={availableUsers}
+  sharedUsers={sharedUsers}
+  isAvailableLoading={isAvailableLoading}
+  isSharedLoading={isSharedLoading}
+  availableCurrentPage={availableCurrentPage}
+  availableTotalPages={availableTotalPages}
+  availableTotalCount={availableTotalCount}
+  availablePageSize={availablePageSize}
+  hasAvailablePreviousPage={availableHasPreviousPage}
+  hasAvailableNextPage={availableHasNextPage}
+  availableNextPage={availableNextPage}
+  availablePreviousPage={availablePreviousPage}
+  availableGoToPage={availableGoToPage}
+  availableChangePageSize={changeAvailablePageSize}
+  availableSearchTerm={availableSearchTerm}
+  availableSetSearchTerm={setAvailableSearchTerm}
+  availableHasSearched={hasSearched}
+  // ... més props per a usuaris compartits
+/>
+```
+
 ## Internacionalització (i18n)
 
 ### Namespace: `users`
@@ -468,6 +692,26 @@ const { t } = useTranslation("users");
 5. Taula mostra nova pàgina
 6. Indicador s'actualitza
 
+### Deferred Search (SelectUsersModal)
+
+Pattern de cerca diferida només pel modal de SelectUsersModal:
+
+1. Modal s'obre
+2. **NO es carrega automàticament** (flag `hasSearched = false`)
+3. Usuari escriu terme de cerca en SearchBar
+4. Usuari clica botó "Cercar"
+5. Executa `loadUsersToShare(1, pageSize, searchTerm)`
+6. Flag `hasSearched` es posa a `true`
+7. Es mostren resultats amb paginació
+8. Si canvia terme i clica de nou → Nova cerca amb `hasSearched = true`
+
+**Benefici:** Evita peticions innecessàries als primers carrecs del modal.
+
+**Diferència amb llista principal:**
+
+- **useUsers**: Carrega automàticament al canviar `searchTerm` (ús estàndard)
+- **useGetUsersToShare**: Només carrega quan es clica "Cercar" (deferred search)
+
 ## Registre del Submòdul
 
 ```typescript
@@ -475,6 +719,104 @@ export const usersModule: ModuleDescriptor = {
   id: "users",
   isPrivate: true,
   routes,
+  menu: [
+    {
+      id: "users.list",
+      label: "users:page.title",
+      path: "/private/accounts/:accountId/users",
+      icon: <Users />,
+      order: 3,
+    },
+  ],
+};
+moduleRegistry.register(usersModule);
+```
+
+## Comportament de Cerca
+
+### Cerca amb Input Buit
+
+La funcionalitat de cerca permet executar una cerca **sense cap term** (input buit) per refrescar la taula amb tots els usuaris:
+
+1. Usuari deixa input buit
+2. Clica botó "Cercar"
+3. Se executa `handleSearch` que crida `setSearchTerm("")`
+4. Viewmodel actualitza estat amb `searchTerm = ""`
+5. `useEffect` es dispara i crida `loadUsers(currentPage, pageSize, "")`
+6. Service rep `searchTerm = ""` i **no afegeix paràmetre a la URL**
+7. Backend retorna tots els usuaris (sense filtrar per terme de cerca)
+8. Taula es refresca amb tots els usuaris
+
+**Pattern idèntic al mòdul de Comptes** (module `accounts`).
+
+## Estructura Actualitzada
+
+```
+modules/accounts/users/
+├── index.tsx                      # Descriptor i registre del submòdul
+├── routes.tsx                     # Configuració de rutes
+├── page.tsx                       # Pàgina principal
+├── viewmodel.ts                   # Hooks de lògica de negoci (8 hooks)
+├── service.ts                     # Serveis d'API (9 funcions)
+├── types.ts                       # Tipus i validacions
+├── translations.ts                # Registre de traduccions
+├── components/
+│   ├── UsersTable.tsx            # Taula d'usuaris
+│   ├── SharedUsersTable.tsx       # Taula d'usuaris compartits
+│   ├── AddNewUserModal.tsx       # Modal de creació
+│   ├── EditUserModal.tsx         # Modal d'edició
+│   ├── ConfirmStateChangeDialog.tsx
+│   ├── SearchBar.tsx              # Component de cerca reutilitzable
+│   ├── Pagination.tsx             # Component de paginació reutilitzable
+│   └── SelectUsersModal.tsx       # Modal de selecció amb deferred search
+└── locales/
+    ├── en.json
+    ├── es.json
+    └── ca.json
+```
+
+## Sumari de Hooks disponibles
+
+| Hook                 | Propòsit                    | Carrega automàtica           |
+| -------------------- | --------------------------- | ---------------------------- |
+| `useUsers`           | Llista principal d'usuaris  | Sí (al cambiar `searchTerm`) |
+| `useGetSharedUsers`  | Usuaris ja compartits       | Sí                           |
+| `useGetUsersToShare` | Usuaris disponibles (modal) | No (deferred search)         |
+| `useCreateUser`      | Crear usuari                | Manual                       |
+| `useUpdateUser`      | Editar usuari               | Manual                       |
+| `useChangeUserState` | Pausar/reprendre            | Manual                       |
+| `useShareUser`       | Compartir usuari            | Manual                       |
+| `useUnshareUser`     | Descompartir usuari         | Manual                       |
+| `useFetchUserInfo`   | Obtenir dades completes     | Manual                       |
+
+## Transicions de Versió
+
+### v1.0 (Actual)
+
+✅ Gestió completa d'usuaris (crear, editar, pausar/reprendre)  
+✅ Compartir usuaris entre comptes  
+✅ Cerca i paginació integrades  
+✅ Deferred search al modal de selecció  
+✅ Validació dual (HTML5 + JavaScript)  
+✅ Internacionalització (3 idiomes)  
+✅ Components reutilitzables (SearchBar, Pagination)
+
+## Registre del Submòdul
+
+```typescript
+export const usersModule: ModuleDescriptor = {
+  id: "users",
+  isPrivate: true,
+  routes,
+  menu: [
+    {
+      id: "users.list",
+      label: "users:page.title",
+      path: "/private/accounts/:accountId/users",
+      icon: <Users />,
+      order: 3,
+    },
+  ],
 };
 
 moduleRegistry.register(usersModule);

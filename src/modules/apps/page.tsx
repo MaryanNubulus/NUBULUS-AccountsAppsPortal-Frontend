@@ -1,3 +1,5 @@
+// page.tsx - Apps module main page
+
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,62 +10,93 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import AppsTable from "./components/AppsTable";
-import { useAppsViewModel } from "./viewmodel";
+import { AppsTable } from "./components/AppsTable";
 import { AddNewAppModal } from "./components/AddNewAppModal";
 import { EditAppModal } from "./components/EditAppModal";
 import { ConfirmStateChangeDialog } from "./components/ConfirmStateChangeDialog";
-import type { AppInfoDTO } from "./types";
+import { SearchBar } from "./components/SearchBar";
+import { Pagination } from "./components/Pagination";
+import { useApps } from "./viewmodel";
+import type { App } from "./types";
 
 export default function AppsPage() {
   const {
     apps,
     isLoading,
     error,
-    isAddModalOpen,
-    setIsAddModalOpen,
-    handleCloseModal,
-    createApp,
-    pauseResumeApp,
-    addAppState,
-    editingApp,
-    isEditModalOpen,
-    handleCloseEditModal,
-    handleStartEdit,
-    handleEditApp,
-    editAppState,
+    reload,
+    currentPage,
+    totalPages,
+    totalCount,
+    pageSize,
+    changePageSize,
+    hasPreviousPage,
+    hasNextPage,
+    nextPage,
+    previousPage,
+    goToPage,
+    searchTerm,
+    search,
     t,
-  } = useAppsViewModel();
+  } = useApps();
 
-  const [confirmationOpen, setConfirmationOpen] = useState(false);
-  const [selectedApp, setSelectedApp] = useState<AppInfoDTO | null>(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+  const [selectedApp, setSelectedApp] = useState<App | null>(null);
   const [stateChangeAction, setStateChangeAction] = useState<
-    "activate" | "deactivate" | null
+    "pause" | "resume" | null
   >(null);
+  const [localSearchTerm, setLocalSearchTerm] = useState("");
 
-  const handleStateChangeClick = (app: AppInfoDTO, activate: boolean) => {
-    setSelectedApp(app);
-    setStateChangeAction(activate ? "activate" : "deactivate");
-    setConfirmationOpen(true);
+  const handleAddSuccess = () => {
+    setIsAddModalOpen(false);
+    reload();
   };
 
-  const handleConfirmStateChange = async () => {
-    if (selectedApp && stateChangeAction) {
-      await pauseResumeApp(selectedApp.id, stateChangeAction === "deactivate");
-      setConfirmationOpen(false);
-      setSelectedApp(null);
-      setStateChangeAction(null);
-    }
+  const handleEditClick = (app: App) => {
+    setSelectedApp(app);
+    setIsEditModalOpen(true);
+  };
+
+  const handleEditSuccess = () => {
+    setIsEditModalOpen(false);
+    setSelectedApp(null);
+    reload();
+  };
+
+  const handleStateChangeClick = (app: App, pause: boolean) => {
+    setSelectedApp(app);
+    setStateChangeAction(pause ? "pause" : "resume");
+    setIsConfirmDialogOpen(true);
+  };
+
+  const handleStateChangeSuccess = () => {
+    setIsConfirmDialogOpen(false);
+    setSelectedApp(null);
+    setStateChangeAction(null);
+    reload();
   };
 
   const handleConfirmDialogClose = () => {
-    setConfirmationOpen(false);
+    if (!isConfirmDialogOpen) return;
+    setIsConfirmDialogOpen(false);
     setSelectedApp(null);
     setStateChangeAction(null);
   };
 
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    search(localSearchTerm);
+  };
+
+  const handleClearSearch = () => {
+    setLocalSearchTerm("");
+    search("");
+  };
+
   return (
-    <div className="container mx-auto py-6 space-y-6">
+    <div className="container mx-auto py-3 space-y-6">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
           <div className="space-y-1">
@@ -78,45 +111,78 @@ export default function AppsPage() {
           </Button>
         </CardHeader>
         <CardContent>
+          <SearchBar
+            placeholder={t("page.searchPlaceholder")}
+            value={localSearchTerm}
+            onChange={setLocalSearchTerm}
+            onSearch={handleSearch}
+            onClear={handleClearSearch}
+            hasSearchTerm={searchTerm.length > 0}
+          />
+
           {error && (
             <div className="mb-4 p-3 rounded-md text-sm bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
               {error}
             </div>
           )}
 
-          <AppsTable
-            apps={apps}
-            isLoading={isLoading}
-            error={error}
-            onEdit={handleStartEdit}
-            onChangeState={handleStateChangeClick}
-            t={t}
-          />
+          {isLoading ? (
+            <div className="text-center py-8 text-muted-foreground">
+              {t("table.loading")}
+            </div>
+          ) : (
+            <>
+              <AppsTable
+                apps={apps}
+                onEdit={handleEditClick}
+                onChangeState={handleStateChangeClick}
+                t={t}
+              />
+
+              {totalPages > 0 && (
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  totalCount={totalCount}
+                  pageSize={pageSize}
+                  hasPreviousPage={hasPreviousPage}
+                  hasNextPage={hasNextPage}
+                  onNextPage={nextPage}
+                  onPreviousPage={previousPage}
+                  onGoToPage={goToPage}
+                  onPageSizeChange={changePageSize}
+                  label={{
+                    of: t("table.pagination.of"),
+                    items: t("table.pagination.apps"),
+                    previous: t("table.pagination.previous"),
+                    next: t("table.pagination.next"),
+                  }}
+                />
+              )}
+            </>
+          )}
         </CardContent>
       </Card>
 
       <AddNewAppModal
         isOpen={isAddModalOpen}
-        onClose={handleCloseModal}
-        onSubmit={createApp}
-        isSubmitting={addAppState.isSubmitting}
-        status={addAppState.status}
+        onClose={() => setIsAddModalOpen(false)}
+        onSuccess={handleAddSuccess}
       />
 
       <EditAppModal
-        app={editingApp}
         isOpen={isEditModalOpen}
-        onClose={handleCloseEditModal}
-        onSubmit={handleEditApp}
-        isSubmitting={editAppState.isSubmitting}
-        status={editAppState.status}
+        onClose={() => setIsEditModalOpen(false)}
+        onSuccess={handleEditSuccess}
+        app={selectedApp}
       />
 
       <ConfirmStateChangeDialog
-        open={confirmationOpen}
-        onOpenChange={handleConfirmDialogClose}
-        isPause={stateChangeAction === "deactivate"}
-        onConfirm={handleConfirmStateChange}
+        isOpen={isConfirmDialogOpen}
+        onClose={handleConfirmDialogClose}
+        onSuccess={handleStateChangeSuccess}
+        app={selectedApp}
+        action={stateChangeAction}
       />
     </div>
   );
