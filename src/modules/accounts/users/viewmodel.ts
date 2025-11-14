@@ -32,7 +32,7 @@ export function useUsers() {
   const [pageSize, setPageSize] = useState(5);
 
   const loadUsers = useCallback(
-    async (page: number = 1, search: string = "") => {
+    async (page: number = 1, pageSize: number, search: string = "") => {
       if (!accountId) return;
 
       setIsLoading(true);
@@ -52,8 +52,8 @@ export function useUsers() {
   );
 
   useEffect(() => {
-    loadUsers(currentPage, searchTerm);
-  }, [currentPage, searchTerm, loadUsers]);
+    loadUsers(currentPage, pageSize, searchTerm);
+  }, [currentPage, pageSize, searchTerm, loadUsers]);
 
   const goToPage = (page: number) => {
     if (page >= 1 && page <= totalPages) {
@@ -76,6 +76,7 @@ export function useUsers() {
   const search = (term: string) => {
     setSearchTerm(term);
     setCurrentPage(1);
+    loadUsers(1, pageSize, term);
   };
 
   const hasPreviousPage = currentPage > 1;
@@ -84,7 +85,7 @@ export function useUsers() {
   const changePageSize = (newSize: number) => {
     setPageSize(newSize);
     setCurrentPage(1);
-    loadUsers(1, searchTerm);
+    loadUsers(1, newSize, searchTerm);
   };
 
   return {
@@ -98,7 +99,7 @@ export function useUsers() {
     hasNextPage,
     searchTerm,
     setSearchTerm: search,
-    reload: () => loadUsers(1, ""),
+    reload: () => loadUsers(currentPage, pageSize, searchTerm),
     goToPage,
     nextPage,
     previousPage,
@@ -163,12 +164,20 @@ export function useCreateUser(onSuccess: () => void) {
     setValidationErrors({});
   }, []);
 
+  const clearStatus = useCallback(() => {
+    setState({
+      isSubmitting: false,
+      status: { type: "none", message: "" },
+    });
+  }, []);
+
   return {
     handleSubmit,
     isSubmitting: state.isSubmitting,
     status: state.status,
     validationErrors,
     clearErrors,
+    clearStatus,
     t,
   };
 }
@@ -232,12 +241,20 @@ export function useUpdateUser(onSuccess: () => void) {
     setValidationErrors({});
   }, []);
 
+  const clearStatus = useCallback(() => {
+    setState({
+      isSubmitting: false,
+      status: { type: "none", message: "" },
+    });
+  }, []);
+
   return {
     handleSubmit,
     isSubmitting: state.isSubmitting,
     status: state.status,
     validationErrors,
     clearErrors,
+    clearStatus,
     t,
   };
 }
@@ -298,7 +315,7 @@ export function useGetSharedUsers() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const loadSharedUsers = useCallback(
-    async (page: number = 1, search: string = "") => {
+    async (page: number = 1, pageSize: number, search: string = "") => {
       if (!accountId) return;
 
       setIsLoading(true);
@@ -318,7 +335,7 @@ export function useGetSharedUsers() {
   );
 
   useEffect(() => {
-    loadSharedUsers(currentPage, searchTerm);
+    loadSharedUsers(currentPage, pageSize, searchTerm);
   }, [currentPage, searchTerm, loadSharedUsers]);
 
   const goToPage = (page: number) => {
@@ -342,12 +359,13 @@ export function useGetSharedUsers() {
   const search = (term: string) => {
     setSearchTerm(term);
     setCurrentPage(1);
+    loadSharedUsers(1, pageSize, term);
   };
 
   const changePageSize = (newSize: number) => {
     setPageSize(newSize);
     setCurrentPage(1);
-    loadSharedUsers(1, searchTerm);
+    loadSharedUsers(1, newSize, searchTerm);
   };
 
   const hasPreviousPage = currentPage > 1;
@@ -368,7 +386,7 @@ export function useGetSharedUsers() {
     previousPage,
     goToPage,
     changePageSize,
-    reload: () => loadSharedUsers(currentPage, searchTerm),
+    reload: () => loadSharedUsers(currentPage, pageSize, searchTerm),
     t,
   };
 }
@@ -379,14 +397,14 @@ export function useGetUsersToShare() {
   const [availableUsers, setAvailableUsers] = useState<UserToShare[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(5);
   const [totalCount, setTotalCount] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
 
   const loadUsersToShare = useCallback(
-    async (page: number = 1, search: string = "") => {
+    async (page: number = 1, pageSize: number = 5, search: string = "") => {
       if (!accountId) return;
 
       setIsLoading(true);
@@ -409,7 +427,7 @@ export function useGetUsersToShare() {
   const goToPage = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
-      loadUsersToShare(page, searchTerm);
+      loadUsersToShare(page, pageSize, searchTerm);
     }
   };
 
@@ -428,13 +446,13 @@ export function useGetUsersToShare() {
   const search = (term: string) => {
     setSearchTerm(term);
     setCurrentPage(1);
-    loadUsersToShare(1, term);
+    loadUsersToShare(1, pageSize, term);
   };
 
   const changePageSize = (newSize: number) => {
     setPageSize(newSize);
     setCurrentPage(1);
-    loadUsersToShare(1, searchTerm);
+    loadUsersToShare(1, newSize, searchTerm);
   };
 
   const hasPreviousPage = currentPage > 1;
@@ -548,5 +566,29 @@ export function useUnshareUser(onSuccess: () => void) {
     error,
     clearError,
     t,
+  };
+}
+
+export function useFetchUserInfo() {
+  const { accountId } = useParams<{ accountId: string }>();
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchUser = useCallback(
+    async (userId: string) => {
+      if (!accountId) return;
+
+      setIsLoading(true);
+      const userData = await userService.getUserInfo(accountId, userId);
+      setUser(userData);
+      setIsLoading(false);
+    },
+    [accountId]
+  );
+
+  return {
+    user,
+    isLoading,
+    fetchUser,
   };
 }

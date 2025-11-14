@@ -71,7 +71,7 @@ export function useAccounts() {
   const search = (term: string) => {
     setSearchTerm(term);
     setCurrentPage(1);
-    loadAccounts(currentPage, pageSize, term);
+    loadAccounts(1, pageSize, term);
   };
 
   const goToPage = (page: number) => {

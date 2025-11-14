@@ -70,6 +70,12 @@ export function UsersPage() {
     isLoading: isAvailableLoading,
     load: loadAvailable,
     totalCount: availableTotalCount,
+    currentPage: availableCurrentPage,
+    totalPages: availableTotalPages,
+    pageSize: availablePageSize,
+    nextPage: availableNextPage,
+    previousPage: availablePreviousPage,
+    changePageSize: changeAvailablePageSize,
     searchTerm: availableSearchTerm,
     setSearchTerm: setAvailableSearchTerm,
     hasSearched,
@@ -194,8 +200,6 @@ export function UsersPage() {
             onSearch={handleSearch}
             onClear={handleClearSearch}
             hasSearchTerm={!!searchTerm}
-            searchButton={t("page.searchButton")}
-            clearButton={t("page.clearButton")}
           />
 
           {isLoading ? (
@@ -260,8 +264,6 @@ export function UsersPage() {
             onSearch={handleSearchShared}
             onClear={handleClearSearchShared}
             hasSearchTerm={!!sharedSearchTerm}
-            searchButton={t("page.searchButton")}
-            clearButton={t("page.clearButton")}
           />
 
           {isSharedLoading ? (
@@ -334,6 +336,12 @@ export function UsersPage() {
         onSearch={setAvailableSearchTerm}
         hasSearched={hasSearched}
         totalCount={availableTotalCount}
+        currentPage={availableCurrentPage}
+        totalPages={availableTotalPages}
+        pageSize={availablePageSize}
+        onNextPage={availableNextPage}
+        onPreviousPage={availablePreviousPage}
+        onChangePageSize={changeAvailablePageSize}
         t={t}
       />
     </div>

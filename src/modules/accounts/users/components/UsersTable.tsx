@@ -31,6 +31,7 @@ export function UsersTable({
           <TableRow>
             <TableHead>{t("table.name")}</TableHead>
             <TableHead>{t("table.email")}</TableHead>
+            <TableHead>{t("table.phone")}</TableHead>
             <TableHead>{t("table.status")}</TableHead>
             <TableHead>{t("table.isCreator")}</TableHead>
             <TableHead className="text-right">{t("table.actions")}</TableHead>
@@ -51,6 +52,7 @@ export function UsersTable({
               <TableRow key={user.userId}>
                 <TableCell className="font-medium">{user.fullName}</TableCell>
                 <TableCell>{user.email}</TableCell>
+                <TableCell>{user.phone || "-"}</TableCell>
                 <TableCell>
                   <Badge
                     variant={user.status === "A" ? "default" : "secondary"}

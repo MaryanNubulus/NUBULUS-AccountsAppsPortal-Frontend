@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { User, UpdateUserRequest } from "../types";
-import { useUpdateUser } from "../viewmodel";
+import { useUpdateUser, useFetchUserInfo } from "../viewmodel";
 
 interface EditUserModalProps {
   open: boolean;
@@ -31,12 +31,15 @@ export function EditUserModal({
     phone: "",
   });
 
+  const { user: fetchedUser, fetchUser } = useFetchUserInfo();
+
   const {
     handleSubmit,
     isSubmitting,
     status,
     validationErrors,
     clearErrors,
+    clearStatus,
     t,
   } = useUpdateUser(() => {
     onSuccess();
@@ -45,14 +48,34 @@ export function EditUserModal({
 
   useEffect(() => {
     if (open && user) {
+      fetchUser(user.userId.toString());
+    }
+  }, [open, user, fetchUser]);
+
+  useEffect(() => {
+    if (fetchedUser) {
       setFormData({
-        fullName: user.fullName,
-        email: user.email,
-        phone: user.phone,
+        fullName: fetchedUser.fullName,
+        email: fetchedUser.email,
+        phone: fetchedUser.phone,
       });
       clearErrors();
+      clearStatus();
     }
-  }, [open, user, clearErrors]);
+  }, [fetchedUser, clearErrors, clearStatus]);
+
+  const handleOpenChange = (newOpen: boolean) => {
+    onOpenChange(newOpen);
+    if (!newOpen) {
+      clearErrors();
+      clearStatus();
+      setFormData({
+        fullName: "",
+        email: "",
+        phone: "",
+      });
+    }
+  };
 
   const handleInputChange = (field: keyof UpdateUserRequest, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -67,7 +90,7 @@ export function EditUserModal({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>{t("editModal.title")}</DialogTitle>

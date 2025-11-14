@@ -19,6 +19,7 @@
   "table": {
     "name": "Name",
     "email": "Email",
+    "phone": "Phone",
     "status": "Status",
     "isCreator": "Creator",
     "actions": "Actions",

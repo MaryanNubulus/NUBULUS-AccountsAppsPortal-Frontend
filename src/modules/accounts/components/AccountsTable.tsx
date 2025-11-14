@@ -1,7 +1,7 @@
 // AccountsTable.tsx - Table component for displaying accounts
 
 import { Edit, Pause, Play, Users } from "lucide-react";
-import { Button } from "../../../components/ui/button";
+import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import {
   Table,
@@ -10,7 +10,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../../../components/ui/table";
+} from "@/components/ui/table";
 import type { Account } from "../types";
 
 interface AccountsTableProps {

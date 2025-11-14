@@ -1,7 +1,7 @@
 // EditAccountModal.tsx - Modal for editing existing accounts
 
 import { useState, useEffect } from "react";
-import { Button } from "../../../components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -9,9 +9,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "../../../components/ui/dialog";
-import { Input } from "../../../components/ui/input";
-import { Label } from "../../../components/ui/label";
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useUpdateAccount } from "../viewmodel";
 import { getAccount } from "../service";
 import type { Account, UpdateAccountRequest } from "../types";

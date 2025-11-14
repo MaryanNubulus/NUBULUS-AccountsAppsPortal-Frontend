@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -35,22 +35,25 @@ export function AddNewUserModal({
     status,
     validationErrors,
     clearErrors,
+    clearStatus,
     t,
   } = useCreateUser(() => {
     onSuccess();
     onOpenChange(false);
   });
 
-  useEffect(() => {
-    if (!open) {
+  const handleOpenChange = (newOpen: boolean) => {
+    onOpenChange(newOpen);
+    if (!newOpen) {
       setFormData({
         fullName: "",
         email: "",
         phone: "",
       });
       clearErrors();
+      clearStatus();
     }
-  }, [open, clearErrors]);
+  };
 
   const handleInputChange = (field: keyof CreateUserRequest, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -63,7 +66,7 @@ export function AddNewUserModal({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>{t("addModal.title")}</DialogTitle>

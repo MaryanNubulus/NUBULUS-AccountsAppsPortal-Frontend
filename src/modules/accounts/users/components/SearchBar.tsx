@@ -9,8 +9,6 @@ interface SearchBarProps {
   onSearch: (e: React.FormEvent) => void;
   onClear: () => void;
   hasSearchTerm: boolean;
-  searchButton: string;
-  clearButton: string;
 }
 
 export function SearchBar({
@@ -20,8 +18,6 @@ export function SearchBar({
   onSearch,
   onClear,
   hasSearchTerm,
-  searchButton,
-  clearButton,
 }: SearchBarProps) {
   return (
     <form onSubmit={onSearch} className="mb-4">
@@ -38,12 +34,10 @@ export function SearchBar({
         </div>
         <Button type="submit" variant="default">
           <Search className="h-4 w-4 mr-2" />
-          {searchButton}
         </Button>
         {hasSearchTerm && (
           <Button type="button" variant="outline" onClick={onClear}>
             <X className="h-4 w-4 mr-2" />
-            {clearButton}
           </Button>
         )}
       </div>

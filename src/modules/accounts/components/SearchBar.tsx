@@ -1,6 +1,6 @@
 import { Search, X } from "lucide-react";
-import { Button } from "../../../components/ui/button";
-import { Input } from "../../../components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 interface SearchBarProps {
   placeholder: string;
@@ -34,12 +34,10 @@ export function SearchBar({
         </div>
         <Button type="submit" variant="default">
           <Search className="h-4 w-4 mr-2" />
-          Cercar
         </Button>
         {hasSearchTerm && (
           <Button type="button" variant="outline" onClick={onClear}>
             <X className="h-4 w-4 mr-2" />
-            Netejar
           </Button>
         )}
       </div>

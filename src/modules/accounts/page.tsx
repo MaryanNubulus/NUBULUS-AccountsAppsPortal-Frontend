@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import { Button } from "../../components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../../components/ui/card";
+} from "@/components/ui/card";
 import { AccountsTable } from "./components/AccountsTable";
 import { AddNewAccountModal } from "./components/AddNewAccountModal";
 import { EditAccountModal } from "./components/EditAccountModal";

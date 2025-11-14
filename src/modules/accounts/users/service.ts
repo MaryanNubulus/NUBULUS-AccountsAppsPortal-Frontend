@@ -2,6 +2,7 @@ import type {
   CreateUserRequest,
   UpdateUserRequest,
   PaginatedUsersResponse,
+  User,
 } from "./types";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "";
@@ -35,6 +36,25 @@ export async function getUsers(
     pageSize: 10,
     items: [],
   };
+}
+
+export async function getUserInfo(
+  accountId: string,
+  userId: string
+): Promise<User | null> {
+  const response = await fetch(
+    `${API_BASE}/api/v1/accounts/${accountId}/users/${userId}`,
+    {
+      method: "GET",
+      credentials: "include",
+    }
+  );
+
+  if (response.ok) {
+    return await response.json();
+  }
+
+  return null;
 }
 
 export async function createUser(
